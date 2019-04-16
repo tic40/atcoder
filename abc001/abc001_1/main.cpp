@@ -1,17 +1,9 @@
-// https://abs.contest.atcoder.jp/tasks/abc085_c
+// https://atcoder.jp/contests/abc001/tasks/abc001_1
 #include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-  int n, y;
-  cin >> n >> y;
-  for (int i = 0; i <= n; i++) {
-    for (int j = 0; j <= (n - i); j++){
-      if (10000 * i + 5000 * j + 1000 * (n - i - j) == y) {
-        cout << i << " " << j << " " << (n - i - j) << endl;
-        return 0;
-      }
-    }
-  }
-  cout << "-1 -1 -1" << endl;
+  int h1, h2;
+  cin >> h1 >> h2;
+  cout << h1 - h2 << endl;
 }
