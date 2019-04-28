@@ -9,13 +9,12 @@ int gcd(int a, int b) {
 int main() {
   int n, ans = 0;
   cin >> n;
-  vector<int> a(n);
-  vector<int> l(n + 1, 0), r(n + 2, 0);
+  vector<int> a(n), l(n + 1, 0), r(n + 2, 0);
   for (int i = 0; i < n; i++) cin >> a[i];
-
-  for (int i = 0; i < n; i++) l[i + 1] = gcd(l[i], a[i]);
-  for (int i = n; i > 0; i--) r[i] = gcd(r[i + 1], a[i - 1]);
-
+  for (int i = 0; i < n; i++) {
+    l[i + 1] = gcd(l[i], a[i]);
+    r[n - i] = gcd(r[n - i + 1], a[n - i - 1]);
+  }
   for (int i = 0; i <= n; i++) ans = max(ans, gcd(l[i], r[i + 2]));
   cout << ans << "\n";
 }
