@@ -6,7 +6,7 @@ using namespace std;
 typedef long long ll;
 
 int main() {
-  bool ans = 'YES';
+  bool ans = false;
   int x0, y0, xb, yb, t, v, n;
   cin >> x0 >> y0 >> xb >> yb >> t >> v >> n;
   int dist, x, y, cost = t * v;
