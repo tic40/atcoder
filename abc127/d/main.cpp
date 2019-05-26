@@ -6,25 +6,25 @@ using namespace std;
 typedef long long ll;
 
 int main() {
-	int n, m, a, b, c;
+  int n, m, a, b, c;
   ll ans;
-	vector<pair<int,int>> v;
-	cin >> n >> m;
+  vector<pair<int,int>> v;
+  cin >> n >> m;
   REP(i, n) {
-		cin >> a;
-		v.push_back(make_pair(a, 1));
-	}
+    cin >> a;
+    v.push_back(make_pair(a, 1));
+  }
   REP(i, m) {
-		cin >> b >> c;
+    cin >> b >> c;
     v.push_back(make_pair(c, b));
-	}
-	sort(v.rbegin(), v.rend());
-	int i = 0;
-	while(n) {
+  }
+  sort(v.rbegin(), v.rend());
+  int i = 0;
+  while(n) {
     ll res = min(n, v[i].second);
-		ans += res * v[i].first;
-		n -= res;
-		i++;
-	}
-	cout << ans << "\n";
+    ans += res * v[i].first;
+    n -= res;
+    i++;
+  }
+  cout << ans << "\n";
 }
