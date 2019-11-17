@@ -7,4 +7,10 @@ typedef long long ll;
 
 int main() {
 
+  int n;
+  string s;
+  cin >> n >> s;
+  string sa = s.substr(0, s.size()/2);
+  string ans = (sa + sa) == s ? "Yes" : "No";
+  cout << ans << endl;
 }
