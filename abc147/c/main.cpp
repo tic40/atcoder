@@ -41,36 +41,3 @@ void solve() {
 int main() {
   solve();
 }
-/*
-
-
-int n, a, ans = 0;
-int x[15][15];
-int y[15][15];
-
-void foreach_permutation(int n, std::function<void(int *)> f) {
-  int indexes[n];
-  for (int i = 0; i < n; i++) indexes[i] = i;
-  do {
-  f(indexes);
-  } while (std::next_permutation(indexes, indexes + n));
-}
-
-
-int main() {
-  cin >> n;
-  REP(i, n) {
-  cin >> a;
-  REP(j, a) {
-    cin >> x[i][j] >> y[i][j];
-  }
-  }
-  for (int i = n; i > 0; i--) {
-  foreach_permutation(i, [](int *indexes) {
-    std::cout << indexes[0] << ',' << indexes[1] << ',' << indexes[2] << std::endl;
-  });
-  }
-
-  cout << ans << endl;
-}
-*/
