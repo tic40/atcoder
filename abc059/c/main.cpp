@@ -6,9 +6,9 @@ using ll = long long;
 int n;
 int a[100000];
 
-int solve(int t){
-  int res = 0, sum = 0;
-  for (int i = 0; i < n; i++, t = -t){
+ll solve(ll t){
+  ll res = 0, sum = 0;
+  for (ll i = 0; i < n; i++, t = -t){
     sum += a[i];
     if (sum * t > 0) continue;
     res += abs(sum - t);
@@ -20,7 +20,7 @@ int solve(int t){
 int main(){
   cin >> n;
   REP(i,n) cin >> a[i];
-  int res = solve(1);
+  ll res = solve(1);
   res = min(res, solve(-1));
   cout << res << endl;
   return 0;
