@@ -3,38 +3,25 @@ using namespace std;
 #define REP(i, n) for(int i = 0; i < n; i++)
 using ll = long long;
 
-int main() {
-  int n; cin >> n;
-  int a[n]; REP(i,n) cin >> a[i];
+int n;
+int a[100000];
 
-  int ans1 = 0;
-  int sum = 0;
-  // 奇数を負,偶数を正
-  REP(i,n) {
-    int cur = a[i];
-    if (i%2) {
-      if (sum+cur >= 0) cur = -(sum+1);
-    } else {
-      if (sum+cur <= 0) cur = -sum+1;
-    }
-    sum+=cur;
-    ans1+=abs(a[i]-cur);
+int solve(int t){
+  int res = 0, sum = 0;
+  for (int i = 0; i < n; i++, t = -t){
+    sum += a[i];
+    if (sum * t > 0) continue;
+    res += abs(sum - t);
+    sum += t * abs(sum - t);
   }
+  return res;
+}
 
-  int ans2 = 0;
-  sum = 0;
-  // 奇数を正, 偶数を負
-  REP(i,n) {
-    int cur = a[i];
-    if (i%2 == 0) {
-      if (sum+cur >= 0) cur = -(sum+1);
-    } else {
-      if (sum+cur <= 0) cur = -sum+1;
-    }
-    sum+=cur;
-    ans2+=abs(a[i]-cur);
-  }
-
-  cout << min(ans1, ans2) << endl;
+int main(){
+  cin >> n;
+  REP(i,n) cin >> a[i];
+  int res = solve(1);
+  res = min(res, solve(-1));
+  cout << res << endl;
   return 0;
 }
