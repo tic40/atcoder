@@ -5,10 +5,13 @@ using namespace std;
 #define FOR(i, m, n) for(int i = m; i < n; i++)
 typedef long long ll;
 
+int x[3];
 int main() {
-  int a,x[3];
+  int a=0;
   string s[3];
   cin>>s[0]>>s[1]>>s[2];
-  while(x[a] - s[a].size()) a = s[a][x[a]++]-'a';
+  while(x[a] - s[a].size()) {
+    a = s[a][x[a]++]-'a';
+  }
   cout << char('A' + a) << endl;
 }
