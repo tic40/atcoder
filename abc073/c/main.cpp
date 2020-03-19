@@ -27,6 +27,5 @@ int main() {
     else ans++;
   }
   cout << ans << endl;
-
   return 0;
 }
