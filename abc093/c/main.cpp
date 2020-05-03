@@ -14,9 +14,16 @@ const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
 int main() {
+  int a,b,c;
+  cin >> a >> b >> c;
+  int m = max(max(a,b),c);
+  if ((3*m)%2 != (a+b+c)%2) m++;
+
+  COUT( (3*m - (a+b+c)) / 2);
+
+  /*
   int a[3]; REP(i,3) cin >> a[i];
   int ans = 0;
-
   auto sorta = [&](){ sort(a, a+3); };
   auto same = [&](){ return a[0] == a[1] && a[0] == a[2]; };
   sorta();
@@ -33,5 +40,6 @@ int main() {
     sorta();
   }
   COUT(ans);
+  */
   return 0;
 }
