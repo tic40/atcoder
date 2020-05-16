@@ -2,7 +2,8 @@
 using namespace std;
 #define REP(i, n) for(int i = 0; i < n; i++)
 #define COUT(x) cout<<(x)<<endl
-#define dump(x)  cout << #x << " = " << (x) << endl;
+#define dump(x) cout<<#x<<" = "<<(x)<<endl;
+#define Yes(x) cout<<(x?"Yes":"No")<<endl;
 using ll = long long;
 using P = pair<int,int>;
 using Graph = vector<vector<int>>;
