@@ -4,6 +4,7 @@ using namespace std;
 #define COUT(x) cout<<(x)<<endl
 #define dump(x) cout<<#x<<" = "<<(x)<<endl;
 #define Yes(x) cout<<(x?"Yes":"No")<<endl;
+#define YES(x) cout<<(x?"YES":"NO")<<endl;
 using ll = long long;
 using P = pair<int,int>;
 using Graph = vector<vector<int>>;
