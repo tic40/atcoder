@@ -15,28 +15,12 @@ const int INF = 1e9;
 const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
+int gcd(int a, int b) { return b?gcd(b,a%b):a; }
+
 int main() {
-  int n; cin >> n;
-  int a[n]; REP(i,n) cin >> a[i];
-  int mini = INF;
-  REP(i,n) mini = min(mini,a[i]);
-  int ans = mini;
-
-  while(1) {
-    mini = ans;
-    int ok = 1;
-    REP(i,n) {
-      if (a[i] == mini) continue;
-      if (a[i] < mini) { a[i] = 0; break; }
-      a[i]%=mini;
-      if (a[i] > 0) {
-        ok = 0;
-        ans = min(ans, a[i]);
-      }
-    }
-    if (ok) break;
-  }
-
+  int n,a; cin >> n;
+  int ans=0;
+  REP(i,n) { cin >> a; ans = gcd(ans,a); }
   COUT(ans);
   return 0;
 }
