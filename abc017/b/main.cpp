@@ -6,9 +6,7 @@ using namespace std;
 typedef long long ll;
 
 int main() {
-  string s;
-  cin >> s;
-	regex po("(ch|o|k|u)+");
-  cout << regex_match(s, po) << endl;
-	cout << (regex_match(s, po) ? "YES" : "NO") << endl;
+  string s; cin >> s;
+  regex po("(ch|o|k|u)+");
+  cout << (regex_match(s, po) ? "YES" : "NO") << endl;
 }
