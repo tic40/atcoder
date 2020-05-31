@@ -5,7 +5,7 @@ if [ $# = 0 ]; then
 fi
 
 mkdir $1
-arr=(a b c d e)
+arr=(a b c d e f)
 for v in ${arr[@]}; do
   mkdir $1/$v
   cp template.cpp $1/$v/main.cpp
