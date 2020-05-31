@@ -6,11 +6,11 @@ https://atcoder.jp/
 
 https://atcoder.jp/users/tic40
 
-### create ABC contest tempalte
+### Create template for contest
 
 `$ ./createAbcTemplate.sh abcXXX`
 
-### compiler option
+### Compiler option
 
 #### C++14 (GCC 5.4.1)
 
