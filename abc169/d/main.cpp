@@ -21,25 +21,17 @@ const int INF = 1e9;
 const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
-ll prime_fac(ll n, vector<pair<ll, ll>>&l){
-  ll r, s = floor(sqrt(n));
-  pair<ll,ll> x;
-  for (ll i=2; i<=s; i++) {
-    if(n%i == 0){
-      r = 0;
-      do {
-        r++;
-        n /= i;
-      } while(n%i == 0);
-      x = make_pair(i, r);
-      l.push_back(x);
-    }
+vector<pair<ll, ll>> prime_factor(ll n) {
+  vector<pair<ll,ll>> res;
+  for (ll a = 2; a * a <= n; a++) {
+    if (n % a != 0) continue;
+    ll ex = 0;
+    while (n % a == 0) { ++ex; n /= a; }
+    res.push_back({a, ex});
   }
-  if(n > s){
-    x = make_pair(n, 1);
-    l.push_back(x);
-  }
-  return l.size();
+
+  if (n != 1) res.push_back({n, 1});
+  return res;
 }
 
 ll counter(ll n){
@@ -50,10 +42,8 @@ ll counter(ll n){
 
 int main(){
   IOS;
-
   ll n; cin >> n;
-  vector<pair<ll,ll>> l;
-  prime_fac(n, l);
+  auto l = prime_factor(n);
 
   ll ans = 0;
   for (pair<ll,ll>x: l) ans += counter(x.second);
