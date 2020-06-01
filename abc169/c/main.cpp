@@ -21,10 +21,8 @@ const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
 int main() {
-  ll a;
-  long double b;
-  cin >> a >> b;
-
-  COUT((ll)(a*b));
+  ll a; double b; cin >> a >> b;
+  ll b2 = (ll)(b*100.0+0.5);
+  COUT(a*b2/100);
   return 0;
 }
