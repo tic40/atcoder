@@ -16,5 +16,12 @@ const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
 int main() {
+  int n; cin >> n;
+  vector<double> a(n); REP(i,n) cin >> a[i];
+
+  double ans=0;
+  REP(i,n) ans+= 1/a[i];
+
+  cout << fixed << setprecision(10) << 1/ans << endl;
   return 0;
 }

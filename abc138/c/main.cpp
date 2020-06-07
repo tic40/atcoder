@@ -16,5 +16,11 @@ const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
 int main() {
+  int n; cin >> n;
+  vector<double> v(n); REP(i,n) cin >> v[i];
+  sort(v.begin(), v.end());
+  double ans = v[0];
+  for (int i = 1; i < n; i++) ans = (ans+v[i])/2;
+  cout << fixed << setprecision(10) << ans << endl;
   return 0;
 }
