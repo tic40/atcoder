@@ -15,6 +15,7 @@ using PQ = priority_queue<int>;
 using PQG = priority_queue<int,vector<int>,greater<int>>;
 using V = vector<int>;
 using ll = long long;
+using edge = struct { int to; int cost; };
 template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } return 0; }
 template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
 const int INF = 1e9;
