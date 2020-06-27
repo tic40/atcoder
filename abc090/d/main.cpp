@@ -28,7 +28,7 @@ int main() {
   ll ans = 0;
   if (k == 0) { COUT((ll)n*n); return 0; }
   for (int b=k+1; b<=n; b++) {
-    ans += (n/b)*(b-k) + max(0, (n%b)-k+1);
+    ans += (n/b)*(b-k) + max(0,(n%b)-k+1);
   }
   COUT(ans);
   return 0;
