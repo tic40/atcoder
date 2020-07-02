@@ -23,17 +23,16 @@ const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
 int main() {
+  IOS;
   int h,w; cin >> h >> w;
   int a[h][w];
   REP(i,h) REP(j,w) cin >> a[i][j];
 
   vector<tuple<int,int,int,int>> ans;
-  REP(i,h-1) {
-    REP(j,w) {
-      if(a[i][j]%2==0) continue;
-      a[i][j]--; a[i+1][j]++;
-      ans.push_back( make_tuple(i,j,i+1,j) );
-    }
+  REP(i,h-1) REP(j,w) {
+    if(a[i][j]%2==0) continue;
+    a[i][j]--; a[i+1][j]++;
+    ans.push_back( make_tuple(i,j,i+1,j) );
   }
   REP(j,w-1) {
     if (a[h-1][j]%2==0) continue;
@@ -41,12 +40,14 @@ int main() {
     ans.push_back( make_tuple(h-1,j,h-1,j+1) );
   }
 
-  cout << ans.size() << endl;
+  COUT(ans.size());
   for(auto x: ans) {
-    int x1,y1,x2,y2;
-    tie(x1,y1,x2,y2) = x;
-    x1++,y1++,x2++,y2++;
-    printf("%d %d %d %d\n",x1,y1,x2,y2);
+    cout
+      << get<0>(x)+1 << " "
+      << get<1>(x)+1 << " "
+      << get<2>(x)+1 << " "
+      << get<3>(x)+1 << endl;
   }
+
   return 0;
 }
