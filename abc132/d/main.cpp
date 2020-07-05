@@ -54,15 +54,6 @@ struct mint {
 istream& operator>>(istream& is, const mint& a) { return is >> a.x;}
 ostream& operator<<(ostream& os, const mint& a) { return os << a.x;}
 
-ll choose(ll n, ll a) {
-  ll x = 1, y = 1;
-  for (ll i = 0; i < a; i++) {
-    x *= n-i;
-    y *= i+1;
-  }
-  return x / y;
-}
-
 // パスカルの三角形
 mint c[4005][4005];
 
