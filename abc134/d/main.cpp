@@ -37,10 +37,7 @@ int main() {
 
   reverse(ALL(ans));
   COUT(ans.size());
-  REP(i,ans.size()) {
-    if (i > 0) cout << " ";
-    cout << ans[i];
-  }
+  for (int x: ans) cout << x << " ";
   cout << endl;
   return 0;
 }
