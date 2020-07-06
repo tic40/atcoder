@@ -27,38 +27,18 @@ int main() {
   int h,w; cin >> h >> w;
   int k; cin >> k;
   char c[h][w];
-  int bsum = 0;
-  REP(i,h) REP(j,w) {
-    cin >> c[i][j];
-    if (c[i][j] == '#') bsum++;
-  }
+  REP(i,h) REP(j,w) cin >> c[i][j];
 
   int ans = 0;
-  for (int bit = 0; bit < (1<<h); bit++) {
-    vector<int> sh;
-
-    REP(i,h) { if (bit >> i & 1) sh.push_back(i); }
-    int tmp_b = 0;
-
-    for(auto vh: sh)  {
-      REP(j,w) { if (c[vh][j] == '#') tmp_b++; }
+  REP(i,1<<h) REP(j,1<<w) {
+    int count = 0;
+    REP(ih,h) REP(jw,w) {
+      // flagが立っているところは選ばれてない行/列
+      // i,jのフラグが立っており、c[ih][jw]が黒の場合はincrement
+      if ((i&(1<<ih)) && (j&(1<<jw)) && c[ih][jw]=='#') count++;
     }
-
-    for (int bit = 0; bit < (1<<w); bit++) {
-      vector<int> sw;
-      REP(i,w) { if (bit >> i & 1) sw.push_back(i); }
-      int tmp_b2 = 0;
-      for(auto vw: sw) {
-        REP(i,h) { if (c[i][vw] == '#') tmp_b2++; }
-      }
-
-      for(auto vh: sh) for(auto vw: sw) {
-        if (c[vh][vw] == '#') tmp_b2--;
-      }
-      if ( bsum - (tmp_b + tmp_b2) == k ) ans++;
-    }
+    if (count==k) ans++;
   }
-
   COUT(ans);
   return 0;
 }
