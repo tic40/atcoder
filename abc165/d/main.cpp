@@ -19,6 +19,5 @@ int main() {
   ll x = n;
   n = min(n, b-1);
   cout << (a*n)/b - a*(n/b) << endl;
-  COUT(ans);
   return 0;
 }
