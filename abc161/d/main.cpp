@@ -15,6 +15,36 @@ const ll LINF = 1e18;
 
 int main() {
   int k; cin >> k;
+  vector<ll> ans;
+  queue<ll> q;
+
+  for (int i = 1; i<10; i++) q.push(i);
+
+  while(!q.empty()) {
+    if (ans.size() > k) break;
+    ll n = q.front(); q.pop();
+    ans.push_back(n);
+
+    if (f > 0) q.push(n*10+(f-1));
+    q.push(n*10+f);
+    if (f < 9) q.push(n*10+f+1);
+  }
+
+  COUT(ans[k-1]);
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
+  /*
+  int k; cin >> k;
   vector<ll> a;
   for (int i=1; i<=9; i++) a.push_back(i);
   while(1) {
@@ -31,4 +61,5 @@ int main() {
       }
     }
   }
+  */
 }
