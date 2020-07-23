@@ -30,9 +30,7 @@ int main() {
 
   M m;
   int ans = 0;
-  REP(i,n) {
-    if (m[a[i]]++) ans++;
-  }
+  REP(i,n) if (m[a[i]]++) ans++;
   COUT(ans);
 
   return 0;
