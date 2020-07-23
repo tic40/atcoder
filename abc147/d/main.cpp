@@ -28,14 +28,17 @@ int main() {
   vector<ll> a(n);
   REP(i,n) cin >> a[i];
   ll ans = 0;
+
+  // 60bitまで
   REP(i,60) {
     ll x = 0;
     REP(j,n) if (a[j]>>i&1) x++;
-    ll now = x*(n-x)%MOD; // 0と1を一つずつ選ぶ
-    REP(j,i) now = now*2%MOD; // 2のi乗
+    ll now = x*(n-x)%MOD; // (1の数)*(0の数): 0と1のペアを選ぶ
+    REP(j,i) now = now*2%MOD;
     ans += now;
     ans %= MOD;
   }
+
   COUT(ans);
   return 0;
 }
