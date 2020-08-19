@@ -28,8 +28,11 @@ void solver(int n, int k, vector<int> p, vector<int> c) {
   ll ans = -LINF;
 
   REP(i,n) {
+
+
     ll cycle_sum = 0;
     int cycle_cnt = 0, v = i;
+    // cycleを計算する
     while(1) {
       cycle_cnt++;
       cycle_sum += c[p[v]];
