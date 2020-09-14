@@ -1,34 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ALL(x) (x).begin(),(x).end()
-#define COUT(x) cout<<(x)<<"\n"
-#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 #define REP(i, n) for(int i=0;i<n;i++)
-#define YES(x) cout<<(x?"YES":"NO")<<"\n"
-#define Yes(x) cout<<(x?"Yes":"No")<<"\n"
-#define dump(x) cout<<#x<<" = "<<(x)<<"\n"
-#define endl "\n"
-using G = vector<vector<int>>;
-using M = map<int,int>;
-using P = pair<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int,vector<int>,greater<int>>;
-using V = vector<int>;
 using ll = long long;
-using edge = struct { int to; int cost; };
-template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } return 0; }
-template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
-const int INF = 1e9;
-const ll LINF = 1e18;
 const int MOD = 1e9+7;
 
 int n;
+int dp[1000010][2][2]; // [N][0を含むかどうか][9を含むかどうか]
 
 ll modpow(ll x, ll y) {
   ll v = 1;
-  REP(i,y) {
-    v *= x; v %= MOD;
-  }
+  REP(i,y) { v *= x; v %= MOD; }
   return v;
 }
 
@@ -40,28 +21,28 @@ void solve1() {
   ll ans = p1 - (p2 - p3);
   ans %= MOD;
   ans = (ans + MOD) % MOD;
-  COUT(ans);
+  cout << ans << endl;
 }
 
 // DP解法
-// dp[桁数][0,9使用状況]
-int dp[1000000][1<<2];
 void solve2() {
-  dp[0][0] = 1;
+  dp[0][0][0] = 1;
   REP(i,n) {
-    REP(j,1<<2) {
-      REP(d,10) {
-        int nj = j | ( d == 0 ? 1 : 0 ) | ( d == 9 ? 2 : 0 );
-        dp[i+1][nj] += dp[i][j];
-        dp[i+1][nj] %= MOD;
+    REP(j,2) {
+      REP(k,2) {
+        REP(x,10) {
+          int nj = j | x == 0;
+          int nk = k | x == 9;
+          dp[i+1][nj][nk] += dp[i][j][k];
+          dp[i+1][nj][nk] %= MOD;
+        }
       }
     }
   }
-  COUT(dp[n][3]);
+  cout << dp[n][1][1] << endl;
 }
 
 int main() {
-  IOS;
   cin >> n;
   // solve1();
   solve2();
