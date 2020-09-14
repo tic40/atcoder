@@ -20,69 +20,50 @@ template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } retu
 template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
 const int INF = 1e9;
 const ll LINF = 1e18;
+const int MOD = 1e9+7;
 
-const int mod = 1e9+7;
-struct mint {
-  ll x; // typedef long long ll;
-  mint(ll x=0):x((x%mod+mod)%mod){}
-  mint operator-() const { return mint(-x);}
-  mint& operator+=(const mint a) {
-    if ((x += a.x) >= mod) x -= mod;
-    return *this;
-  }
-  mint& operator-=(const mint a) {
-    if ((x += mod-a.x) >= mod) x -= mod;
-    return *this;
-  }
-  mint& operator*=(const mint a) { (x *= a.x) %= mod; return *this;}
-  mint operator+(const mint a) const { return mint(*this) += a;}
-  mint operator-(const mint a) const { return mint(*this) -= a;}
-  mint operator*(const mint a) const { return mint(*this) *= a;}
-  mint pow(ll t) const {
-    if (!t) return 1;
-    mint a = pow(t>>1);
-    a *= a;
-    if (t&1) a *= *this;
-    return a;
-  }
-  // for prime mod
-  mint inv() const { return pow(mod-2);}
-  mint& operator/=(const mint a) { return *this *= a.inv();}
-  mint operator/(const mint a) const { return mint(*this) /= a;}
-};
-istream& operator>>(istream& is, const mint& a) { return is >> a.x;}
-ostream& operator<<(ostream& os, const mint& a) { return os << a.x;}
+int n;
 
-mint choose(int n, int a) {
-  mint x = 1, y = 1;
-  REP(i,a) {
-    x *= n-i;
-    y *= i+1;
+ll modpow(ll x, ll y) {
+  ll v = 1;
+  REP(i,y) {
+    v *= x; v %= MOD;
   }
-  return x / y;
+  return v;
 }
 
-mint f(int n, int a) {
-  if (n == 0) return 1;
-  mint x = f(n/2, a);
-  x *= x;
-  if (n % 2 == 1) x *= a;
-  return x;
+// 包除原理解法
+void solve1() {
+  ll p1 = modpow(10, n);
+  ll p2 = (modpow(9, n) * 2) % MOD;
+  ll p3 = modpow(8, n);
+  ll ans = p1 - (p2 - p3);
+  ans %= MOD;
+  ans = (ans + MOD) % MOD;
+  COUT(ans);
+}
+
+// DP解法
+// dp[桁数][0,9使用状況]
+int dp[1000000][1<<2];
+void solve2() {
+  dp[0][0] = 1;
+  REP(i,n) {
+    REP(j,1<<2) {
+      REP(d,10) {
+        int nj = j | ( d == 0 ? 1 : 0 ) | ( d == 9 ? 2 : 0 );
+        dp[i+1][nj] += dp[i][j];
+        dp[i+1][nj] %= MOD;
+      }
+    }
+  }
+  COUT(dp[n][3]);
 }
 
 int main() {
   IOS;
-  int n; cin >> n;
-
-  mint p1 = f(n, 10); // 全通り
-  mint p2 = f(n, 9) * 2; // 0が存在しないケース/9が存在しないケース
-  mint p3 = f(n, 8); // 0と9が共に存在しないケース
-
-  // 包除原理
-  // (0が存在しないケース + 9が存在しないケースから) 0と9が共に存在しないケースを
-  // 引くことで、0または9が少なくとも一方が存在しないケースとなる。
-  // 全体から、0または9が少なくとも一方が存在しないケースを引けば、
-  // 0と9が両方存在するケースとなる
-  COUT( p1 - (p2 - p3) );
+  cin >> n;
+  // solve1();
+  solve2();
   return 0;
 }

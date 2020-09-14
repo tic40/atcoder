@@ -24,10 +24,7 @@ const ll LINF = 1e18;
 
 int main() {
   IOS;
-  int n;
-  cin >> n;
-  if (n == 0) COUT(1);
-  else COUT(0);
-
+  int n; cin >> n;
+  COUT(n == 0 ? 1 : 0);
   return 0;
 }

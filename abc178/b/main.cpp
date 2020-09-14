@@ -28,11 +28,9 @@ int main() {
   cin >> x[0] >> x[1];
   cin >> y[0] >> y[1];
   ll ans = -LINF;
-  REP(i,2) {
-    REP(j,2) {
-      ll v = x[i] * y[j];
-      if (ans < v) ans = v;
-    }
+  REP(i,2) REP(j,2) {
+    ll v = x[i] * y[j];
+    chmax(ans, v);
   }
   COUT(ans);
 
