@@ -28,18 +28,21 @@ int main() {
   IOS;
   cin >> n >> x >> m;
   int start, loop;
+  const int MAXM = 100010;
+  vector<ll> a(MAXM), s(MAXM), pre(MAXM,-1);
 
-  vector<int> a(n), s(n), pre(100010,-1);
   a[1] = s[1] = x;
   pre[x] = 1;
 
-  for (int i = 2; i <= n; i++) {
-    a[i] = a[i-1] * a[i-1] % m;
+  for (int i = 2; i <= MAXM; i++) {
+    a[i] = (a[i-1] * a[i-1]) % m;
     s[i] = s[i-1] + a[i];
+
     if (i == n) {
       COUT(s[i]);
       return 0; // ループ検知前にnに達したら答えを出力して終了
     }
+
     if (pre[a[i]] >= 0) {
       start = pre[a[i]]; // loop スタート
       loop = i-pre[a[i]]; // loop の長さ
