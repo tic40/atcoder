@@ -1,18 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
-#define COUT(x) cout<<(x)<<endl
-#define dump(x)  cout << #x << " = " << (x) << endl;
-using ll = long long;
-using P = pair<int,int>;
-using Graph = vector<vector<int>>;
-using M = map<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int, vector<int>, greater<int>>;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
+#define COUT(x) cout<<(x)<<"\n"
+#define REP(i,n) for(int i=0;i<n;i++)
+
+int a,b;
+const int h=100,w=100;
+char g[h][w];
 
 int main() {
+  cin >> a >> b;
+  a--; b--;
+
+  REP(i,h) REP(j,w) g[i][j] = i<h/2 ? '#' : '.';
+
+  for (int i=0; i<h; i+=2) {
+    if (h/2+(h/2)%2+2 == i) swap(a,b);
+    for (int j=0; j<w; j+=2) {
+      if (a==0) break;
+      g[i][j] = g[i][j] == '.' ? '#' : '.';
+      a--;
+    }
+  }
+
+  cout << h << " " << w << endl;
+  REP(i,h) REP(j,w) {
+    cout << g[i][j];
+    j == w-1 && cout << endl;
+  }
   return 0;
 }
