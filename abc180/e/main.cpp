@@ -25,6 +25,7 @@ int main() {
 
   // 開始点0から各都市への移動
   REP(i,n) {
+    // 0から0への移動はスキップ
     if (i==0) continue;
     dp[1<<i][i] = cost[0][i];
   }
