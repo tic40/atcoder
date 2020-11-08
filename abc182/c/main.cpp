@@ -22,16 +22,12 @@ const int INF = 1e9;
 const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
-ll tol(vector<int> v) {
-  ll res = 0;
-  if (v.size() == 0) return res;
-  reverse(s.begin(), s.end());
-  ll i = 1;
-  for(auto n: v) {
-    res += n*i; i*=10;
-  }
-
-  return res;
+bool ok(vector<int> v) {
+  if (v.size() == 0) return false;
+  int sum = 0;
+  // 3の倍数は各桁を足し合わせた数が3の倍数かどうかで判定可能
+  for(auto n: v) sum += n;
+  return sum % 3 == 0;
 }
 
 int main() {
@@ -45,17 +41,11 @@ int main() {
     REP(i,k) {
       if (bit >> i & 1) s.push_back(n[i]-'0');
     }
-
-    if (s.size() == 0) continue;
-
-    if (tol(s) % 3 == 0) {
-      int diff = k - s.size();
-      chmin(ans, diff);
-    }
+    if (ok(s)) chmin(ans, (int)(k - s.size()));
   }
 
-  if (ans == INF) COUT(-1);
-  else COUT(ans);
+  if (ans == INF) ans = -1;
+  COUT(ans);
 
   return 0;
 }

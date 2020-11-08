@@ -27,13 +27,11 @@ int main() {
   int n; cin >> n;
   vector<int> a(n);
   int mx = 0;
-  REP(i,n) {
-    cin >> a[i];
-    chmax(mx, a[i]);
-  }
+  REP(i,n) cin >> a[i];
+  sort(a.begin(), a.end());
 
   int ans = 0, cnt = 0;
-  for (int i = 2; i <= mx; i++) {
+  for (int i = 2; i <= a[n-1]; i++) {
     int tmp = 0;
     REP(j,n) if (a[j] % i == 0) tmp++;
     if (cnt < tmp) {
