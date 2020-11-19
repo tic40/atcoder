@@ -14,5 +14,22 @@ const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
 int main() {
+  int n; cin >> n;
+
+  if (n == 0) { COUT(0); return 0; }
+
+  vector<int> a;
+  while(n != 0) {
+    int tmp = n % 2;
+    if (tmp < 0) tmp+=2;
+
+    a.push_back(tmp);
+    n = (n-tmp) / -2;
+  }
+
+  reverse(a.begin(), a.end());
+  for(auto v: a) cout << v;
+  cout << endl;
+
   return 0;
 }
