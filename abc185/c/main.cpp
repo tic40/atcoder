@@ -33,15 +33,21 @@ void init() {
   }
 }
 
-ll comb(int n, int k) {
-  return c[n][k];
-}
+ll comb(int n, int k) { return c[n][k]; }
 
 int main() {
   IOS;
   ll l; cin >> l;
 
-  init();
-  COUT(comb(l-1, 11));
+  // パスカルの三角形解法
+  // init();
+  // COUT(comb(l-1, 11));
+
+  ll ans = 1;
+  for (int i = 1; i < 12; i++) {
+    ans *= l - i;
+    ans /= i;
+  }
+  COUT(ans);
   return 0;
 }
