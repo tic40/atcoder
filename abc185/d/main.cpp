@@ -27,22 +27,23 @@ int main() {
   int n,m; cin >> n >> m;
   vector<int> a(m);
   REP(i,m) cin >> a[i];
-  a.push_back(n+1);
   sort(ALL(a));
+  a.push_back(n+1);
 
-  int cur = 1;
+  int cur = 1, k = INF;
   vector<int> s;
-
   REP(i,m+1) {
-    int w = a[i] - cur;
-    if (0 < w) s.push_back(w);
+    int len = a[i] - cur;
+    if (0 < len) {
+      s.push_back(len);
+      chmin(k,len);
+    }
     cur = a[i]+1;
   }
-  int k = n;
-  for (int w: s) k = min(k, w);
 
   int ans = 0;
-  for(int w: s) ans += (w+k-1)/k;
+  for (auto v: s) ans += (v+k-1)/k;
+
   COUT(ans);
   return 0;
 }
