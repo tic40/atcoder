@@ -22,14 +22,18 @@ const int INF = 1e9;
 const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
-vector<int> f(int n, int base) {
-  vector<int> a;
-  while(n > 0) {
-    a.push_back(n % base);
-    n /= base;
+string to_oct(int n){
+  string s;
+  while(n){
+    s = to_string(n%8) + s;
+    n /= 8;
   }
-  reverse(ALL(a));
-  return a;
+  return s;
+}
+
+bool has_7(string s) {
+  for(char c: s) if (c == '7') return true;
+  return false;
 }
 
 int main() {
@@ -38,19 +42,7 @@ int main() {
 
   int ans = 0;
   for (int i = 1; i <=n; i++) {
-    int tmp = i;
-    int ok = true;
-    while(tmp > 0) {
-      if (tmp % 10 == 7) { ok = false; break; }
-      tmp /= 10;
-    }
-    if (!ok) continue;
-
-    vector<int> h = f(i, 8);
-    REP(j,h.size()) {
-      if (h[j] == 7) { ok = false; break; }
-    }
-    if (ok) ans++;
+    if (!has_7(to_string(i)) && !has_7(to_oct(i))) ans++;
   }
 
   COUT(ans);
