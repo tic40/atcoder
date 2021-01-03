@@ -33,8 +33,7 @@ void solve() {
     aoki += a[i];
   }
 
-  sort(p.begin(), p.end());
-  reverse(p.begin(), p.end());
+  sort(p.rbegin(), p.rend());
 
   int ans = 0;
   REP(i,n) {
