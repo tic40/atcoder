@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ALL(x) (x).begin(),(x).end()
 #define REP(i,n) for(int i=0;i<n;i++)
 
 int n;
@@ -14,8 +13,8 @@ void dfs(int cur, int d) {
 
     if (dp[next] != -1) continue;
 
-    dp[next] = d^w;
-    dfs(next, d^w);
+    dp[next] = (d+w)%2;
+    dfs(next, dp[next]);
   }
   return;
 }
@@ -38,7 +37,6 @@ int main() {
     int u,v,w;
     cin >> u >> v >> w;
     u--; v--;
-    w %= 2; // 偶奇だけ持つ
     g[u].push_back({v,w});
     g[v].push_back({u,w});
   }
