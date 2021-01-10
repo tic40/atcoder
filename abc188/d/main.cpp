@@ -25,6 +25,7 @@ const ll LINF = 1e18;
 ll N,C;
 vector<ll> a,b,c;
 
+// いもす法 mapを使った経路圧縮
 void solve() {
   map<int, ll> events;
   REP(i,N) {
