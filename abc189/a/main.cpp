@@ -24,8 +24,7 @@ const ll LINF = 1e18;
 
 int main() {
   IOS;
-  string s;
-  cin >> s;
+  string s; cin >> s;
   if (s[0] == s[1] && s[1] == s[2]) COUT("Won");
   else COUT("Lost");
 

@@ -24,20 +24,16 @@ const ll LINF = 1e18;
 
 int main() {
   IOS;
-  ll n,x;
-  cin >> n >> x;
+  ll n,x; cin >> n >> x;
   ll v[n],p[n];
-  REP(i,n) { cin >> v[i] >> p[i]; }
+  REP(i,n) cin >> v[i] >> p[i];
 
-  ll tot = 0;
   REP(i,n) {
-    tot += v[i] * p[i];
-    if (x*100 < tot) {
-      COUT(i+1);
-      return 0;
+    if (x*100 < v[i]*p[i]) {
+      COUT(i+1); return 0;
     }
   }
-  COUT(-1);
 
+  COUT(-1);
   return 0;
 }
