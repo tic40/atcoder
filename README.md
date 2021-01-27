@@ -14,7 +14,5 @@ https://atcoder.jp/users/tic40
 
 #### C++14 (GCC 5.4.1)
 
+compile
 `g++ -std=gnu++1y -o a.out main.cpp`
-
-shortcut alias
-`alias gcc14='g++ -std=gnu++1y -o a.out main.cpp && ./a.out'`
