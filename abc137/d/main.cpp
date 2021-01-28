@@ -26,30 +26,29 @@ int n,m;
 vector<int> a,b;
 
 void solve() {
-  vector<vector<int>> AtoB(m+1);
+  vector<vector<int>> ab(m+1);
   REP(i,n) {
     if (m < a[i]) continue;
-    AtoB[a[i]].push_back(b[i]);
+    ab[a[i]].push_back(b[i]);
   }
 
   ll ans = 0;
-  priority_queue<ll> que;
+  priority_queue<int> que;
   for (int i = m-1; 0 <= i; i--) {
-    for (auto b: AtoB[m-i]) que.push(b);
+    for (int x: ab[m-i]) que.push(x);
     if (que.empty()) continue;
+
     ans += que.top();
     que.pop();
   }
-  COUT(ans);
 
+  COUT(ans);
   return;
 }
 
 int main() {
-  IOS;
   cin >> n >> m;
-  a.resize(n);
-  b.resize(n);
+  a.resize(n); b.resize(n);
   REP(i,n) cin >> a[i] >> b[i];
 
   solve();
