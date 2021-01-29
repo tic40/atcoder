@@ -1,13 +1,42 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define COUT(x) cout<<(x)<<"\n"
 #define REP(i,n) for(int i=0;i<n;i++)
-#define endl "\n"
 using ll = long long;
 const int MOD = 1e9+7;
+const double PI = 3.141592653589793;
+
+const int MAX = 100005;
+
+ll gcd(ll a, ll b) { return b?gcd(b,a%b):a; }
+ll lcm(ll a, ll b) { return a/gcd(a,b)*b; }
+long long extGCD(ll a, ll b, ll &x, ll &y) {
+  if (b == 0) { x = 1; y = 0; return a; }
+  ll d = extGCD(b, a%b, y, x);
+  y -= a/b * x;
+  return d;
+}
+
+// 二項係数
+ll fac[MAX], finv[MAX], inv[MAX];
+void comInit() { // テーブルを作る前処理
+  fac[0] = fac[1] = 1;
+  finv[0] = finv[1] = 1;
+  inv[1] = 1;
+  for (int i = 2; i < MAX; i++){
+    fac[i] = fac[i - 1] * i % MOD;
+    inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
+    finv[i] = finv[i - 1] * inv[i] % MOD;
+  }
+  return;
+}
+ll com(int n, int k) { // 二項係数計算
+  if (n < k) return 0;
+  if (n < 0 || k < 0) return 0;
+  return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
+}
 
 struct mint {
-  ll x; // typedef long long ll;
+  ll x;
   mint(ll x=0):x((x%MOD+MOD)%MOD){}
   mint operator-() const { return mint(-x);}
   mint& operator+=(const mint a) {
@@ -40,43 +69,21 @@ ostream& operator<<(ostream& os, const mint& a) { return os << a.x;}
 int n,k;
 vector<int> a;
 
-const int MAX = 100005;
-long long fac[MAX], finv[MAX], inv[MAX];
-void COMinit() { // テーブルを作る前処理
-  fac[0] = fac[1] = 1;
-  finv[0] = finv[1] = 1;
-  inv[1] = 1;
-  for (int i = 2; i < MAX; i++){
-    fac[i] = fac[i - 1] * i % MOD;
-    inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
-    finv[i] = finv[i - 1] * inv[i] % MOD;
-  }
-  return;
-}
-
-long long COM(int n, int k) { // 二項係数計算
-  if (n < k) return 0;
-  if (n < 0 || k < 0) return 0;
-  return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
-}
-
 void solve() {
-  COMinit();
+  comInit();
 
-  auto f = [&](){
+  auto f = [&]() {
     mint sum = 0;
-    for (int i = k-1; i <= n; i++) {
-      sum += mint(a[i]) * COM(i,k-1);
-    }
+    for (int i=k-1; i<=n; i++) sum += a[i] * com(i, k-1);
     return sum;
   };
 
   sort(a.begin(), a.end());
-  mint summax = f();
+  mint sumMax = f();
   reverse(a.begin(), a.end());
-  mint summin = f();
+  mint sumMin = f();
 
-  COUT(summax - summin);
+  cout << sumMax - sumMin << endl;
   return;
 }
 
