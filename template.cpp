@@ -32,10 +32,11 @@ ll extGCD(ll a, ll b, ll &x, ll &y) {
   return d;
 }
 
-// 二項係数
 const int comMAX = 100005;
+// 二項係数テーブル
 ll fac[comMAX], finv[comMAX], inv[comMAX];
-void comInit() { // テーブルを作る前処理
+// 二項係数テーブル前処理
+void comInit() {
   fac[0] = fac[1] = 1;
   finv[0] = finv[1] = 1;
   inv[1] = 1;
@@ -46,7 +47,8 @@ void comInit() { // テーブルを作る前処理
   }
   return;
 }
-ll com(int n, int k) { // 二項係数計算
+// 二項係数計算
+ll com(int n, int k) {
   if (n < k) return 0;
   if (n < 0 || k < 0) return 0;
   return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
@@ -82,6 +84,11 @@ struct mint {
 };
 istream& operator>>(istream& is, const mint& a) { return is >> a.x;}
 ostream& operator<<(ostream& os, const mint& a) { return os << a.x;}
+
+
+void solve() {
+  return;
+}
 
 int main() {
   IOS;
