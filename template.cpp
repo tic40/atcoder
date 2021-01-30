@@ -35,8 +35,9 @@ ll extGCD(ll a, ll b, ll &x, ll &y) {
 const int comMAX = 100005;
 // 二項係数テーブル
 ll fac[comMAX], finv[comMAX], inv[comMAX];
-// 二項係数テーブル前処理
-void comInit() {
+bool comInitialized = false;
+// 二項係数テーブル初期化
+void _comInit() {
   fac[0] = fac[1] = 1;
   finv[0] = finv[1] = 1;
   inv[1] = 1;
@@ -45,10 +46,13 @@ void comInit() {
     inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
     finv[i] = finv[i - 1] * inv[i] % MOD;
   }
+  comInitialized = true;
   return;
 }
-// 二項係数計算
+
+// 二項係数nCk算出
 ll com(int n, int k) {
+  if (!comInitialized) _comInit();
   if (n < k) return 0;
   if (n < 0 || k < 0) return 0;
   return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
