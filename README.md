@@ -6,13 +6,17 @@ https://atcoder.jp/
 
 https://atcoder.jp/users/tic40
 
-### Create template for contest
+### Scripts
 
-`$ ./createAbcTemplate.sh abcXXX`
+#### Create template for contest
+
+`$ ./scripts/createContestTemplate.sh {directory name}`
+
+#### Exec test
+
 
 ### Compiler option
 
 #### C++14 (GCC 5.4.1)
 
-compile
-`g++ -std=gnu++1y -o a.out main.cpp`
+`$ g++ -std=gnu++1y -o a.out main.cpp`
