@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ $# = 0 ]; then
-  echo '作成するディレクトリ名を指定してください'
+  echo 'Argument error: Please specify directory name to be created.'
   exit 1
 fi
 
