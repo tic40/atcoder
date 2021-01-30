@@ -108,15 +108,41 @@ struct UnionFind {
   int size(int x) { return -d[root(x)]; }
 };
 
-int binary_search(vector<int> a, int key) {
-  int ng = -1, ok = a.size();
+ll binary_search(vector<ll> a, ll key) {
+  ll ng = -1, ok = a.size();
   while (abs(ok-ng)>1) {
-    int mid = (ok+ng)/2;
+    ll mid = (ok+ng)/2;
     // 条件: key以上の場合
     if (a[mid]>=key) ok = mid;
     else ng = mid;
   }
   return ok;
+}
+
+// 素因数分解
+vector<pair<ll, ll>> prime_factorize(ll n) {
+  vector<pair<ll,ll>> res;
+  for (ll a = 2; a * a <= n; a++) {
+    if (n % a != 0) continue;
+    ll ex = 0;
+    while (n % a == 0) { ++ex; n /= a; }
+    res.push_back({a, ex});
+  }
+  if (n != 1) res.push_back({n, 1});
+  return res;
+}
+
+// 約数列挙
+vector<ll> divisor(ll n) {
+  vector<ll> ret;
+  for (ll i = 1; i * i <= n; i++) {
+    if (n % i == 0) {
+      ret.push_back(i);
+      if (i * i != n) ret.push_back(n / i);
+    }
+  }
+  sort(ret.begin(),ret.end());
+  return ret;
 }
 
 
