@@ -15,7 +15,7 @@ if [ $cnt = 0 ]; then
 fi
 
 echo "===start test==="
-echo "run $cnt tests: ${res[@]}"
+echo "run $cnt tests."
 for fname in "${res[@]}"; do
   echo "[run $fname]"
   ./a.out < $fname
