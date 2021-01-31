@@ -2,8 +2,18 @@
 filePattern=${1:-test*}
 
 echo "===start runTest.sh==="
+
+if [ -e a.out ]; then
+  rm a.out
+fi
+
 # compile
 g++ -std=gnu++1y -o a.out main.cpp
+
+if [ ! -e a.out ]; then
+  echo "Error: Compile error."
+  exit 1
+fi
 
 # get test files
 res=(`find . -type f -name "$filePattern" | sort`)
@@ -15,9 +25,8 @@ if [ $cnt = 0 ]; then
 fi
 
 echo "===start test==="
-echo "run $cnt tests."
 for fname in "${res[@]}"; do
   echo "[run $fname]"
   ./a.out < $fname
 done
-echo "===end test==="
+echo "===end: run $cnt tests.==="
