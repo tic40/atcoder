@@ -135,16 +135,24 @@ vector<pair<ll, ll>> prime_factorize(ll n) {
 // 約数列挙
 vector<ll> divisor(ll n) {
   vector<ll> ret;
-  for (ll i = 1; i * i <= n; i++) {
-    if (n % i == 0) {
-      ret.push_back(i);
-      if (i * i != n) ret.push_back(n / i);
-    }
+  for (ll i = 1; i*i <= n; i++) {
+    if (n%i) continue;
+
+    ret.push_back(i);
+    if (i * i != n) ret.push_back(n / i);
   }
   sort(ret.begin(),ret.end());
   return ret;
 }
 
+ll divisorCnt(ll n) {
+  ll cnt = 0;
+  for (ll i = 1; i*i <= n; i++) {
+    if (n%i) continue;
+    cnt += i*i == n ? 1 : 2;
+  }
+  return cnt;
+}
 
 void solve() {
   return;
