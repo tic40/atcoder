@@ -26,7 +26,7 @@ fi
 
 echo "===start test==="
 for fname in "${res[@]}"; do
-  echo "[run $fname]"
+  echo "\n[input $fname]"
   ./a.out < $fname
 done
-echo "===end: run $cnt tests.==="
+echo "\n===end: run $cnt tests.==="
