@@ -1,59 +1,67 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
-using ll = long long;
 using P = pair<int,int>;
-using edge = struct { int to; int cost; };
+using Edge = struct { int to; int cost; };
 const int INF = 1e9;
 
-int n,m;
 vector<int> a,b,c;
-vector<vector<edge>> g;
+int n,m;
+vector<vector<Edge>> g;
 
-void solve(int s) {
-  vector<int> d(n+5, INF);
-  priority_queue<P, vector<P>, greater<P>> que;
-  d[s] = 0;
-  que.push(P(0, s));
+// s: スタート位置
+vector<int> dijkstra(int s) {
+  vector<int> dist(g.size(), INF);
+  dist[s] = 0;
 
-  while (!que.empty()) {
-    P p = que.top(); que.pop();
-    int v = p.second;
-    if (d[v] < p.first) continue;
+  priority_queue<P, vector<P>, greater<P>> q;
+  q.emplace(0, s); // [現在位置のコスト, 位置位置]
 
-    REP(i,g[v].size()) {
-      edge e = g[v][i];
-      if (d[e.to] > d[v] + e.cost) {
-        d[e.to] = d[v] + e.cost;
-        que.push(P(d[e.to], e.to));
+  while (!q.empty()) {
+    P p = q.top(); q.pop();
+    auto d = p.first, v = p.second;
+    if (dist[v] < d) continue;
+
+    for (Edge e: g[v]) {
+      if (dist[v]+e.cost < dist[e.to]) {
+        dist[e.to] = dist[v] + e.cost;
+        q.emplace(dist[e.to], e.to);
       }
     }
   }
 
-  int ans = INF;
-  REP(i,n) {
-    if (d[i] == INF) continue;
-    for(auto x: g[i]) {
-      if (x.to == s) ans = min(ans, d[i] + x.cost);
-    }
+  return dist;
+}
+
+void solve() {
+  g.resize(n);
+  REP(i,m) {
+    Edge e = { b[i], c[i] };
+    g[a[i]].emplace_back(e);
   }
 
-  cout << (ans == INF ? -1 : ans) << endl;
-  return;
+  REP(i,n) {
+    vector<int> d = dijkstra(i);
+
+    int ans = INF;
+    REP(j,n) {
+      for(Edge e: g[j]) {
+        if (e.to == i) ans = min(ans, d[j]+e.cost);
+      }
+    }
+
+    cout << (ans == INF ? -1 : ans) << endl;
+  }
 }
 
 int main() {
   cin >> n >> m;
   a.resize(m); b.resize(m); c.resize(m);
-  g.resize(n);
-
   REP(i,m) {
     cin >> a[i] >> b[i] >> c[i];
     a[i]--; b[i]--;
-    edge e = { b[i], c[i] };
-    g[a[i]].emplace_back(e);
   }
 
-  REP(i,n) solve(i);
+  solve();
   return 0;
 }
