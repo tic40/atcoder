@@ -23,41 +23,6 @@ const int MOD = 1e9+7;
 const ll LINF = 1e18;
 const double PI = 3.141592653589793;
 
-ll gcd(ll a, ll b) { return b?gcd(b,a%b):a; }
-ll lcm(ll a, ll b) { return a/gcd(a,b)*b; }
-ll extGCD(ll a, ll b, ll &x, ll &y) {
-  if (b == 0) { x = 1; y = 0; return a; }
-  ll d = extGCD(b, a%b, y, x);
-  y -= a/b * x;
-  return d;
-}
-
-const int comMAX = 100005;
-// 二項係数テーブル
-ll fac[comMAX], finv[comMAX], inv[comMAX];
-bool comInitialized = false;
-// 二項係数テーブル初期化
-void _comInit() {
-  fac[0] = fac[1] = 1;
-  finv[0] = finv[1] = 1;
-  inv[1] = 1;
-  for (int i = 2; i < comMAX; i++){
-    fac[i] = fac[i - 1] * i % MOD;
-    inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
-    finv[i] = finv[i - 1] * inv[i] % MOD;
-  }
-  comInitialized = true;
-  return;
-}
-
-// 二項係数nCk算出
-ll com(int n, int k) {
-  if (!comInitialized) _comInit();
-  if (n < k) return 0;
-  if (n < 0 || k < 0) return 0;
-  return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
-}
-
 struct mint {
   ll x;
   mint(ll x=0):x((x%MOD+MOD)%MOD){}
@@ -108,6 +73,52 @@ struct UnionFind {
   int size(int x) { return -d[root(x)]; }
 };
 
+
+ll gcd(ll a, ll b) { return b?gcd(b,a%b):a; }
+ll lcm(ll a, ll b) { return a/gcd(a,b)*b; }
+ll extGCD(ll a, ll b, ll &x, ll &y) {
+  if (b == 0) { x = 1; y = 0; return a; }
+  ll d = extGCD(b, a%b, y, x);
+  y -= a/b * x;
+  return d;
+}
+
+const int comMAX = 200005;
+// 二項係数テーブル
+ll fac[comMAX], finv[comMAX], inv[comMAX];
+bool comInitialized = false;
+// 二項係数テーブル初期化
+void _comInit() {
+  fac[0] = fac[1] = 1;
+  finv[0] = finv[1] = 1;
+  inv[1] = 1;
+  for (int i = 2; i < comMAX; i++){
+    fac[i] = fac[i - 1] * i % MOD;
+    inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
+    finv[i] = finv[i - 1] * inv[i] % MOD;
+  }
+  comInitialized = true;
+  return;
+}
+
+// 二項係数テーブルからnCk算出
+ll com(int n, int k) {
+  if (!comInitialized) _comInit();
+  if (n < k) return 0;
+  if (n < 0 || k < 0) return 0;
+  return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
+}
+
+// mint nCk
+mint choose(int n, int k) {
+  mint x = 1, y = 1;
+  REP(i,k) {
+    x *= n-i;
+    y *= i+1;
+  }
+  return x / y;
+}
+
 ll binary_search(vector<ll> a, ll key) {
   ll ng = -1, ok = a.size();
   while (abs(ok-ng)>1) {
@@ -153,6 +164,7 @@ ll divisorCnt(ll n) {
   }
   return cnt;
 }
+
 
 void solve() {
   return;
