@@ -27,9 +27,7 @@ int main() {
   }
 
   int ans = 0;
-  REP(k,1000) {
-    if (dp[n][3][k]) ans++;
-  }
+  REP(k,1000) if (dp[n][3][k]) ans++;
   cout << ans << endl;
   return 0;
 }
