@@ -11,16 +11,14 @@ vector<int> a;
 
 void solve() {
   vector<int> x(n+1);
-
-  for(int i = n; 0 < i; i--) {
-    int sum = a[i];
-    for(int j = i*2; j <= n; j+=i) sum += x[j];
-    x[i] = sum%2;
+  for (int i = n; 0 < i; i--) {
+    int sum = 0;
+    for (int j = i*2; j <= n; j+=i) sum += x[j];
+    x[i] = sum%2 != a[i] ? 1 : 0;
   }
 
   vector<int> ans;
-  REP(i,n+1) if(x[i]) ans.push_back(i);
-
+  for (int i = 1; i <= n; i++) if (x[i]) ans.push_back(i);
   cout << ans.size() << endl;
   for(int v: ans) cout << v << " ";
 
@@ -30,7 +28,7 @@ void solve() {
 int main() {
   cin >> n;
   a.resize(n+1);
-  for(int i = 1; i<=n; i++) cin >> a[i];
+  for(int i = 1; i <= n; i++) cin >> a[i];
 
   solve();
   return 0;
