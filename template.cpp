@@ -8,6 +8,7 @@ using namespace std;
 #define Yes(x) cout<<(x?"Yes":"No")<<"\n"
 #define dump(x) cout<<#x<<" = "<<(x)<<"\n"
 #define endl "\n"
+#define sz(x) int(x.size())
 using G = vector<vector<int>>;
 using M = map<int,int>;
 using P = pair<int,int>;
