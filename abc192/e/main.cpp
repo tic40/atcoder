@@ -12,10 +12,14 @@ vector<vector<Edge>> g;
 
 vector<ll> dijkstra(int s) {
   vector<ll> dist(g.size(), INF);
-  dist[s] = 0;
-
   priority_queue<P, vector<P>, greater<P>> q;
-  q.emplace(0, s);
+  auto push = [&](ll nx, int to) {
+    if (nx < dist[to]) {
+      dist[to] = nx;
+      q.emplace(dist[to], to);
+    }
+  };
+  push(0,s);
 
   while (!q.empty()) {
     P p = q.top(); q.pop();
@@ -24,10 +28,7 @@ vector<ll> dijkstra(int s) {
 
     for (Edge e: g[v]) {
       ll nx = (dist[v] + e.k-1) / e.k * e.k + e.cost;
-      if (nx < dist[e.to]) {
-        dist[e.to] = nx;
-        q.emplace(dist[e.to], e.to);
-      }
+      push(nx, e.to);
     }
   }
 
