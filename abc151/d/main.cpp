@@ -1,50 +1,52 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
-typedef long long ll;
+#define REP(i,n) for(int i=0;i<n;i++)
+using ll = long long;
+const int INF = 1e9;
+const int MOD = 1e9+7;
+const ll LINF = 1e18;
 
-const int INF = 1001001001;
-const int di[] = {-1,0,1,0};
-const int dj[] = {0,-1,0,1};
+int h,w;
+vector<string> s(20);
+int dist[20][20];
+const vector<pair<int, int>> moves = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
 
-int main() {
-  int h, w, ans=0;
-  cin >> h >> w;
-  vector<string> s(h);
-  REP(i,h) cin >> s[i];
+void dfs(int y, int x, int d) {
+  dist[y][x]=d;
+  auto ok = [&](int ny, int nx){
+    if (ny < 0 || h <= ny || nx < 0 || w <= nx) return false;
+    if (s[ny][nx] == '#') return false;
+    if (dist[ny][nx] <= d+1) return false;
+    return true;
+  };
 
-  // 始点 si, sj
-  REP(si,h) {
-    REP(sj,w) {
-      if (s[si][sj] == '#') continue;
-      vector<vector<int>> dist(h, vector<int>(w, INF));
-      queue<pair<int, int>> q;
-      // func
-      auto update = [&](int i, int j, int x) {
-        if (dist[i][j] != INF) return;
-        dist[i][j] = x;
-        q.push(make_pair(i,j));
-      };
-      update(si, sj, 0);
-      while(!q.empty()) {
-        int i = q.front().first;
-        int j = q.front().second;
-        q.pop();
-        REP(dir,4) {
-          int ni = i+di[dir];
-          int nj = j+dj[dir];
-          if (ni<0||ni>=h||nj<0||nj>=w) continue;
-          if (s[ni][nj] == '#') continue;
-          update(ni,nj,dist[i][j]+1);
-        }
-      }
-      REP(i,h) {
-        REP(j,w) {
-          if (dist[i][j] == INF) continue;
-          ans = max(ans, dist[i][j]);
-        }
-      }
+  for (auto v: moves) {
+    int ny = y + v.first, nx = x + v.second;
+    if (ok(ny,nx)) dfs(ny,nx,d+1);
+  }
+  return;
+}
+
+void solve() {
+  int ans = 0;
+
+  REP(i,h) REP(j,w) {
+    REP(k,h) REP(l,w) dist[k][l] = INF;
+    if (s[i][j] == '#') continue;
+    dfs(i,j,0);
+    REP(k,h) REP(l,w) {
+      if (dist[k][l] != INF) ans = max(ans, dist[k][l]);
     }
   }
+
   cout << ans << endl;
+  return;
+}
+
+int main() {
+  cin >> h >> w;
+  REP(i,h) cin >> s[i];
+
+  solve();
+  return 0;
 }
