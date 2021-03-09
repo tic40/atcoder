@@ -11,18 +11,13 @@ int main() {
   string s;
   cin >> n >> s;
 
-  int add_l = 0, add_r = 0, cursor = 0;
+  int cursor = 0, addL = 0;
   REP(i,n) {
-    if (s[i] == '(') {
-      cursor++;
-    } else {
-      cursor == 0 ? add_l++ : cursor--;
-    }
+    if (s[i] == '(') cursor++;
+    else cursor == 0 ? addL++ : cursor--;
   }
-  add_r = cursor;
 
-  string ans = string(add_l, '(') + s + string(add_r, ')');
+  string ans = string(addL, '(') + s + string(cursor, ')');
   cout << ans << endl;
-
   return 0;
 }
