@@ -1,40 +1,24 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ALL(x) (x).begin(),(x).end()
-#define COUT(x) cout<<(x)<<"\n"
-#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define REP(i, n) for(int i=0;i<n;i++)
-#define YES(x) cout<<(x?"YES":"NO")<<"\n"
-#define Yes(x) cout<<(x?"Yes":"No")<<"\n"
-#define dump(x) cout<<#x<<" = "<<(x)<<"\n"
-#define endl "\n"
-using G = vector<vector<int>>;
-using M = map<int,int>;
-using P = pair<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int,vector<int>,greater<int>>;
-using V = vector<int>;
+#define REP(i,n) for(int i=0;i<n;i++)
 using ll = long long;
-using edge = struct { int to; int cost; };
-template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } return 0; }
-template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
 const int INF = 1e9;
-const int mod = 1e9+7;
+const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
 struct mint {
   ll x; // typedef long long ll;
-  mint(ll x=0):x((x%mod+mod)%mod){}
+  mint(ll x=0):x((x%MOD+MOD)%MOD){}
   mint operator-() const { return mint(-x);}
   mint& operator+=(const mint a) {
-    if ((x += a.x) >= mod) x -= mod;
+    if ((x += a.x) >= MOD) x -= MOD;
     return *this;
   }
   mint& operator-=(const mint a) {
-    if ((x += mod-a.x) >= mod) x -= mod;
+    if ((x += MOD-a.x) >= MOD) x -= MOD;
     return *this;
   }
-  mint& operator*=(const mint a) { (x *= a.x) %= mod; return *this;}
+  mint& operator*=(const mint a) { (x *= a.x) %= MOD; return *this;}
   mint operator+(const mint a) const { return mint(*this) += a;}
   mint operator-(const mint a) const { return mint(*this) -= a;}
   mint operator*(const mint a) const { return mint(*this) *= a;}
@@ -45,8 +29,8 @@ struct mint {
     if (t&1) a *= *this;
     return a;
   }
-  // for prime mod
-  mint inv() const { return pow(mod-2);}
+  // for prime MOD
+  mint inv() const { return pow(MOD-2);}
   mint& operator/=(const mint a) { return *this *= a.inv();}
   mint operator/(const mint a) const { return mint(*this) /= a;}
 };
@@ -63,15 +47,24 @@ mint choose(int n, int a) {
 }
 
 int main() {
-  IOS;
-  int X,Y; cin >> X >> Y;
+  int x,y;
+  cin >> x >> y;
+
+  // 1ni, 2ni
+  // 2nj, 1nj
+  // ni + 2nj = x
+  // 2ni + nj = y
+  //  2nj = x-ni
+  //  nj = y - 2ni
   mint ans = 0;
-  REP(b, 1000005) {
-    int a = X - (2*b);
+  REP(b, 1e6+1) {
+    int a = x - 2*b;
     if (a < 0) break;
-    if (Y != (2*a) + b) continue;
-    ans += choose(a+b, b);
+    if (y == 2*a + b) {
+      ans += choose(a+b, b);
+    }
   }
-  COUT(ans);
+  cout << ans << endl;
+
   return 0;
 }
