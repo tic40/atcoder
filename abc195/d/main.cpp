@@ -11,15 +11,15 @@ vector<int> w,v,x;
 
 void solve(int l, int r) {
   int ans = 0;
-  vector<int> x2;
-  REP(i,m) if (l < i || r < i) x2.push_back(x[i]);
-  sort(x2.begin(), x2.end());
+  vector<int> as;
+  REP(i,m) if (i < l || r < i) as.push_back(x[i]);
+  sort(as.begin(), as.end()); // 容量が小さい箱から見ていく
   vector<int> used(n);
 
-  for(auto b: x2) {
+  for(auto a: as) {
     pair<int, int> best = {-1, -1}; // value, idx
     REP(i,n) {
-      if (used[i] || b < w[i]) continue; // 使用済み、重さ超過
+      if (used[i] || a < w[i]) continue; // 使用済み、重さ超過
       if (best.first < v[i]) best = { v[i], i };
     }
 
