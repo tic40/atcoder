@@ -16,7 +16,8 @@ ll dfs(int i, int j, int a, int b) {
   if (a < 0 || b < 0) return 0;
 
   // 右端まで来ていたら一つ下へ移動
-  if (w <= j) { j=0; i++; }
+  if (w <= j) dfs(i+1,0,a,b);
+
   if (h <= i) return 0;
 
   // 既に埋まっていたら次のマスへ移動
