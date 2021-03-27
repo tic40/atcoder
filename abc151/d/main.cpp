@@ -1,52 +1,46 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
-using ll = long long;
 const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
 
 int h,w;
-vector<string> s(20);
+vector<string> s;
 int dist[20][20];
-const vector<pair<int, int>> moves = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
 
-void dfs(int y, int x, int d) {
-  dist[y][x]=d;
-  auto ok = [&](int ny, int nx){
-    if (ny < 0 || h <= ny || nx < 0 || w <= nx) return false;
-    if (s[ny][nx] == '#') return false;
-    if (dist[ny][nx] <= d+1) return false;
-    return true;
-  };
+const vector<pair<int, int>> moves =  {
+  {1,0}, {-1, 0}, {0, 1}, {0, -1}
+};
 
-  for (auto v: moves) {
-    int ny = y + v.first, nx = x + v.second;
-    if (ok(ny,nx)) dfs(ny,nx,d+1);
+void dfs(int i, int j, int d) {
+  if (i < 0 || j < 0 || h <= i || w <= j) return;
+  if (s[i][j] == '#') return;
+  if (dist[i][j] <= d) return;
+
+  dist[i][j] = d;
+
+  for(auto v: moves) {
+    int ni = i + v.first;
+    int nj = j + v.second;
+    dfs(ni, nj, d+1);
   }
-  return;
-}
-
-void solve() {
-  int ans = 0;
-
-  REP(i,h) REP(j,w) {
-    REP(k,h) REP(l,w) dist[k][l] = INF;
-    if (s[i][j] == '#') continue;
-    dfs(i,j,0);
-    REP(k,h) REP(l,w) {
-      if (dist[k][l] != INF) ans = max(ans, dist[k][l]);
-    }
-  }
-
-  cout << ans << endl;
-  return;
 }
 
 int main() {
   cin >> h >> w;
+  s.resize(h);
   REP(i,h) cin >> s[i];
 
-  solve();
+  int ans = 0;
+  REP(i,h) REP(j,w) {
+    REP(k,h) REP(l,w) dist[k][l] = INF;
+
+    dfs(i,j,0);
+
+    REP(k,h) REP(l,w) if (dist[k][l] != INF) {
+      ans = max(ans, dist[k][l]);
+    }
+  }
+
+  cout << ans << endl;
   return 0;
 }
