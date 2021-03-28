@@ -1,50 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
-#define COUT(x) cout<<(x)<<endl
-#define dump(x)  cout << #x << " = " << (x) << endl;
+#define REP(i,n) for(int i=0;i<n;i++)
 using ll = long long;
-using P = pair<int,int>;
-using Graph = vector<vector<int>>;
-using M = map<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int, vector<int>, greater<int>>;
 const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
+
+int n,m;
+vector<int> a(50),b(50);
+vector<vector<int>> g(50);
+bool visited[50];
+int ca,cb;
+
+void dfs(int x = 0) {
+  if (visited[x]) return;
+
+  visited[x] = 1;
+  for(int v: g[x]) {
+    if (x == ca && v == cb) continue;
+    if (x == cb && v == ca) continue;
+    dfs(v);
+  }
+}
+
+void solve() {
+  int ans = 0;
+
+  REP(i,m) {
+    ca=a[i],cb=b[i];
+    REP(j,n) visited[j]=0;
+
+    dfs();
+
+    int ok = true;
+    REP(j,n) if (!visited[j]) ok = false;
+    if (!ok) ans++;
+  }
+
+  cout << ans << endl;
+  return;
+}
 
 int main() {
-  int n,m; cin >> n >> m;
-  Graph g(n);
-  vector<P> p(m);
-  int a, b;
+  cin >> n >> m;
   REP(i,m) {
-    cin >> a >> b; a--; b--;
-    p[i] = {a, b};
-    g[a].push_back(b);
-    g[b].push_back(a);
+    cin >> a[i] >> b[i];
+    a[i]--; b[i]--;
+    g[a[i]].push_back(b[i]);
+    g[b[i]].push_back(a[i]);
   }
 
-  int ans = 0;
-  REP(i,m) {
-    queue<int> q;
-    vector<int> visited(n, 0);
-    const auto push = [&](int next){
-      if (visited[next]) return;
-      q.push(next); visited[next] = 1;
-    };
-    push(0);
-    while(!q.empty()) {
-      int v = q.front(); q.pop();
-      for(auto nv : g[v]) {
-        if (make_pair(v,nv) == p[i] || make_pair(nv,v) == p[i]) continue;
-        push(nv);
-      }
-    }
-    int add = false;
-    REP(j,n) if (!visited[j]) add = true;
-    if (add) ans++;
-  }
-  cout << ans << endl;
+  solve();
   return 0;
 }
