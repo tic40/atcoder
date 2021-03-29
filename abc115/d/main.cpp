@@ -2,37 +2,36 @@
 using namespace std;
 #define REP(i, n) for(int i = 0; i < n; i++)
 #define COUT(x) cout<<(x)<<endl
-#define dump(x) cout<<#x<<" = "<<(x)<<endl;
-#define Yes(x) cout<<(x?"Yes":"No")<<endl;
-#define YES(x) cout<<(x?"YES":"NO")<<endl;
 using ll = long long;
-using P = pair<int,int>;
-using Graph = vector<vector<int>>;
-using M = map<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int, vector<int>, greater<int>>;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
 
-ll N,X;
-ll a[51],p[51]; // a: 層の総数, p: パティの総数
+// a[i]: レベルiバーガーの層の総数
+// p[i]: レベルiバーガーのパティの総数
+vector<ll> a(51),p(51);
 
-ll solve(ll n, ll x) {
-  if (n==0) return x>0 ? 1 : 0;
-
-  if (x <= 1 + a[n-1]) return solve(n-1,x-1);
-
-  return p[n-1] + 1 + solve(n-1,x-2-a[n-1]);
+// n: レベルnバーガー, x: 下からx層
+ll f(ll n, ll x) {
+  if (n == 0) {
+    // レベル0バーガー
+    return 0 < x ? 1 : 0;
+  } else if (x <= 1+a[n-1]) {
+    // 一番下のバン + レベルn-1バーガーの層以下
+    return f(n-1, x-1);
+  } else {
+    // 一番下のバン + レベルn-1バーガーの層より大きい
+    return p[n-1] + 1 + f(n-1, x-2-a[n-1]);
+  }
 }
 
 int main() {
-  cin >> N >> X;
-  a[0] = 1; p[0] = 1;
-  for(int i = 1; i < N; i++) {
-    a[i] = a[i-1]*2+3;
-    p[i] = p[i-1]*2+1;
+  ll n,x;
+  cin >> n >> x;
+
+  a[0] = p[0] = 1;
+  REP(i,n) {
+    a[i+1] = a[i]*2+3;
+    p[i+1] = p[i]*2+1;
   }
-  COUT(solve(N,X));
+
+  cout << f(n,x) << endl;
   return 0;
 }
