@@ -1,32 +1,57 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
-#define COUT(x) cout<<(x)<<endl
-#define dump(x)  cout << #x << " = " << (x) << endl;
+#define REP(i,n) for(int i=0;i<n;i++)
 using ll = long long;
-using P = pair<int,int>;
-using Graph = vector<vector<int>>;
-using M = map<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int, vector<int>, greater<int>>;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
 
-vector<int> dp(100005, INF);
-int main() {
-  int n; cin >> n;
-  set<int> s; s.insert(1);
-  int a=6,b=9;
-  while(a <= n) { s.insert(a); a*=6; }
-  while(b <= n) { s.insert(b); b*=9; }
+int n;
 
+// dfs解
+int dfs() {
+  vector<int> dp(100010,-1);
+
+  queue<int> q;
+  q.push(0); dp[0]=0;
+
+  auto push = [&](int v, int add){
+    int nx = v+add;
+    if (dp[nx] == -1) {
+      dp[nx] = dp[v]+1;
+      q.push(nx);
+    }
+  };
+
+  while(q.size()) {
+    int v = q.front(); q.pop();
+    push(v,1);
+    for(int p6=6; p6+v<=n; p6*=6) push(v,p6);
+    for(int p9=9; p9+v<=n; p9*=9) push(v,p9);
+  }
+
+  return dp[n];
+}
+
+// dp解
+int solve() {
+  vector<int> dp(100010,n);
   dp[0] = 0;
-  for (int i = 1; i <= n; i++) {
-    for(auto x: s) {
-      if (i-x >= 0) dp[i] = min(dp[i], dp[i-x]+1);
+
+  REP(i,n) {
+    dp[i+1] = min(dp[i+1], dp[i]+1);
+    for(int p6=6; p6+i<=n; p6*=6) {
+      dp[i+p6] = min(dp[i+p6], dp[i]+1);
+    }
+    for(int p9=9; p9+i<=n; p9*=9) {
+      dp[i+p9] = min(dp[i+p9], dp[i]+1);
     }
   }
-  COUT(dp[n]);
+
+  return dp[n];
+}
+
+int main() {
+  cin >> n;
+  //cout << dfs() << endl;
+  cout << solve() << endl;
+
   return 0;
 }
