@@ -16,12 +16,9 @@ const ll LINF = 1e18;
 int main() {
   int n; cin >> n;
   int f[n][10], p[n][11];
-  REP(i,n) REP(j,10) {
-    cin >> f[i][j];
-  }
-  REP(i,n) REP(j,11) {
-    cin >> p[i][j];
-  }
+  REP(i,n) REP(j,10) cin >> f[i][j];
+  REP(i,n) REP(j,11) cin >> p[i][j];
+
   int ans=-INF;
   for (int bit=1; bit < 1<<10; bit++) {
     int sum=0;
