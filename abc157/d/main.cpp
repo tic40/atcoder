@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
+#define REP(i,n) for(int i=0;i<n;i++)
 using ll = long long;
 
 struct UnionFind {
@@ -22,33 +22,50 @@ struct UnionFind {
   int size(int x) { return -d[root(x)]; }
 };
 
-int deg[100005];
-vector<int> to[100005];
+int n,m,k;
+vector<int> a,b,c,d;
 
-int main() {
-  int n,m,k;
-  cin >> n >> m >> k;
-  UnionFind uf(n);
+void solve() {
+  // friend list, block list
+  vector<vector<int>> flist(n), blist(n);
   REP(i,m) {
-    int a,b; cin >> a >> b;
-    a--; b--;
-    deg[a]++; deg[b]++;
-    uf.unite(a,b);
+    flist[a[i]].push_back(b[i]);
+    flist[b[i]].push_back(a[i]);
   }
   REP(i,k) {
-    int a,b; cin >> a >> b;
-    a--; b--;
-    to[a].push_back(b);
-    to[b].push_back(a);
+    blist[c[i]].push_back(d[i]);
+    blist[d[i]].push_back(c[i]);
   }
+
+  UnionFind uf(n);
+  REP(i,m) uf.unite(a[i], b[i]);
+
+  vector<int> ans(n);
   REP(i,n) {
-    // 友達関係をたどってたどり着ける人の数
-    // 友達及び友達関係から辿れる人の合計 - 親の分の1 - 直接つながっている友達
-    int ans = uf.size(i) - 1 - deg[i];
-    // ブロック関係を引く
-    for (int u: to[i]) if (uf.same(i,u)) ans--;
-    if (i > 0) cout << " ";
-    cout << ans;
+    int cnt = uf.size(i) - 1 - flist[i].size();
+    for (int v: blist[i]) if (uf.same(i, v)) cnt--;
+    ans[i] = cnt;
   }
-  cout << endl;
+
+  REP(i,n) cout << ans[i] << " ";
+  return;
+}
+
+int main() {
+  cin >> n >> m >> k;
+
+  a.resize(m); b.resize(m);
+  REP(i,m) {
+    cin >> a[i] >> b[i];
+    a[i]--; b[i]--;
+  }
+
+  c.resize(k); d.resize(k);
+  REP(i,k) {
+    cin >> c[i] >> d[i];
+    c[i]--; d[i]--;
+  }
+
+  solve();
+  return 0;
 }
