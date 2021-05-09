@@ -2,43 +2,42 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 
+struct Edge {
+  int to, d;
+};
+
 int n;
-vector<vector<pair<int, int>>> g;
-vector<int> dp;
+vector<vector<Edge>> g;
+vector<int> ans;
 
-void dfs(int cur, int d) {
-  for (auto v: g[cur]) {
-    int next = v.first;
-    int w = v.second;
-
-    if (dp[next] != -1) continue;
-
-    dp[next] = (d+w)%2;
-    dfs(next, dp[next]);
+void dfs(int cur) {
+  for(auto v: g[cur]) {
+    if (ans[v.to] != -1) continue;
+    ans[v.to] = v.d % 2 == 0 ? ans[cur] : ans[cur] ^ 1;
+    dfs(v.to);
   }
+
   return;
 }
 
 void solve() {
-  dp.resize(n,-1);
-  dp[0] = 0;
+  ans.resize(n, -1);
+  ans[0] = 0;
+  dfs(0);
 
-  dfs(0,0);
-
-  REP(i,n) cout << dp[i] << endl;
+  for(int v: ans) cout << v << endl;
   return;
 }
 
 int main() {
   cin >> n;
   g.resize(n);
-
+  int u,v,w;
   REP(i,n-1) {
-    int u,v,w;
     cin >> u >> v >> w;
     u--; v--;
-    g[u].push_back({v,w});
-    g[v].push_back({u,w});
+    g[u].emplace_back(Edge({v, w}));
+    g[v].emplace_back(Edge({u, w}));
   }
 
   solve();
