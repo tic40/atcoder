@@ -5,7 +5,7 @@ using namespace std;
 int n;
 vector<int> a;
 
-void output(vector<int> b, vector<int> c) {
+void out(vector<int> b, vector<int> c) {
   cout << "Yes" << endl;
   cout << b.size() << " ";
   for(int v: b) cout << v << " ";
@@ -13,32 +13,37 @@ void output(vector<int> b, vector<int> c) {
   cout << c.size() << " ";
   for(int v: c) cout << v << " ";
   cout << endl;
+
+  return;
 }
 
 void solve() {
   REP(i,n) a[i] %= 200;
+  // 鳩の巣原理で最大8要素まで調べればよい
+  // 2^8 = 256 なので必ず同じになる配列が存在する
+  int an = min(8,n);
 
   vector<vector<int>> memo(200);
-  // bit全探索
-  for (int bit = 1; bit < 1<<min(8,n); bit++) {
-    int sum = 0;
+  // bit 全探索
+  for(int bit = 1; bit < (1<<an); bit++) {
+    int tot = 0;
     vector<int> s;
-    REP(i,n) {
-      if (bit>>i & 1) {
-        sum += a[i];
-        sum %= 200;
+    REP(i,an) {
+      if ((bit >> i) & 1) {
+        tot += a[i];
         s.push_back(i+1);
       }
     }
+    tot %= 200;
 
-    if (memo[sum].size() == 0) {
-      memo[sum] = s;
-    } else {
-      output(memo[sum], s);
-      return;
+    if (memo[tot].size() == 0) {
+      memo[tot] = s;
+      continue;
     }
-  }
 
+    out(s, memo[tot]);
+    return;
+  }
   cout << "No" << endl;
   return;
 }
