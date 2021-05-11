@@ -1,40 +1,24 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ALL(x) (x).begin(),(x).end()
-#define COUT(x) cout<<(x)<<"\n"
-#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define REP(i, n) for(int i=0;i<n;i++)
-#define YES(x) cout<<(x?"YES":"NO")<<"\n"
-#define Yes(x) cout<<(x?"Yes":"No")<<"\n"
-#define dump(x) cout<<#x<<" = "<<(x)<<"\n"
-#define endl "\n"
-using G = vector<vector<int>>;
-using M = map<int,int>;
-using P = pair<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int,vector<int>,greater<int>>;
-using V = vector<int>;
+#define REP(i,n) for(int i=0;i<n;i++)
 using ll = long long;
-using edge = struct { int to; int cost; };
-template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } return 0; }
-template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
 const int INF = 1e9;
+const int MOD = 1e9+7;
 const ll LINF = 1e18;
 
-const int mod = 1000000007;
 struct mint {
   ll x; // typedef long long ll;
-  mint(ll x=0):x((x%mod+mod)%mod){}
+  mint(ll x=0):x((x%MOD+MOD)%MOD){}
   mint operator-() const { return mint(-x);}
   mint& operator+=(const mint a) {
-    if ((x += a.x) >= mod) x -= mod;
+    if ((x += a.x) >= MOD) x -= MOD;
     return *this;
   }
   mint& operator-=(const mint a) {
-    if ((x += mod-a.x) >= mod) x -= mod;
+    if ((x += MOD-a.x) >= MOD) x -= MOD;
     return *this;
   }
-  mint& operator*=(const mint a) { (x *= a.x) %= mod; return *this;}
+  mint& operator*=(const mint a) { (x *= a.x) %= MOD; return *this;}
   mint operator+(const mint a) const { return mint(*this) += a;}
   mint operator-(const mint a) const { return mint(*this) -= a;}
   mint operator*(const mint a) const { return mint(*this) *= a;}
@@ -45,25 +29,24 @@ struct mint {
     if (t&1) a *= *this;
     return a;
   }
-
-  // for prime mod
-  mint inv() const { return pow(mod-2);}
+  // for prime MOD
+  mint inv() const { return pow(MOD-2);}
   mint& operator/=(const mint a) { return *this *= a.inv();}
   mint operator/(const mint a) const { return mint(*this) /= a;}
 };
 istream& operator>>(istream& is, const mint& a) { return is >> a.x;}
 ostream& operator<<(ostream& os, const mint& a) { return os << a.x;}
 
-// パスカルの三角形
-mint c[4005][4005];
+mint c[2005][2005];
 
 // パスカルの三角形を前計算する
 void init() {
   c[0][0] = 1;
-  REP(i,4001) REP(j,i+1) {
+  REP(i,2001) REP(j,i+1) {
     c[i+1][j] += c[i][j];
     c[i+1][j+1] += c[i][j];
   }
+  return;
 }
 
 mint comb(int n, int k) {
@@ -83,14 +66,11 @@ mint f(int n, int k) {
 }
 
 int main() {
-  IOS;
   init();
   int n, k; cin >> n >> k;
 
   for (int i = 1; i <= k; i++) {
     mint blue = f(k,i);
-    mint red = f2(n-k-(i-1), i+1);
-    /* 場合わけする場合
     mint red = 0;
     {
       red += f(n-k,i-1); // 両端を含まない
@@ -98,9 +78,8 @@ int main() {
       red += f(n-k,i); // 片方の端を含む
       red += f(n-k,i+1); // 両端を含む
     }
-    */
     mint ans = blue * red;
-    COUT(ans);
+    cout << ans << endl;
   }
   return 0;
 }
