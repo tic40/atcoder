@@ -6,23 +6,16 @@ using ll = long long;
 ll a,b;
 
 ll gcd(ll a, ll b) { return b?gcd(b,a%b):a; }
-ll lcm(ll a, ll b) {
-  ll l = a/gcd(a,b);
-
-  if (( (ll)1e18+1) % b == 0) {
-    if (l < ((ll)1e18+1)/b) return l*b;
-  } else {
-    if (l <= ((ll)1e18+1)/b) return l*b;
-  }
-  return -1;
-}
+ll lcm(ll a, ll b) { return a/gcd(a,b)*b; }
 
 int main() {
   cin >> a >> b;
+  ll mx = 1e18;
   ll ans = lcm(a,b);
 
-  if (ans == -1) cout << "Large" << endl;
-  else cout << ans << endl;
+  ll r = a / gcd(a,b);
+  if (r > mx/b) cout << "Large" << endl;
+  else cout << r * b << endl;
 
   return 0;
 }
