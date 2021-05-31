@@ -4,27 +4,33 @@ using namespace std;
 const int INF = 1e9;
 
 int n,k;
-int a[805][805], s[805][805];
+int a[810][810], s[810][810];
 
-int binary_search(int key) {
+int binary_search() {
+  int num = k*k/2+1; // 何番目に高い中央値か
   auto check = [&](int mid) {
-    REP(i,n) REP(j,n) s[i+1][j+1] = a[i][j] > mid ? 1 : 0;
-    REP(i,n+1) REP(j,n) s[i][j+1] += s[i][j];
-    REP(i,n) REP(j,n+1) s[i+1][j] += s[i][j];
-
+    // 二次元累積和
+    REP(i,n) REP(j,n) {
+      s[i+1][j+1] = a[i][j] > mid ? 1 : 0;
+      s[i+1][j+1] += s[i+1][j];
+      s[i+1][j+1] += s[i][j+1];
+      s[i+1][j+1] -= s[i][j];
+    }
+    // 取りうる池の配置をすべて試す
     REP(i,n-k+1) REP(j,n-k+1) {
       int now = s[i+k][j+k];
-      now -= s[i][j+k];
       now -= s[i+k][j];
+      now -= s[i][j+k];
       now += s[i][j];
-
-      if (now < key) return true;
+      // mid以下の中央値を取れるマスの選び方が一つでもあればtrueを返す
+      if (now < num) return true;
     }
     return false;
   };
 
-  int ok = INF;
-  int ng = -1;
+  // ok: ok値より小さい中央値の解が存在する
+  int ok = INF; // 解が存在する値
+  int ng = -1; // 解が存在しない値
   while(abs(ok-ng) > 1) {
     int mid = (ok+ng)/2;
     check(mid) ? ok = mid : ng = mid;
@@ -37,7 +43,6 @@ int main() {
   cin >> n >> k;
   REP(i,n) REP(j,n) cin >> a[i][j];
 
-  int med = k * k / 2 + 1;
-  cout << binary_search(med) << endl;
+  cout << binary_search() << endl;
   return 0;
 }
