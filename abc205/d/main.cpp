@@ -2,30 +2,26 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 using ll = long long;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
 
-ll n,q;
-vector<ll> a,k,sum;
-
-void calc(ll x) {
-  auto it = lower_bound(sum.begin(), sum.end(), x);
-  int idx = it-sum.begin();
-
-  if (idx == n) {
-    cout << a[n-1] + (x - sum[n-1]) << endl;
-  } else {
-    cout << a[idx] - (sum[idx] - x + 1) << endl;
-  }
-  return;
-}
+int n,q;
+vector<ll> a,k;
 
 void solve() {
-  sum.resize(n);
-  REP(i,n) sum[i] += a[i] - (i+1);
+  vector<ll> s(n);
+  REP(i,n) {
+    if (i == 0) s[i] = a[i]-1;
+    else s[i] = s[i-1] + a[i]-a[i-1]-1;
+  }
 
-  REP(i,q) calc(k[i]);
+  REP(i,q) {
+    auto it = lower_bound(s.begin(), s.end(), k[i]);
+    int idx = it-s.begin();
+    if (idx == n) {
+      cout << a[n-1] + (k[i] - s[n-1]) << endl;
+    } else {
+      cout << a[idx] - (s[idx] - k[i] + 1) << endl;
+    }
+  }
   return;
 }
 
