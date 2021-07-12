@@ -13,17 +13,13 @@ void solve() {
 
     map<int,int> mp;
     REP(i,w) {
-      int cur = -1;
-      int ok = true;
+      int cur = -1, ok = true;
       for(int x: d) {
         if (cur == -1) cur = p[x][i];
-        else {
-          if (p[x][i] != cur) ok = false;
-        }
+        if (p[x][i] != cur) ok = false;
       }
       if (ok) mp[cur] += d.size();
     }
-
     int sum = 0;
     for(auto v: mp) sum = max(sum, v.second);
     ans = max(ans,sum);
