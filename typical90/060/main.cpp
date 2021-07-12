@@ -8,24 +8,23 @@ vector<int> a;
 
 void solve() {
   vector<int> p(n),q(n);
-  vector<int> dp(n,INF);
+  vector<int> dp1(n, INF), dp2(n, INF);
+
   REP(i,n) {
-    int pos = lower_bound(dp.begin(), dp.end(), a[i]) - dp.begin();
-    dp[pos] = a[i];
+    int pos = lower_bound(dp1.begin(), dp1.end(), a[i]) - dp1.begin();
+    dp1[pos] = a[i];
     p[i] = pos+1;
   }
 
-  REP(i,n) dp[i] = INF;
-  for(int i = n-1; 0 <= i; i--) {
-    int pos = lower_bound(dp.begin(), dp.end(), a[i]) - dp.begin();
-    dp[pos] = a[i];
+  for (int i = n-1; 0 <= i; i--) {
+    int pos = lower_bound(dp2.begin(), dp2.end(), a[i]) - dp2.begin();
+    dp2[pos] = a[i];
     q[i] = pos+1;
   }
 
   int ans = 0;
-  REP(i,n) ans = max(ans, p[i]+q[i]-1);
+  REP(i,n) ans = max(ans, p[i] + q[i] - 1);
   cout << ans << endl;
-
   return;
 }
 
