@@ -6,6 +6,7 @@ int m;
 vector<string> s;
 
 void solve() {
+  // sa: 先頭3文字 sb: 後ろから3文字
   vector<string> sa(m), sb(m);
   REP(i,m) {
     sa[i] = s[i].substr(0,3);
@@ -16,14 +17,16 @@ void solve() {
     mp[sa[i]] = 0;
     mp[sb[i]] = 0;
   }
+
   int n = 0;
+  // 0から順番に頂点番号をナンバリングする
   for(auto& p: mp) {
     p.second = n;
     n++;
   }
 
   vector<vector<int>> to(n);
-  vector<int> deg(n);
+  vector<int> deg(n); // 入次数
   REP(i,m) {
     int a = mp[sa[i]];
     int b = mp[sb[i]];
@@ -32,11 +35,11 @@ void solve() {
   }
 
   queue<int> q;
-  vector<int> ans(n);
+  vector<int> ans(n); // -1: 負け, 0: 引き分け, 1: 価値
   REP(i,n) {
     if (deg[i] == 0) {
       ans[i] = -1;
-      q.push(i);
+      q.push(i); // 入次数が0の点をpush
     }
   }
   while(q.size()) {
