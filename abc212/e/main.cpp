@@ -49,11 +49,15 @@ void solve() {
     REP(i,n) tot += p[i];
 
     REP(i,n) {
+      // 途切れを考慮しない合計
       dp[i] = tot;
       // 隣接から途切れている分を引く
       for(int u: to[i]) dp[i] -= p[u];
       // 自分自身も合計に含まれているので引く
       dp[i] -= p[i];
+      cout << "tot: " << tot << endl;
+      REP(i,n) cout << dp[i] << " ";
+      cout << endl;
     }
   }
 
