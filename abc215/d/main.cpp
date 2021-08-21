@@ -3,10 +3,6 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 using ll = long long;
 
-ll n,m;
-set<ll> a;
-vector<int> num(100001);
-
 vector<pair<ll, ll>> prime_factorize(ll n) {
   vector<pair<ll,ll>> res;
   for (ll a = 2; a * a <= n; a++) {
@@ -19,17 +15,18 @@ vector<pair<ll, ll>> prime_factorize(ll n) {
   return res;
 }
 
+int n,m;
+set<int> st;
+vector<int> num(100001);
 
 void solve() {
-  set<ll> pfact;
-  for(ll v: a) {
+  set<int> pfact;
+  for(int v: st) {
     auto pf = prime_factorize(v);
-    for(auto p: pf) pfact.insert(p.first);
+    for(auto v2: pf) pfact.insert( v2.first );
   }
-
-  for (auto v: pfact) {
-    if (num[v] == 1) continue;
-    for(int i = v; i <= m; i+=v) num[i] = 1;
+  for(int v: pfact) {
+    for(int i = v; i <= m; i+=v) num[i]=1;
   }
 
   vector<int> ans;
@@ -38,15 +35,15 @@ void solve() {
   }
 
   cout << ans.size() << endl;
-  for (int res: ans) cout << res << endl;
+  for(int v: ans) cout << v << endl;
   return;
 }
 
 int main() {
   cin >> n >> m;
   REP(i,n) {
-    ll _; cin >> _;
-    a.insert(_);
+    int a; cin >> a;
+    st.insert(a);
   }
 
   solve();
