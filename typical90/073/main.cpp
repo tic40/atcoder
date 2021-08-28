@@ -14,30 +14,35 @@ vector<vector<int>> g;
 int dp[100005][3];
 
 void dfs(int pos, int pre) {
+  // val1: a のみまたは b のみのケース
+  // val2: 全体のケース
   ll val1 = 1, val2 = 1;
+
   for(int i: g[pos]) {
     if (i == pre) continue;
 
     dfs(i, pos);
 
     if (c[pos] == 'a') {
+      // 削除しないとき dp[i][0]
+      // 削除するとき dp[i][2]
       val1 *= (dp[i][0] + dp[i][2]);
-      val2 *= (dp[i][0] + dp[i][1] + 2LL * dp[i][2]);
     } else {
 			val1 *= (dp[i][1] + dp[i][2]);
-			val2 *= (dp[i][0] + dp[i][1] + 2LL * dp[i][2]);
     }
+    // 2*dp[i][2] しているのは削除するときとしないとき
+ 		val2 *= (dp[i][0] + dp[i][1] + (ll)2 * dp[i][2]);
+
     val1 %= MOD;
     val2 %= MOD;
   }
 
   if (c[pos] == 'a') {
 		dp[pos][0] = val1;
-		dp[pos][2] = (val2 - val1 + MOD) % MOD;
   } else {
 		dp[pos][1] = val1;
-		dp[pos][2] = (val2 - val1 + MOD) % MOD;
   }
+	dp[pos][2] = (val2 - val1 + MOD) % MOD;
 
   return;
 }
