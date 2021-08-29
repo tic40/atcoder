@@ -10,8 +10,7 @@ ll n,k;
 vector<ll> a;
 
 ll binary_search() {
-  ll ok = 2 * INF;
-  ll ng = 0;
+  ll ok = 2 * INF, ng = 0;
 
   while (abs(ok-ng)>1) {
     ll mid = (ok+ng)/2;
@@ -27,23 +26,17 @@ ll binary_search() {
 
 void solve() {
   sort(a.begin(), a.end());
-  ll ans = 0;
 
-  ll len = 0;
-  REP(i,n) len += a[i];
-  if (len < k) {
-    REP(i,n) ans += a[i] * (a[i]+1) / 2;
-  } else {
-    ll m = binary_search();
-    int cnt = 0;
-    REP(i,n) {
-      if (m <= a[i]) {
-        ans += (a[i] + m) * (a[i]-m+1) / 2;
-        cnt += a[i]-m+1;
-      }
+  ll m = binary_search();
+  ll ans = 0, cnt = 0;
+  REP(i,n) {
+    if (m <= a[i]) {
+      ll d = a[i]-m+1;
+      ans += (a[i] + m) * d / 2;
+      cnt += d;
     }
-    if (cnt < k) ans += (m-1) * (k-cnt);
   }
+  if (cnt < k) ans += (m-1) * (k-cnt);
 
   cout << ans << endl;
   return;
