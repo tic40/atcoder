@@ -2,34 +2,22 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 
-int l,q;
-vector<int> c,x;
-
-void solve() {
-  set<int> st;
-  // 下限と上限を入れて置く
-  st.insert({0, l});
+int main() {
+  int l,q;
+  cin >> l >> q;
+  set<int> st = {0,l};
 
   REP(i,q) {
-    if (c[i] == 1) {
-      st.insert(x[i]);
+    int c,x; cin >> c >> x;
+
+    if (c == 1) {
+      st.insert(x);
     } else {
-      auto it = st.lower_bound(x[i]);
-      int r = *it;
-      int l = *(--it);
-      cout << r-l << endl;
+      auto it = st.lower_bound(x);
+      int right = *it;
+      int left = *(--it);
+      cout << right - left << endl;
     }
   }
-
-  return;
-}
-
-int main() {
-  cin >> l >> q;
-  c.resize(q);
-  x.resize(q);
-  REP(i,q) cin >> c[i] >> x[i];
-
-  solve();
   return 0;
 }

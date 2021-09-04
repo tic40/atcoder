@@ -2,16 +2,17 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 
-int q;
 int main() {
+  int q;
   cin >> q;
   queue<int> que1;
   priority_queue<int, vector<int>, greater<int>> que2;
 
   REP(i,q) {
-    int c; cin >> c;
+    int c,x;
+    cin >> c;
     if (c == 1) {
-      int x; cin >> x;
+      cin >> x;
       que1.push(x);
     } else if (c == 2) {
       if (que2.size()) {
@@ -28,6 +29,5 @@ int main() {
       }
     }
   }
-
   return 0;
 }
