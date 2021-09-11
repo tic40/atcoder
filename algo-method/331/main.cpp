@@ -15,11 +15,12 @@ vector<bool> eratosthenes(int n) {
 
 int main() {
   int n; cin >> n;
-  auto primes = eratosthenes(n);
+  auto p = eratosthenes(n);
   int ans = 0;
-  REP(i,n-1) {
-    if (primes[i] && primes[i+2]) ans++;
+  for (int i = 2; i <= (n+1)/2; i++) {
+    if (p[i] && p[n-i]) ans++;
   }
+
   cout << ans << endl;
   return 0;
 }
