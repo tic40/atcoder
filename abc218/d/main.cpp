@@ -17,21 +17,14 @@ ll choose(ll n, ll a) {
 
 void solve() {
   sort(p.begin(), p.end());
-
-  // x軸で平行
-  map<pair<ll,ll>, int> xp;
-  REP(i,n) {
-    for (int j = i+1; j < n; j++) {
-      if (p[i].first != p[j].first) break;
-      xp[ {p[i].second, p[j].second} ]++;
-    }
+  map<pair<ll,ll>, int> mp;
+  REP(i,n) for (int j = i+1; j < n; j++) {
+    if (p[i].first != p[j].first) break;
+    mp[ {p[i].second, p[j].second} ]++;
   }
 
   ll ans = 0;
-  for (auto v: xp) {
-    auto mp = v.first;
-    ans += choose(v.second, 2);
-  }
+  for (auto v: mp) ans += choose(v.second, 2);
   cout << ans << endl;
   return;
 }

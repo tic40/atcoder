@@ -8,7 +8,7 @@ if [ -e a.out ]; then
 fi
 
 # compile
-g++ -std=gnu++1y -o a.out main.cpp
+g++ -std=gnu++17 -Wall -Wextra -O2 main.cpp
 
 if [ ! -e a.out ]; then
   echo "Error: Compile error."
