@@ -1,48 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
-#define ALL(x) x.begin(), x.end()
 using ll = long long;
 
 int n;
-vector<ll> a,b;
+vector<int> a(200005),b(200005);
 
 // 座標圧縮 + imos法
 void solve() {
-  map<ll,ll> mp,tbl;
+  map<int,ll> mp; // [何日目, 人数]
 
   REP(i,n) {
-    mp[ a[i] ]++;
-    mp[ a[i]+b[i] ]--;
+    mp[ a[i] ]++; // ログインを+1
+    mp[ a[i]+b[i] ]--; // ログアウトを-1
   }
 
-  ll prev = -1;
-  for(auto v: mp) {
-    if (prev == -1) tbl[v.first] = v.second;
-    else tbl[v.first] = v.second + prev;
-    prev = tbl[v.first];
+  int prev_day = 0;
+  for(auto [day, count]: mp) {
+    mp[day] = count + mp[prev_day];
+    prev_day = day;
   }
 
   vector<int> ans(n+1);
-  ll prev_idx = -1, prev_value = 0;
-  for(auto v: tbl) {
-    if (prev_idx != -1) {
-      ans[prev_value] += v.first - prev_idx;
-    }
-    prev_idx = v.first;
-    prev_value = v.second;
+  prev_day = 0;
+  // ちょうどi人がログインしていた日数を集計する
+  for(auto [day, _]: mp) {
+    ans[mp[prev_day]] += day - prev_day;
+    prev_day = day;
   }
 
-  // ちょうどi人がログインしていた日数を答える
   REP(i,n) cout << ans[i+1] << " ";
   cout << endl;
-
   return;
 }
 
 int main() {
   cin >> n;
-  a.resize(n); b.resize(n);
   REP(i,n) cin >> a[i] >> b[i];
 
   solve();
