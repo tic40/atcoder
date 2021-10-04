@@ -34,10 +34,34 @@ void solve() {
   return;
 }
 
+// 解説解(イベントソート)
+void solve2() {
+  vector<pair<int,int>> x;
+  REP(i,n) {
+    x.push_back({ a[i], 1 });
+    x.push_back({ a[i]+b[i], -1 });
+  }
+
+  sort(x.begin(), x.end());
+
+  int cnt = 0;
+  vector<int> ans(x.size());
+  REP(i, x.size()-1) {
+    cnt += x[i].second;
+    ans[cnt] += ((x[i + 1].first) - (x[i].first));
+  }
+
+  REP(i,n) cout << ans[i+1] << " ";
+  cout << endl;
+
+  return;
+}
+
 int main() {
   cin >> n;
   REP(i,n) cin >> a[i] >> b[i];
 
-  solve();
+  // solve();
+  solve2();
   return 0;
 }
