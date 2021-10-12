@@ -5,15 +5,13 @@ using namespace std;
 int main() {
   string s,t; cin >> s >> t;
 
-  if (s != t) {
-    int n = s.size();
-    REP(i,n-1) {
-      swap(s[i],s[i+1]);
-      if (s == t) break;
-      swap(s[i],s[i+1]);
-    }
+  bool ok = s==t;
+  REP(i,s.size()-1) {
+    swap(s[i],s[i+1]);
+    if (s == t) ok = true;
+    swap(s[i],s[i+1]);
   }
 
-  cout << (s==t ? "Yes" : "No") << endl;
+  cout << (ok ? "Yes" : "No") << endl;
   return 0;
 }
