@@ -19,10 +19,11 @@ Point g[2005];
 const double pi = 3.141592653589793;
 
 double getangle(Point p) {
-  double I = p.px / sqrt(p.px * p.px + p.py * p.py);
-  double kaku = acos(I) * 180.0 / pi;
-
-  return (0 <= p.py ? kaku : 360.0 - kaku);
+  // double I = p.px / sqrt(p.px * p.px + p.py * p.py);
+  // double kaku = acos(I) * 180.0 / pi;
+  // return (0 <= p.py ? kaku : 360.0 - kaku);
+  double kaku = atan2(p.py, p.px) * 180.0 / pi;
+  return kaku;
 }
 
 double getangle2(double I1, double I2) {
