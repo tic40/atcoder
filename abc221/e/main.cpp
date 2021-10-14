@@ -89,6 +89,7 @@ void solve() {
   return;
 }
 
+// 座標圧縮 + fenwick_tree(BIT)
 void solve2() {
   // 座標圧縮
   map<int,int> mp;
