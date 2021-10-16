@@ -101,6 +101,10 @@ void solve2() {
   fenwick_tree<mint> b(m);
 
   mint ans = 0;
+
+  // 2^(r-1) * Σ(1/2)^l
+  // 2^(r-1) 部分を two
+  // Σ(1/2)^l 部分を itwo と置く
   mint two = 1, itwo = 1;
 
   REP(i,n) {
