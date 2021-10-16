@@ -2,7 +2,7 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
 
-vector<int> quiq_sort(vector<int> a) {
+vector<int> quick_sort(vector<int> a) {
   int mid = a.size() / 2;
   vector<int> l,r;
 
@@ -14,9 +14,9 @@ vector<int> quiq_sort(vector<int> a) {
   }
 
   vector<int> res;
-  if (l.size()) for (int v: quiq_sort(l)) res.push_back(v);
+  if (l.size()) for (int v: quick_sort(l)) res.push_back(v);
   res.push_back(a[mid]);
-  if (r.size()) for (int v: quiq_sort(r)) res.push_back(v);
+  if (r.size()) for (int v: quick_sort(r)) res.push_back(v);
   return res;
 }
 
@@ -26,7 +26,7 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  auto ans = quiq_sort(a);
+  auto ans = quick_sort(a);
   for (int v: ans) cout << v << " ";
   cout << endl;
 
