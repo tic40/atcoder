@@ -54,6 +54,18 @@ int main() {
     }
   }
 
+  int n = 5;
+  for (int bit = 0; bit < (1<<n); bit++) {
+    vector<int> s;
+    REP(i,n) {
+      s.push_back(bit >> i & 1);
+      // if (bit >> i & 1) s.push_back(i);
+    }
+    for(auto v: s) cout << v << " ";
+    cout << endl;
+  }
+  return 0;
+
   // dfs();
   // cout << ans << endl;
   solve2();
