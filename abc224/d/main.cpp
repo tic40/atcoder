@@ -3,32 +3,29 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
 
 vector<vector<int>> g(9);
-vector<int> p(9,-1), g_state(9);
-int emp = -1; // 存在しないコマ
-map<vector<int>, int> memo;
+string s = "888888888";
+string g_s = "012345678"; // 完成形
 
 void solve() {
-  // 完成形
-  REP(i,9) g_state[i] = i==emp ? -1 : i;
+  int emp_idx; // コマが置いてない点
+  REP(i,9) if (s[i]-'0' == 8) emp_idx = i;
 
-  int first_emp_idx = -1;
-  REP(i,9) if (p[i] == -1) first_emp_idx = i;
-
-  queue< tuple<int,int,vector<int>> > q;
-  q.push({ 0,first_emp_idx,p });
-  memo[p]++;
+  queue< tuple<int,int,string> > q;
+  q.push({ 0,emp_idx,s });
+  map<string, int> memo;
+  memo[s]++;
 
   while(q.size()) {
     auto [cnt, emp_idx, state] = q.front();
     q.pop();
 
-    if (state == g_state) {
+    if (state == g_s) { // 完成
       cout << cnt << endl;
       return;
     }
 
     for (int v: g[emp_idx]) {
-      vector<int> n_state = state;
+      string n_state = state;
       swap(n_state[v], n_state[emp_idx]);
 
       if (memo[n_state]) continue;
@@ -54,12 +51,8 @@ int main() {
   REP(i,8) {
     int x; cin >> x;
     x--;
-    p[x] = i;
+    s[x] = i+'0';
   }
-
-  vector<bool> mb(9);
-  REP(i,9) if (0 <= p[i]) mb[p[i]] = true;
-  REP(i,9) if (!mb[i]) emp = i;
 
   solve();
   return 0;
