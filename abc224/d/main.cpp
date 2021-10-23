@@ -7,35 +7,30 @@ string s = "888888888";
 string g_s = "012345678"; // 完成形
 
 void solve() {
-  int emp_idx; // コマが置いてない点
-  REP(i,9) if (s[i]-'0' == 8) emp_idx = i;
+  queue<string> q;
+  q.push(s);
 
-  queue< tuple<int,int,string> > q;
-  q.push({ 0,emp_idx,s });
   map<string, int> memo;
   memo[s]++;
 
   while(q.size()) {
-    auto [cnt, emp_idx, state] = q.front();
-    q.pop();
+    auto state = q.front(); q.pop();
 
-    if (state == g_s) { // 完成
-      cout << cnt << endl;
-      return;
-    }
+    REP(i,9) {
+      if (state[i] != '8') continue;
 
-    for (int v: g[emp_idx]) {
-      string n_state = state;
-      swap(n_state[v], n_state[emp_idx]);
+      for (int v: g[i]) {
+        auto n_state = state;
+        swap(n_state[v], n_state[i]);
 
-      if (memo[n_state]) continue;
-
-      memo[n_state]++;
-      q.push({ cnt+1, v, n_state });
+        if (memo[n_state]) continue;
+        memo[n_state] = memo[state]+1;
+        q.push(n_state);
+      }
     }
   }
 
-  cout << -1 << endl;
+  cout << memo[g_s]-1 << endl;
   return;
 }
 
@@ -49,8 +44,7 @@ int main() {
   }
 
   REP(i,8) {
-    int x; cin >> x;
-    x--;
+    int x; cin >> x; x--;
     s[x] = i+'0';
   }
 
