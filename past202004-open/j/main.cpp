@@ -3,35 +3,33 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
 
 string s;
-int idx = 0;
+int n, idx = 0;
 
 string parse() {
-  string res = "";
+  if (n <= idx) return "";
 
+  if (s[idx] == ')') {
+    return "";
+  }
+
+  string res = "";
   if (s[idx] == '(') {
     idx++;
     res += parse();
-
     string ser = res;
-    reverse(ser.begin(),ser.end());
+    reverse(ser.begin(), ser.end());
     idx++;
-
     return res + ser + parse();
   }
 
-  if ('a' <= s[idx] && s[idx] <= 'z') {
-    res += s.substr(idx,1);
-    idx++;
-    res += parse();
-    return res;
-  }
-
-  return res;
+  res += s[idx];
+  idx++;
+  return res + parse();
 }
 
 int main() {
   cin >> s;
-
+  n = s.size();
   cout << parse() << endl;
   return 0;
 }
