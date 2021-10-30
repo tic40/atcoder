@@ -13,13 +13,14 @@ int main() {
     G は Mの約数である
   */
   vector<ll> d;
-  for(int i = 1; i*i <= m; i++) {
+  for(ll i = 1; i*i <= m; i++) {
     if (m%i==0) {
       d.push_back(i);
       if (m/i != i) d.push_back(m/i);
     }
   }
 
+  return 0;
   int ans = 0;
   for (ll v: d) if (v*n <= m) ans++;
 
