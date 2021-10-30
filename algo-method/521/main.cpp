@@ -20,7 +20,6 @@ int main() {
     }
   }
 
-  return 0;
   int ans = 0;
   for (ll v: d) if (v*n <= m) ans++;
 
