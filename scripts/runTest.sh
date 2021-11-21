@@ -7,8 +7,8 @@ if [ -e a.out ]; then
   rm a.out
 fi
 
-# compile
-g++ -std=gnu++17 -Wall -Wextra -O2 main.cpp
+# compile with ac-library
+g++ -std=gnu++17 -I /Users/tic40/Documents/repo/tic40/atcoder/ac-library -Wall -Wextra -O2 main.cpp
 
 if [ ! -e a.out ]; then
   echo "Error: Compile error."

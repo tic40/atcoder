@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
-#define ALL(x) x.begin(), x.end()
 using ll = long long;
 const int INF = 1e9;
 const ll LINF = 1e18;
