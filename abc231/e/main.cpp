@@ -6,29 +6,35 @@ using namespace std;
 using ll = long long;
 const int INF = 1e9;
 const ll LINF = 1e18;
-const int MOD = 1e9+7;
-
-ll ceil(ll x,ll y){ return x/y+!!(x%y); }
 
 ll n,x;
 vector<ll> a;
-map<ll, int> memo;
 
-ll dfs(ll now, ll idx) {
-  if (x <= 0) return 0;
-  if (memo[now]) return memo[now];
-  if (idx == n-1) return now / a[idx];
-  ll cur = a[idx];
-  ll nx = a[idx+1];
+void solve() {
+  vector<ll> dp(2,LINF);
+  dp[0] = 0;
 
-  // 支払い金額を次の通貨で割ったあまり / 今の通貨で割った商
-  ll r = now % nx / cur;
-  ll ans = dfs( now / nx * nx, idx+1 ) + r;
-  if (r) {
-    ans = min(ans, dfs(ceil(now,nx) * nx, idx+1) + (nx/cur - r));
+  REP(i,n-1) {
+    // 次の硬貨の倍率(A[i+1] は A[i]の倍数になっている)
+    ll d = a[i+1]/a[i];
+    ll r = x%d;
+    vector<ll> p(2,LINF);
+    // pからdpへの遷移
+    swap(dp,p);
+    // 今の桁の繰り下がり、次の桁の繰り下がり
+    REP(c,2) REP(nc,2) {
+      // a[i] - c + nc*d - b[i] = x[i]
+      // a[i]-b[i] = x[i]+c-nc*d
+      ll nr = r+c-nc*d;
+      dp[nc] = min(dp[nc], p[c]+abs(nr));
+    }
+    x /= d;
   }
-  memo[now] = ans;
-  return memo[now];
+
+  ll ans = LINF;
+  REP(c,2) ans = min(ans, dp[c]+abs(x+c));
+  cout << ans << endl;
+  return;
 }
 
 int main() {
@@ -36,6 +42,6 @@ int main() {
   a.resize(n);
   REP(i,n) cin >> a[i];
 
-  cout << dfs(x, 0) << endl;
+  solve();
   return 0;
 }
