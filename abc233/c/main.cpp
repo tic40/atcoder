@@ -4,37 +4,41 @@ using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
 using ll = long long;
+const int INF = 1e9;
+const ll LINF = 1e18;
+const int MOD = 1e9+7;
 
-ll n,x;
-vector<vector<ll>> g;
-ll ans = 0;
+int n;
+ll x;
+vector<vector<ll>> a;
+int ans;
 
-void dfs(int i, ll cur) {
+void dfs(int p, ll cur) {
   if (x < cur) return;
-  if (i == n) {
+  if (p == n) {
     if (cur == x) ans++;
     return;
   }
 
-  for(ll v: g[i]) {
-    if (cur > x/v) continue;
-    dfs(i+1, cur * v);
+  for(ll v: a[p]) {
+    if (x/v < cur) continue;
+    dfs(p+1, cur*v);
   }
   return;
 }
 
 int main() {
   cin >> n >> x;
-  g.resize(n);
+  a.resize(n);
   REP(i,n) {
-    ll l; cin >> l;
+    int l; cin >> l;
     REP(j,l) {
-      ll a; cin >> a;
-      g[i].push_back(a);
+      ll x; cin >> x;
+      a[i].push_back(x);
     }
   }
 
-  dfs(0, 1);
+  dfs(0,1);
   cout << ans << endl;
   return 0;
 }

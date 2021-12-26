@@ -11,23 +11,22 @@ const int MOD = 1e9+7;
 int main() {
   string x; cin >> x;
   int n = x.size();
-
-  ll s = 0;
-  REP(i,n) s += x[i]-'0';
-
-  reverse(x.begin(),x.end());
-  vector<int> vs;
+  ll tot = 0;
+  REP(i,n) tot += x[i]-'0';
 
   ll c = 0;
-  for(int i = 0; (i < n || c != 0); i++) {
-    c += s;
-    vs.push_back(c % 10);
+  vector<int> ans;
+  reverse(x.begin(),x.end());
+
+  for(int i = 0; i < n || c > 0; i++) {
+    c += tot;
+    ans.push_back(c%10);
     c /= 10;
-    s -= x[i]-'0';
+    tot -= x[i]-'0';
   }
 
-  reverse(vs.begin(),vs.end());
-  for(int v: vs) cout << v;
+  reverse(ans.begin(),ans.end());
+  for(int v: ans) cout << v;
   cout << endl;
   return 0;
 }
