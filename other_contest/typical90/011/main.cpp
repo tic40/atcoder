@@ -7,36 +7,35 @@ using ll = long long;
 
 struct Work {
   int d,c,s;
-  bool operator<(const Work& o) const { return d < o.d; }
+  bool operator<(const Work& w) const { return d < w.d; }
 };
 
 int main() {
   int n; cin >> n;
   vector<Work> w(n);
-
   REP(i,n) cin >> w[i].d >> w[i].c >> w[i].s;
-  sort(w.begin(), w.end()); // 締切の昇順
-  int maxd = w.back().d;
 
-  vector<ll> dp(maxd+1, -1); // dp[i日目] = 最大の報酬
+  sort(w.begin(),w.end()); // 締切日の昇順
+  int maxD = w.back().d;
+  vector<ll> dp(maxD+1, -1); // dp[i日目] = i日目で最大の報酬
+
   dp[0] = 0;
-
   REP(i,n) {
-    Work curW = w[i];
-    vector<ll> p(maxd+1, -1);
+    vector<ll> p(maxD+1, -1);
     swap(p,dp);
 
-    // pからdpへの遷移
-    REP(j, curW.d+1) {
+    auto cur = w[i];
+    REP(j,cur.d+1) {
       dp[j] = p[j];
-      if (0 <= j-curW.c && p[j-curW.c] != -1) {
-        dp[j] = max(dp[j], p[j-curW.c] + curW.s);
+      if (0 <= j-cur.c && p[j-cur.c] != -1) {
+        dp[j] = max(dp[j], p[j-cur.c] + cur.s);
       }
     }
   }
 
   ll ans = 0;
-  REP(i,maxd+1) ans = max(ans, dp[i]);
+  for(auto v: dp) ans = max(ans, v);
   cout << ans << endl;
+
   return 0;
 }
