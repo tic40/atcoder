@@ -1,20 +1,25 @@
-## at-coder
+## atcoder
 
-https://atcoder.jp/
+[atcoder.jp](https://atcoder.jp/) コンテストへの参加/提出記録
 
 ### My Account
 
-https://atcoder.jp/users/tic40
+[https://atcoder.jp/users/tic40](https://atcoder.jp/users/tic40)
+
+
+### C++ Template file
+
+[template.cpp](https://github.com/tic40/atcoder/blob/main/template.cpp)
 
 ### Scripts
 
-#### Create template for contest
+#### Create contest template
 
-`$ ./scripts/createContestTemplate.sh {directory name}`
+`$ scripts/createContestTemplate.sh {directory name}`
 
-#### Exec test
+#### Run test
 
-`$ ./scripts/runTest.sh`
+`$ scripts/runTest.sh`
 
 ### Compile
 
@@ -26,3 +31,7 @@ alias gcc17e='g++ -std=gnu++17 -Wall -Wextra -O2 main.cpp && ./a.out'
 alias gcc17ac='g++ -std=gnu++17 -I /path/to/ac-library -Wall -Wextra -O2 main.cpp'
 alias gcc17ace='g++ -std=gnu++17 -I /path/to/ac-library -Wall -Wextra -O2 main.cpp && ./a.out'
 ```
+
+### Libraries
+
+- [libraries/ac-library](https://github.com/atcoder/ac-library)
