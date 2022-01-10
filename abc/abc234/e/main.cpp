@@ -8,47 +8,34 @@ const ll LINF = 1e18;
 
 ll x;
 int n;
-vector<ll> candidates;
+ll ans = LINF;
 
-int getDigit(ll num) {
-  int digit = 0;
-  while(num!=0) { num/=10; digit++; }
-  return digit;
+int digit(ll n) {
+  int res = 0;
+  while(n) { n/=10; res++; }
+  return res;
 }
 
-void dfs(ll cur, int d, int cnt=1) {
-  if (cnt == n) {
-    if (x <= cur) candidates.push_back(cur);
+void dfs(ll cur, int d) {
+  if (x <= cur) {
+    ans = min(ans, cur);
     return;
   }
 
-  int nx = cur%10 + d;
-  if (nx < 0 || 9 < nx) return;
-  dfs(cur*10+nx, d, cnt+1);
+  int nx = cur%10+d;
+  if (0 <= nx && nx <= 9) dfs(cur*10+nx, d);
+
   return;
 }
 
 int main() {
   cin >> x;
-  n = getDigit(x);
+  n = digit(x);
 
-  for(int i = 1; i <= 9; i++) {
-    REP(d,10) {
-      dfs(i,d);
-      dfs(i,-d);
-    }
+  for(int i = 1; i <= 9; i++) REP(d,10) {
+    dfs(i,d);
+    dfs(i,-d);
   }
-
-  ll ans;
-  ll minDiff = LINF;
-  for(auto v: candidates) {
-    ll diff = v-x;
-    if (diff < minDiff) {
-      minDiff = diff;
-      ans = v;
-    }
-  }
-
   cout << ans << endl;
   return 0;
 }
