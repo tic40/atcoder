@@ -5,41 +5,36 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
 using ll = long long;
 
-int a,n;
-vector<int> d(1000005, -1);
+int main() {
+  int a,n;
+  cin >> a >> n;
+  vector<int> d(1000005, -1);
 
-void bfs() {
   queue<int> q;
   q.push(1);
   d[1]=0;
-  int mx = min(1000000, n*10);
 
-  auto push = [&](ll nv, int v){
-    if (nv <= mx && d[nv] == -1) {
-      d[nv] = d[v]+1;
+  auto push = [&](int nv, int cnt) {
+    if (nv <= min(1000000, n*10) && d[nv] == -1) {
+      d[nv] = cnt+1;
       q.push(nv);
     }
   };
 
-  while (q.size()) {
-    int cur = q.front(); q.pop();
+  while(q.size()) {
+    int v = q.front(); q.pop();
+    int cnt = d[v];
+    if (v == n) break;
 
-    if (cur == n) return;
+    if (v <= 1000000/a) push(v*a,cnt);
 
-    push((ll)cur*a, cur);
-    if (10 <= cur && cur % 10 != 0) {
-      string t = to_string(cur);
-      rotate(t.rbegin(), t.rbegin()+1, t.rend());
-      push(stoi(t), cur);
+    if (10 <= v && v % 10 != 0) {
+      string s = to_string(v);
+      rotate(s.rbegin(), s.rbegin()+1, s.rend());
+      push(stoi(s),cnt);
     }
   }
 
-  return;
-}
-
-int main() {
-  cin >> a >> n;
-  bfs();
   cout << d[n] << endl;
   return 0;
 }
