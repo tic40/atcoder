@@ -9,47 +9,47 @@ const ll LINF = 1e18;
 const int MOD = 1e9+7;
 
 struct Edge {
-  int from, to, cost, i;
-  Edge(int from, int to, int cost, int i = -1): from(from), to(to), cost(cost), i(i) {}
-  bool operator<(const Edge& o) const { // costで順序定義
-    return cost < o.cost;
+  int a,b,c,i;
+  Edge(int a, int b, int c, int i = -1): a(a), b(b), c(c), i(i) {}
+  bool operator<(const Edge& o) const {
+    return c < o.c;
   }
 };
 
-int n,m,q;
-vector<Edge> es, qs;
-
 int main() {
+  int n,m,q;
   cin >> n >> m >> q;
+  vector<Edge> es,ps;
+
   REP(i,m) {
     int a,b,c;
     cin >> a >> b >> c;
     a--; b--;
     es.emplace_back(a,b,c);
   }
-  sort(es.begin(), es.end());
 
   REP(i,q) {
     int u,v,w;
     cin >> u >> v >> w;
     u--; v--;
-    qs.emplace_back(u,v,w,i);
+    ps.emplace_back(u,v,w,i);
   }
 
+  sort(es.begin(),es.end());
+  sort(ps.begin(),ps.end());
   vector<bool> ans(q);
-  sort(qs.begin(), qs.end());
-  dsu t(n);
 
+  dsu d(n);
   int qi = 0;
-  for(auto [from, to, cost, _]: es) {
-    while(qi < q && qs[qi].cost < cost) {
-      auto [nfrom, nto, ncost, i] = qs[qi];
+  for(auto [a,b,c,_]: es) {
+    while(qi < q && ps[qi].c < c) {
+      auto [na,nb,nc,i] = ps[qi];
+      ans[i] = !d.same(na,nb);
       qi++;
-      ans[i] = !t.same(nfrom, nto);
     }
-    t.merge(from, to);
+    d.merge(a,b);
   }
 
-  REP(i,q) cout << (ans[i] ? "Yes" : "No") << endl;
+  for(bool v: ans) cout << (v ? "Yes" : "No") << endl;
   return 0;
 }
