@@ -11,13 +11,10 @@ ll a[20][20];
 ll ans = 0;
 
 void dfs(vector<bool> memo, ll tot, int idx) {
-  while(memo[idx]) {
-    idx++;
-    if (2*n <= idx) break;
-  }
+  while(memo[idx]) idx++;
   memo[idx] = true;
 
-  if(idx >= 2*n) {
+  if (idx >= 2*n) {
     ans = max(ans,tot);
     return;
   }
