@@ -4,19 +4,17 @@ using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
 using ll = long long;
-const ll LINF = 1e18;
+using P = pair<int,int>;
+const int INF = 1e9;
 
 int n,m;
-vector<ll> h;
-ll ans = 0;
-
-using Edge = struct { int to; ll cost; };
+vector<int> h;
+struct Edge { int to; int cost; };
 vector<vector<Edge>> g;
-using P = pair<ll,int>;
 
 // s: スタート位置
-vector<ll> dijkstra(int s) {
-  vector<ll> dist(g.size(), LINF);
+vector<int> dijkstra(int s) {
+  vector<int> dist(g.size(), INF);
   priority_queue<P, vector<P>, greater<P>> q;
 
   // cost: toに移動するときのコスト, to: 移動先
@@ -25,11 +23,12 @@ vector<ll> dijkstra(int s) {
     dist[to] = cost;
     q.emplace(dist[to], to);
   };
+
+  // スタート位置をコスト0で追加
   push(0, s); // [現在位置のコスト, 現在位置]
 
   while (q.size()) {
-    auto [d,v] = q.top(); q.pop();
-    // if (dist[v] != d) continue;
+    auto [_,v] = q.top(); q.pop();
     for (Edge e: g[v]) {
       ll cost = dist[v]+e.cost;
       push(cost, e.to);
@@ -43,20 +42,20 @@ int main() {
   cin >> n >> m;
   h.resize(n);
   g.resize(n);
-
   REP(i,n) cin >> h[i];
   REP(i,m) {
-    int u,v; cin >> u >> v;
+    int u,v;
+    cin >> u >> v;
     u--; v--;
-
-    g[u].emplace_back((Edge){v, max(0LL, h[v]-h[u]) });
-    g[v].emplace_back((Edge){u, max(0LL, h[u]-h[v]) });
+    // 負の辺は扱えないため、いくらコストがかかるかを考える
+    g[u].emplace_back((Edge){ v, max(0, h[v]-h[u]) });
+    g[v].emplace_back((Edge){ u, max(0, h[u]-h[v]) });
   }
 
   auto dist = dijkstra(0);
-
-  ll ans = 0;
-  REP(i,n) ans = max(ans, h[0]-h[i]-dist[i]);
+  int ans = 0;
+  REP(i,n) ans = max(ans, h[0] - h[i] - dist[i]);
   cout << ans << endl;
+
   return 0;
 }
