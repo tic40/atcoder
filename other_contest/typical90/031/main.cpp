@@ -5,6 +5,7 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
 
 // grundy[白色の数][青色の数] = grundy数
+// 青色の最大数は: (1+50)*50/2+50
 int grundy[55][1500];
 
 void init() {
@@ -16,7 +17,7 @@ void init() {
     if (1 <= i) mex[ grundy[i-1][j+i] ] = 1;
     // 操作2 [2 <= b のとき選択可能]　1 以上 b/2以下の整数 k を選び、選んだ山から青石を k 個取り除く
     if (2 <= j) {
-      for (int k = 1; k <= (j / 2); k++) mex[ grundy[i][j - k] ] = 1;
+      for (int k = 1; k <= (j/2); k++) mex[ grundy[i][j-k] ] = 1;
     }
 
     REP(k, 1500) {
