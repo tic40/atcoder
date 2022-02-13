@@ -20,6 +20,7 @@ void init() {
       for (int k = 1; k <= (j/2); k++) mex[ grundy[i][j-k] ] = 1;
     }
 
+    // mex を grundy[i][j] に加える
     REP(k, 1500) {
       if (mex[k] == 0) {
         grundy[i][j] = k;
