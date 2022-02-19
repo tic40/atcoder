@@ -11,10 +11,7 @@ int main() {
   vector<int> s(n);
   REP(i,n) cin >> s[i];
 
-  vector<ll> x;
-  x.push_back(0);
-  x.push_back(0);
-
+  vector<ll> x = {0, 0};
   REP(i,n) x.push_back(s[i] - x[i] - x[i+1]);
 
   vector<ll> mn(3, LINF);
@@ -25,7 +22,7 @@ int main() {
     return 0;
   }
 
-  mn[0] = - (mn[1] + mn[2]);
+  mn[2] = -(mn[0]+mn[1]);
   REP(i,n+2) x[i] -= mn[i%3];
 
   cout << "Yes" << endl;
