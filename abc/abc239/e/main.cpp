@@ -7,53 +7,43 @@ using ll = long long;
 const int INF = 1e9;
 const ll LINF = 1e18;
 const int MOD = 1e9+7;
-using Edge = struct { int to; int cost; };
 
-int n,q;
 vector<int> x;
-vector<vector<int>> g;
+vector<vector<int>> g,memo;
 
-vector<vector<int>> memo;
-vector<int> dfs(int cur, int prev) {
-  vector<int> res = { x[cur] };
-  for(int nv: g[cur]) {
-    if (nv == prev) continue;
-    for(auto t: dfs(nv, cur)) {
-      res.push_back(t);
+vector<int> dfs(int cur, int prev = -1) {
+  vector<int> t = { x[cur] };
+  for(int v: g[cur]) {
+    if (v == prev) continue;
+    for(int nv: dfs(v, cur)) {
+      t.push_back(nv);
     }
   }
-
-  sort(res.rbegin(),res.rend());
-  REP(i, min((int)res.size(), 20) ) {
-    memo[cur].push_back(res[i]);
-  }
-
-  return memo[cur];
+  sort(t.rbegin(), t.rend());
+  vector<int> res;
+  REP(i, min((int)t.size(), 20)) res.push_back(t[i]);
+  return memo[cur] = res;
 }
 
 int main() {
-  cin >> n >> q;
-
+  int n,q; cin >> n >> q;
   x.resize(n);
   REP(i,n) cin >> x[i];
-
   g.resize(n);
+  memo.resize(n);
+
   REP(i,n-1) {
-    int a,b;
-    cin >> a >> b;
+    int a,b; cin >> a >> b;
     a--; b--;
     g[a].push_back(b);
     g[b].push_back(a);
   }
 
-  memo.resize(n);
-  dfs(0, -1);
+  dfs(0);
 
   REP(i,q) {
-    int v,k;
-    cin >> v >> k;
+    int v,k; cin >> v >> k;
     v--; k--;
-
     cout << memo[v][k] << endl;
   }
 
