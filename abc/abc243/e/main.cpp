@@ -4,54 +4,34 @@ using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
 using ll = long long;
-const int INF = 1e9;
 const ll LINF = 1e18;
-const int MOD = 1e9+7;
 
-/*
-  単純連結無向グラフとは、単純かつ連結で辺に向きの無いグラフのことをいいます。
-  グラフが単純であるとは、グラフが自己ループや多重辺を含まないことをいいます。
-  グラフが連結であるとは、グラフ上の任意の 2 頂点 s,t について s から t へ辺をたどって行けることをいいます。
-  頂点 s と頂点 t の間の距離とは、頂点 s と頂点 t の間の最短路の長さのことをいいます。
-*/
-using Edge = struct { int to; ll cost; };
-
+struct Edge { int from; int to; ll cost; };
 int n,m;
-vector<vector<Edge>> g;
-vector<ll> visited;
-vector<int> A,B,C;
-int target;
+vector<Edge> edges;
+ll dp[305][305];
 
-void dfs(int cur, ll cost = 0) {
-  if (cur == target) return;
-
-  for(auto [nto, ncost]: g[cur]) {
-    if (cost + ncost < visited[nto]) {
-      visited[nto] = cost + ncost;
-      dfs(nto, ncost+cost);
+void warshall_floyd(int n) {
+  REP(k,n) { // 経由する頂点
+    REP(i,n) { // 開始頂点
+      REP(j,n) { // 終端
+        dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j]);
+      }
     }
   }
-
   return;
 }
 
 void solve() {
+  warshall_floyd(n);
+
   int ans = 0;
-  REP(i,m) {
-    int from = A[i];
-    int to = B[i];
-    int cost = C[i];
-
-    visited = vector<ll>(n);
-    REP(j,n) visited[j] = LINF;
-    visited[from] = 0;
-
-    target = to;
-    dfs(from);
-    if (visited[to] < cost) {
-      // cout << from << " " << visited[to] << " " << cost << endl;
-      ans++;
+  for(auto [a,b,c]: edges) {
+    int can_delete = 0;
+    REP(j,n) {
+      if (dp[a][j] + dp[j][b] <= c) can_delete = 1;
     }
+    ans += can_delete;
   }
 
   cout << ans << endl;
@@ -60,19 +40,14 @@ void solve() {
 
 int main() {
   cin >> n >> m;
-  g.resize(n);
-  A.resize(m);
-  B.resize(m);
-  C.resize(m);
+  REP(i,n) REP(j,n) dp[i][j] = LINF;
   REP(i,m) {
     int a,b,c;
     cin >> a >> b >> c;
     a--; b--;
-    g[a].emplace_back(Edge{b,c});
-    g[b].emplace_back(Edge{a,c});
-    A[i] = a;
-    B[i] = b;
-    C[i] = c;
+    dp[a][b] = c;
+    dp[b][a] = c;
+    edges.emplace_back(Edge{a,b,c});
   }
 
   solve();
