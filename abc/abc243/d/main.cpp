@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
-using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
 using ll = long long;
@@ -11,11 +9,8 @@ int main() {
 
   deque<int> dq;
   REP(i,n) {
-    if (dq.size() && dq.back() != 'U' && s[i] == 'U') {
-      dq.pop_back();
-      continue;
-    }
-    dq.push_back(s[i]);
+    if (dq.size() && dq.back() != 'U' && s[i] == 'U') dq.pop_back();
+    else dq.push_back(s[i]);
   }
 
   while(dq.size()) {

@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
-using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
 const int INF = 1e9+5;
