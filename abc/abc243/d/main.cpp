@@ -5,39 +5,25 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<(int)(n);i++)
 using ll = long long;
 
-int n;
-ll x;
-string s;
+int main() {
+  int n; ll x; string s;
+  cin >> n >> x >> s;
 
-void solve() {
-  deque<char> st;
+  deque<int> dq;
   REP(i,n) {
-    if (st.empty()) {
-      st.push_back(s[i]);
+    if (dq.size() && dq.back() != 'U' && s[i] == 'U') {
+      dq.pop_back();
       continue;
     }
-
-    char top = st.back();
-    if (s[i] == 'U' && top != 'U') st.pop_back();
-    else st.push_back(s[i]);
+    dq.push_back(s[i]);
   }
 
-  vector<char> vs;
-  while(st.size()) {
-    char t = st.front();
-    st.pop_front();
-
-    if (t == 'U') x/=2;
-    else if (t == 'L') x*=2;
-    else if (t == 'R') x = x*2+1;
+  while(dq.size()) {
+    char c = dq.front(); dq.pop_front();
+    if (c == 'U') x = x >> 1;
+    else x = (x << 1) + (c == 'R');
   }
 
   cout << x << endl;
-  return;
-}
-
-int main() {
-  cin >> n >> x >> s;
-  solve();
   return 0;
 }
