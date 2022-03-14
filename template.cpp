@@ -2,7 +2,7 @@
 #include <atcoder/all>
 using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<(int)(n);i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
 using ll = long long;
 const int INF = 1e9+5;
 const ll LINF = 1e18+5;
