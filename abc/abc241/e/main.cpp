@@ -33,11 +33,11 @@ void solve2() {
   int logK = 1;
   while ((1LL << logK) <= k) logK++;
 
-  vector<vector<ll>> dp(100, vector<ll>(n));
+  vector<vector<ll>> dp(logK, vector<ll>(n));
   REP(i,n) dp[0][i] = a[i];
 
   REP(i,logK-1) REP(j,n) {
-    dp[i + 1][j] = dp[i][j] + dp[i][ (j+dp[i][j]) % n ];
+    dp[i + 1][j] = dp[i][j] + dp[i][ (j+dp[i][j])%n ];
   }
 
   ll x = 0;
