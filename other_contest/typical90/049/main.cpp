@@ -5,33 +5,34 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
 using ll = long long;
 
-int n,m;
 struct Edge {
   int c; int l; int r;
   bool operator<(const Edge& o) const { return c < o.c; }
 };
 
 int main() {
-  cin >> n >> m;
-  vector<Edge> edges;
+  int n,m; cin >> n >> m;
+  vector<Edge> edges(m);
   REP(i,m) {
     int c,l,r; cin >> c >> l >> r;
-    edges.emplace_back(Edge{c,l-1,r});
+    l--; r--;
+    edges[i] = {c,l,r};
   }
 
-  sort(edges.begin(), edges.end());
 
   ll ans = 0;
-  dsu uf(n+1);
+  dsu uf(n+1); // N+1頂点
 
+  // クラスカル
+  // costの昇順にソート
+  sort(edges.begin(), edges.end());
   for(auto [c,l,r]: edges) {
-    if (uf.same(l,r)) continue;
-
-    uf.merge(l,r);
+    if (uf.same(l,r+1)) continue;
+    uf.merge(l,r+1);
     ans += c;
   }
 
-  if (uf.size(0)-1 != n) ans = -1;
+  if (uf.size(0) != n+1) ans = -1;
   cout << ans << endl;
   return 0;
 }
