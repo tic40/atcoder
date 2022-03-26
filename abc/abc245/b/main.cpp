@@ -1,26 +1,19 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
-using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
-using ll = long long;
-const int INF = 1e9+5;
-const ll LINF = 1e18+5;
-const int MOD = 1e9+7;
-// using mint = modint998244353; // modint1000000007;
 
 int main() {
   int n; cin >> n;
-  vector<bool> a(2005);
+  set<int> st;
   REP(i,n) {
-    int x; cin >> x;
-    a[x] = true;
+    int a; cin >> a;
+    st.insert(a);
   }
 
-  REP(i,2005) {
-    if (a[i]) continue;
-    cout << i << endl;
-    break;
+  int i = 0;
+  while(1) {
+    if (st.count(i)) { i++; continue; }
+    cout << i << endl; break;
   }
   return 0;
 }
