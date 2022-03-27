@@ -22,10 +22,7 @@ int main() {
   REP(i,s) for(int v: d[i]) di[v] = i;
   vector<bool> dp(s);
 
-  // トポロジカルソートされたものを後ろから見ていくので逆順にする
-  reverse(d.begin(),d.end());
-
-  REP(i,s) {
+  for(int i = s-1; i >= 0; i--) {
     dp[i] = d[i].size() > 1;
 
     if (d[i].size() == 1) {
