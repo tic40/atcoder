@@ -16,14 +16,8 @@ int main() {
   }
 
   sort(a.rbegin(),a.rend());
-  REP(i,n) {
-    if (k == 0) break;
-    a[i] = max(a[i]-x, 0);
-    k--;
-  }
-
   ll ans = 0;
-  REP(i,n) ans += a[i];
+  for (int i = k; i < n; i++) ans += a[i];
   cout << ans << endl;
   return 0;
 }
