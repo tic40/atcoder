@@ -18,6 +18,7 @@ int main() {
   int ans = INF;
   for(int i = k; i < n; i++) {
     if (a[i] <= mn) continue;
+
     int ok = 0, ng = k;
     while(abs(ok-ng) > 1) {
       int mid = (ok+ng)/2;
@@ -27,7 +28,6 @@ int main() {
     ans = min(ans, i-ok);
   }
 
-  if (ans == INF) ans = -1;
-  cout << ans << endl;
+  cout << (ans == INF ? -1 : ans) << endl;
   return 0;
 }
