@@ -1,19 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
 
-int n;
-vector<int> f(int x, vector<int> s) {
-  if (n < x) return s;
-  vector<int> ns = s;
-  ns.push_back(x);
-  for(int v: s) ns.push_back(v);
-  return f(x+1, ns);
+void f(int x) {
+  if (x == 0) return;
+  f(x-1);
+  cout << x << " ";
+  f(x-1);
 }
 
 int main() {
-  cin >> n;
-  auto ans = f(2, {1});
-  for(auto v: ans) cout << v << " ";
+  int n; cin >> n;
+  f(n);
   return 0;
 }

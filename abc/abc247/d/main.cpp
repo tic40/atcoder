@@ -14,7 +14,6 @@ int main() {
       dq.push_back({x,c});
     } else {
       int c; cin >> c;
-
       ll sum = 0;
       while(0 < c) {
         auto [nx,nc] = dq.front(); dq.pop_front();

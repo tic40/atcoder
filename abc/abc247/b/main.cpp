@@ -4,19 +4,18 @@ using namespace std;
 
 int main() {
   int n; cin >> n;
-  vector<string> s(n), t(n);
+  vector<string> s(n),t(n);
   REP(i,n) cin >> s[i] >> t[i];
-  map<string,int> ms, mt;
+  map<string,int> ms,mt;
   REP(i,n) { ms[s[i]]++; mt[t[i]]++; }
 
   REP(i,n) {
     ms[s[i]]--; mt[t[i]]--;
-    bool sok = true, tok = true;
-    if (ms[s[i]] > 0 || mt[s[i]] > 0) sok = false;
-    if (ms[t[i]] > 0 || mt[t[i]] > 0) tok = false;
+    int ok = 2;
+    if (ms[s[i]] || mt[s[i]]) ok--;
+    if (ms[t[i]] || mt[t[i]]) ok--;
     ms[s[i]]++; mt[t[i]]++;
-
-    if (!tok && !sok) { cout << "No" << endl; return 0; }
+    if (ok) { cout << "No" << endl; return 0; }
   }
 
   cout << "Yes" << endl;

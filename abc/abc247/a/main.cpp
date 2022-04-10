@@ -4,9 +4,8 @@ using namespace std;
 
 int main() {
   string s; cin >> s;
-  rotate(s.rbegin(),s.rbegin()+1,s.rend());
-  s[0] = '0';
+  rotate(s.rbegin(), s.rbegin()+1, s.rend());
+  s[0]='0';
   cout << s << endl;
-
   return 0;
 }
