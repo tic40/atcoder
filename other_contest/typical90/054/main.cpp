@@ -6,7 +6,6 @@ const int INF = 1e9;
 int main() {
   int n,m; cin >> n >> m;
   vector<vector<int>> g(n+m);
-
   REP(i,m) {
     int k; cin >> k;
     REP(j,k) {
@@ -17,25 +16,21 @@ int main() {
     }
   }
 
-  vector<int> cost(n+m,INF);
   queue<int> q({0});
-  cost[0] = 0;
+  vector<int> dist(n+m,INF);
+  dist[0] = 0;
 
   while(q.size()) {
     int now = q.front(); q.pop();
-    int nc = cost[now]+1;
+    int nd = dist[now]+1;
     for(int v: g[now]) {
-      if (nc < cost[v]) {
-        cost[v] = nc;
+      if (nd < dist[v]) {
         q.push(v);
+        dist[v] = nd;
       }
     }
   }
 
-  REP(i,n) {
-    if (cost[i] == INF) cout << -1;
-    else cout << cost[i]/2;
-    cout << endl;
-  }
+  REP(i,n) cout << (dist[i] == INF ? -1 : dist[i]/2) << endl;
   return 0;
 }
