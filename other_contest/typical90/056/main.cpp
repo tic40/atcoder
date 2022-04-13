@@ -7,17 +7,20 @@ int main() {
   vector<int> a(n),b(n);
   REP(i,n) cin >> a[i] >> b[i];
 
-  vector<vector<bool>> dp(n+1, vector<bool>(s+1, false));
+  vector<vector<bool>> dp(n+1,vector<bool>(s+1));
   dp[0][0] = true;
   REP(i,n) REP(j,s+1) {
-    if (dp[i][j] && j + a[i] <= s) dp[i+1][j+a[i]] = true;
-    if (dp[i][j] && j + b[i] <= s) dp[i+1][j+b[i]] = true;
+    if (dp[i][j] && j+a[i] <= s) dp[i+1][j+a[i]] = true;
+    if (dp[i][j] && j+b[i] <= s) dp[i+1][j+b[i]] = true;
   }
 
-  if (!dp[n][s]) { cout << "Impossible" << endl; return 0; }
+  if (!dp[n][s]) {
+    cout << "Impossible" << endl;
+    return 0;
+  }
 
-  int now = s;
   string ans;
+  int now = s;
   for(int i = n-1; 0 <= i; i--) {
     if (0 <= now - a[i] && dp[i][now - a[i]]) {
       now -= a[i];
