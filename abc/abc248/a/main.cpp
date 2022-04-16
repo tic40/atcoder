@@ -4,8 +4,8 @@ using namespace std;
 
 int main() {
   string s; cin >> s;
-  vector<int> m(10);
-  for(char c: s) m[c-'0']++;
-  REP(i,10) if(m[i] == 0) cout << i << endl;
+  vector<int> v(10);
+  REP(i,9) v[s[i]-'0']++;
+  REP(i,10) if(v[i] == 0) cout << i << endl;
   return 0;
 }

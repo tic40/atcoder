@@ -6,7 +6,7 @@ using ll = long long;
 int main() {
   ll a,b,k; cin >> a >> b >> k;
   int ans = 0;
-  while(a < b) { a *= k; ans++; }
+  while(a < b) { ans++; a *= k; }
   cout << ans << endl;
   return 0;
 }

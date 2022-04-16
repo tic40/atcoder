@@ -9,14 +9,14 @@ int main() {
     int a; cin >> a;
     g[a].push_back(i);
   }
-
   int q; cin >> q;
   REP(i,q) {
     int l,r,x; cin >> l >> r >> x;
     l--; r--;
+
     auto it1 = lower_bound(g[x].begin(),g[x].end(),l);
     auto it2 = upper_bound(g[x].begin(),g[x].end(),r) - 1;
-    cout << it2 - it1 + 1 << endl;
+    cout << (it2-it1) + 1 << endl;
   }
   return 0;
 }
