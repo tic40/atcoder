@@ -4,22 +4,23 @@ using namespace std;
 using ll = long long;
 const ll LINF = 1e18+5;
 
-ll dp[300005][2][2]; // [i][j][k] := i番目, j支払ったかどうか, k 最初か最後どちらを決め打ちで支払ったか
-
 int main() {
   int n; cin >> n;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
+  vector<vector<ll>> dp(2, vector<ll>(2));
+  dp[1][0] = LINF;
   REP(i,n) {
-    if (i == 0) dp[i+1][0][0] = LINF;
-    else dp[i+1][0][0] = dp[i][1][0];
-    dp[i+1][1][0] = min(dp[i][0][0],dp[i][1][0]) + a[i];
+    vector<vector<ll>> ndp(2, vector<ll>(2));
+    ndp[0][0] = dp[1][0];
+    ndp[1][0] = min(dp[1][0],dp[0][0]) + a[i];
 
-    dp[i+1][0][1] = dp[i][1][1];
-    dp[i+1][1][1] = min(dp[i][0][1],dp[i][1][1]) + a[i];
+    ndp[0][1] = dp[1][1];
+    ndp[1][1] = min(dp[1][1],dp[0][1]) + a[i];
+    swap(dp,ndp);
   }
 
-  cout << min(dp[n][1][1], min(dp[n][0][0],dp[n][1][0])) << endl;
+  cout << min(dp[1][1], min(dp[1][0], dp[0][0])) << endl;
   return 0;
 }
