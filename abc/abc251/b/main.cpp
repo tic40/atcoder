@@ -6,18 +6,20 @@ int main() {
   int n,w; cin >> n >> w;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
-  set<int> st;
 
+  vector<int> m(3e6+1);
   REP(i,n) {
-    if (a[i] <= w) st.insert(a[i]);
+    m[a[i]] = 1;
     for(int j = i+1; j < n; j++) {
-      if (a[i]+a[j] <= w) st.insert(a[i]+a[j]);
+      m[a[i]+a[j]] = 1;
       for(int k = j+1; k < n; k++) {
-        if (a[i]+a[j]+a[k] <= w) st.insert(a[i]+a[j]+a[k]);
+        m[a[i]+a[j]+a[k]] = 1;
       }
     }
   }
 
-  cout << st.size() << endl;
+  int ans = 0;
+  for(int i = 1; i <= w; i++) ans += m[i];
+  cout << ans << endl;
   return 0;
 }

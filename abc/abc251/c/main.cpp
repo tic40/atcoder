@@ -4,16 +4,15 @@ using namespace std;
 
 int main() {
   int n; cin >> n;
-  set<string> st;
-  pair<int,int> ans;
+  unordered_set<string> st;
+  int ans = 1e9+5, mx = -1;
+
   REP(i,n) {
-    string s; int t;
-    cin >> s >> t;
+    string s; int t; cin >> s >> t;
     if (st.count(s)) continue;
     st.insert(s);
-    if (ans.first < t) ans = {t,i+1};
+    if (mx < t) { mx = t; ans = i+1; }
   }
-
-  cout << ans.second << endl;
+  cout << ans << endl;
   return 0;
 }
