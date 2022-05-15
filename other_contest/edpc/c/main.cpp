@@ -1,24 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
-typedef long long ll;
-
-int dp[100001][3];
+#define REP(i,n) for(int i=0;i<(n);i++)
 
 int main() {
   int n; cin >> n;
-  int a[n][3];
-  REP(i,n) REP(j,3) cin >> a[i][j];
+  vector<vector<int>> g(n,vector<int> (3));
+  REP(i,n) cin >> g[i][0] >> g[i][1] >> g[i][2];
 
+  vector<int> dp(3);
   REP(i,n) {
-    REP(j,3) {
-      REP(k,3) {
-        if (j==k) continue;
-        dp[i+1][j] = max(dp[i+1][j], dp[i][k] + a[i][j]);
-      }
+    vector<int> p(3);
+    REP(from,3) REP(to,3) {
+      if (from != to) p[to] = max(p[to], dp[from] + g[i][to]);
     }
+    swap(p,dp);
   }
+
   int ans = 0;
-  REP(i,3) ans = max(ans, dp[n][i]);
+  REP(i,3) ans = max(ans,dp[i]);
   cout << ans << endl;
+  return 0;
 }
