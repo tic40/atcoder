@@ -9,18 +9,17 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  vector<vector<ll>> dp(2, vector<ll>(2));
-  dp[1][0] = LINF;
+  vector<vector<ll>> dp(2,vector<ll>(2));
   REP(i,n) {
-    vector<vector<ll>> ndp(2, vector<ll>(2));
-    ndp[0][0] = dp[1][0];
-    ndp[1][0] = min(dp[1][0],dp[0][0]) + a[i];
+    vector<vector<ll>> p(2,vector<ll>(2));
+    p[0][0] = i == 0 ? LINF : dp[1][0];
+    p[1][0] = min(dp[0][0],dp[1][0]) + a[i];
 
-    ndp[0][1] = dp[1][1];
-    ndp[1][1] = min(dp[1][1],dp[0][1]) + a[i];
-    swap(dp,ndp);
+    p[0][1] = dp[1][1];
+    p[1][1] = min(dp[0][1],dp[1][1]) + a[i];
+    swap(dp,p);
   }
 
-  cout << min(dp[1][1], min(dp[1][0], dp[0][0])) << endl;
+  cout << min(min(dp[0][0],dp[1][0]), dp[1][1]) << endl;
   return 0;
 }
