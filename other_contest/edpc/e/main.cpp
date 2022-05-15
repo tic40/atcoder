@@ -1,27 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
-typedef long long ll;
+#define REP(i,n) for(int i=0;i<(n);i++)
+using ll = long long;
+const int INF = 1e9+5;
 
 int main() {
-  int N,W;
-  cin >> N >> W;
-  int w[N], v[N];
-  REP(i,N) cin >> w[i] >> v[i];
+  int n,W; cin >> n >> W;
+  vector<int> w(n),v(n);
+  REP(i,n) cin >> w[i] >> v[i];
 
-  int mxV = 1000 * N;
-  int dp[N+1][mxV+1];
-  REP(i,N+1) REP(j,mxV+1) dp[i][j] = 1001001001;
-  dp[0][0] = 0;
-
-  REP(i,N) REP(j,mxV+1) {
-    dp[i+1][j] = dp[i][j];
-    if (j-v[i] >= 0 && (dp[i][j-v[i]]+w[i]) <= W) {
-      dp[i+1][j] = min(dp[i+1][j],dp[i][j-v[i]]+w[i]);
+  vector<ll> dp(1e5+1, INF); // [価値] = 重さ
+  dp[0] = 0;
+  REP(i,n) {
+    vector<ll> p(1e5+1, INF);
+    REP(now, 1e5+1) {
+      p[now] = min(p[now], dp[now]);
+      if ( W < dp[now] + w[i] ) continue;
+      p[now + v[i]] = min(p[now + v[i]], dp[now] + w[i]);
     }
+    swap(dp,p);
   }
 
   int ans = 0;
-  REP(i,mxV+1) if (dp[N][i] <= W) ans = i;
+  for(int i = 1e5; 0 <= i; i--) if (dp[i] <= W) { ans = i; break; }
   cout << ans << endl;
+  return 0;
 }
