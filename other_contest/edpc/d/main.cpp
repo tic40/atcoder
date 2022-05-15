@@ -1,20 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
-typedef long long ll;
+#define REP(i,n) for(int i=0;i<(n);i++)
+using ll = long long;
 
 int main() {
-  int N, W; cin >> N >> W;
-  int w[N],v[N]; REP(i,N) cin >> w[i] >> v[i];
+  int n,W; cin >> n >> W;
+  vector<int>  w(n),v(n);
+  REP(i,n) cin >> w[i] >> v[i];
 
-  ll dp[N+1][W+1];
-  REP(i,N+1) REP(j,W+1) dp[i][j] = 0;
-
-  REP(i,N) REP(j,W+1) {
-    dp[i+1][j] = dp[i][j];
-    if (j-w[i] >= 0) {
-      dp[i+1][j] = max(dp[i+1][j], dp[i][j-w[i]] + v[i]);
+  vector<ll> dp(W+1); // [重さ] = 最大の価値
+  REP(i,n) {
+    vector<ll> p(W+1);
+    REP(now,W+1) {
+      p[now] = max(p[now], dp[now]);
+      if (W < now + w[i]) continue;
+      p[ now + w[i] ] = max( p[ now + w[i] ], dp[now] + v[i] );
     }
+    swap(dp,p);
   }
-  cout << dp[N][W] << endl;
+
+  ll ans = 0;
+  REP(i,W+1) ans = max(ans, dp[i]);
+  cout << ans << endl;
+  return 0;
 }
