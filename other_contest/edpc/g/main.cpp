@@ -1,30 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
-typedef long long ll;
+#define REP(i,n) for(int i=0;i<(n);i++)
 
-int N, M;
-vector<vector<int>> G(100000);
-vector<int> dp(100000, -1);
+vector<int> memo; // [i] = iを始点としたときの最長パス長
+vector<vector<int>> g;
 
-int rec(int v) {
-  if (dp[v] != -1) return dp[v];
-
+int f(int x) {
+  if (0 <= memo[x]) return memo[x];
   int res = 0;
-  for (auto nv : G[v]) res = max(res, rec(nv) + 1);
-  return dp[v] = res;
+  for(int v: g[x]) res = max(res, f(v)+1);
+  return memo[x] = res;
 }
 
 int main() {
-  cin >> N >> M;
-
-  int x, y;
-  REP(i,M) {
-    cin >> x >> y;
-    G[x-1].push_back(y-1);
+  int n,m; cin >> n >> m;
+  g.resize(n); memo.resize(n,-1);
+  REP(i,m) {
+    int x,y; cin >> x >> y;
+    x--; y--;
+    g[x].push_back(y);
   }
 
-  int res = 0;
-  REP(i,N) res = max(res, rec(i));
-  cout << res << endl;
+  int ans = 0;
+  REP(i,n) ans = max(ans, f(i));
+  cout << ans << endl;
+
+  return 0;
 }
