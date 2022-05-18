@@ -10,17 +10,14 @@ int main() {
   double ans = 0;
   REP(i,n) {
     for(int j = i+1; j < n; j++) {
-      int cnt = 0, all = 0;
       for(int k = l[i]; k <= r[i]; k++) {
-        for(int m = l[j]; m <= r[j]; m++) {
-          all++;
-          if (m < k) cnt++;
-        }
+        int cnt = 0;
+        for(int m = l[j]; m <= r[j]; m++) if (m < k) cnt++;
+        int all = (r[i]-l[i]+1) * (r[j]-l[j]+1);
+        ans += (double)cnt / all;
       }
-      ans += (double)cnt / all;
     }
   }
-
   cout << fixed << setprecision(10) << ans << endl;
   return 0;
 }
