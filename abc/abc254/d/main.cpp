@@ -7,15 +7,15 @@ int main() {
   vector<bool> sq(n+1);
   for(int i = 1; i*i <= n; i++) sq[i*i] = true;
   vector<vector<int>> d(n+1);
+
   for(int i = 1; i <= n; i++) {
-    // jの約数を追加
     for(int j = i; j <= n; j+=i) d[j].push_back(i);
   }
 
   vector<int> cnt(n+1);
+
   for(int i = 1; i <= n; i++) {
     int f = 0;
-    // iの約数の中で最大の平方数
     for(int v: d[i]) if (sq[v]) f = v;
     cnt[i/f]++;
   }
