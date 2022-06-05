@@ -4,12 +4,12 @@ using namespace std;
 using ll = long long;
 const ll LINF = 1e18+5;
 
-// dp[l][r]=(区間[l,r]に相当するスライムが1匹にまとまっているとき、それを分解するために必要な最小コスト)
 vector<vector<ll>> dp(401, vector<ll>(401, LINF));
 vector<ll> m(401);
 vector<int> a(401);
 
 // O(n^3)
+// dp[l][r]=(区間[l,r]に相当するスライムが1匹にまとまっているとき、それを分解するために必要な最小コスト)
 ll f(int l, int r) {
   if (dp[l][r] != LINF) return dp[l][r];
 	if (l == r) return 0;
