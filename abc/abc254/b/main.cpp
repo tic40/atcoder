@@ -4,16 +4,15 @@ using namespace std;
 
 int main() {
   int n; cin >> n;
-  vector<vector<int>> g(n);
-  REP(i,n) REP(j,i+1) {
-    if (j == 0 || j == i) g[i].push_back(1);
-    else g[i].push_back( g[i-1][j-1] + g[i-1][j] );
-  }
-
+  vector<int> a;
   REP(i,n) {
-    for(int v: g[i]) cout << v << " ";
+    vector<int> b(i+1,1);
+    for(int j = 1; j < i; j++) {
+      b[j] = a[j]+a[j-1];
+    }
+    for(int v: b) cout << v << " ";
     cout << endl;
+    swap(a,b);
   }
-
   return 0;
 }

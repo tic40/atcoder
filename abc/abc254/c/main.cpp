@@ -6,22 +6,16 @@ int main() {
   int n,k; cin >> n >> k;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
-  if (k == 1) {
-    cout << "Yes" << endl;
-    return 0;
-  }
 
+  if (k == 1) { cout << "Yes" << endl; return 0; }
+
+  vector<vector<int>> g(n);
+  REP(i,n) g[i%k].push_back(a[i]);
+  REP(i,n) sort(g[i].begin(),g[i].end());
+
+  REP(i,n) a[i] = g[i%k][i/k];
   vector<int> b = a;
   sort(b.begin(),b.end());
-
-  vector<vector<int>> g(k);
-  REP(i,n) g[i%k].push_back(a[i]);
-  REP(i,k) sort(g[i].begin(),g[i].end());
-  REP(i,n) {
-    if (i/k <= (int)g[i%k].size()-1) a[i] = g[i%k][i/k];
-  }
-
-  bool ok = a == b;
-  cout << (ok ? "Yes" : "No") << endl;
+  cout << (a == b ? "Yes" : "No") << endl;
   return 0;
 }
