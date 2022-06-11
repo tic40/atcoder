@@ -3,26 +3,52 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
 using ll = long long;
 
-int main() {
-  ll x,a,d,n; cin >> x >> a >> d >> n;
+ll x,a,d,n;
 
-  x -= a;
-  ll left, right;
-  if (0 < d) {
-    left = 0;
-    right = d*(n-1);
-  } else {
-    left = d*(n-1);
-    right = 0;
+// 場合分け解
+ll solve1() {
+  if (d < 0) {
+    a = a + d * (n-1);
+    d = -d;
   }
 
-  ll ans = min(abs(x-left), abs(x-right));
-  if (d != 0 && left <= x && x <= right) {
-    ll m = abs(x) % abs(d);
-    ans = min(ans, m);
-    ans = min(ans, abs(d) - m);
+  ll l = 0, r = n-1;
+  while(abs(r-l) > 1) {
+    ll mid = (r+l)/2;
+    if (a + d * (mid) < x) l = mid;
+    else r = mid;
   }
+
+  ll ans = abs(x - (a + d * l));
+  if (l < n-1) ans = min(ans, abs(x - (a + d * (l+1) )));
+
+  return ans;
+}
+
+// 二分探索解
+ll solve2() {
+  if (d < 0) {
+    a = a + d * (n-1);
+    d = -d;
+  }
+
+  ll l = 0, r = n-1;
+  while(abs(r-l) > 1) {
+    ll mid = (r+l)/2;
+    if (a + d * (mid) < x) l = mid;
+    else r = mid;
+  }
+
+  ll ans = abs(x - (a + d * l));
+  if (l < n-1) ans = min(ans, abs(x - (a + d * (l+1) )));
 
   cout << ans << endl;
+  return 0;
+}
+
+int main() {
+  cin >> x >> a >> d >> n;
+  cout << solve1() << endl;
+  // cout << solve2() << endl;
   return 0;
 }

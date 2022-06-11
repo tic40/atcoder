@@ -4,24 +4,21 @@ using namespace std;
 
 int main() {
   int n,k; cin >> n >> k;
-  vector<int> a(k);
+  vector<int> a(k),x(n),y(n);
   REP(i,k) { cin >> a[i]; a[i]--; }
-
-  vector<int> x(n),y(n);
   REP(i,n) cin >> x[i] >> y[i];
 
   double ans = 0;
   REP(i,n) {
-    double d = 1e12;
-    REP(j,k) {
-      double dx = x[i] - x[a[j]];
-      double dy = y[i] - y[a[j]];
-      double dist = sqrt(dx*dx + dy*dy);
-      d = min(dist,d);
+    double now = 1e6;
+    for(int j: a) {
+      double dx = x[i]-x[j];
+      double dy = y[i]-y[j];
+      now = min(now, sqrt(dx*dx + dy*dy));
     }
-    ans = max(ans,d);
+    ans = max(ans,now);
   }
 
-  cout << printf("%0.10f\n", ans) << endl;
+  printf("%0.10f\n", ans);
   return 0;
 }
