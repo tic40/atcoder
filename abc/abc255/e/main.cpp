@@ -13,6 +13,8 @@ int main() {
   ll a = 0;
   int c = 1;
   REP(i,n) {
+    // a + x*c = luckynum
+    // x = (luckynum - a)/c
     REP(j,m) cnt[(x[j]-a)*c]++;
     if (i == n-1) break;
     a = s[i] - a;
