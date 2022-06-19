@@ -19,6 +19,7 @@ int main() {
       continue;
     }
 
+    // i - x[i]で閉路になっている
     int cur = c[i], v = i;
     while(1) {
       v = x[v];
