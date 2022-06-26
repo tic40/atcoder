@@ -20,18 +20,18 @@ int main() {
   vector<int> large; // largeにb以上の頂点を入れておく
   REP(i,n) if ((int)g[i].size() >= b) large.push_back(i);
 
-  // link[i][j] = jからiへの辺がlargeに向かっている場合はtrue
-  vector link(n, vector<bool>(large.size()));
-  REP(i, (int)large.size()) {
-    link[large[i]][i] = true;
-    for(int j: g[large[i]]) link[j][i] = true;
+  vector<vector<int>> link(n);
+  for(int i: large) {
+    link[i].push_back(i);
+    for(int j: g[i]) link[j].push_back(i);
   }
 
-  vector<int> update(n,-1), update_large(large.size(),-1);
+  // 最後に更新したときのindexを入れる
+  vector<int> update(n,-1), update_large(n,-1);
   REP(i,q) {
     int last = update[x[i]];
-    REP(j, (int)large.size()) {
-      if (link[x[i]][j]) last = max(last, update_large[j]);
+    for(int j: link[x[i]]) {
+      last = max(last, update_large[j]);
     }
     cout << (last == -1 ? 1 : y[last]) << endl;
 
@@ -39,8 +39,7 @@ int main() {
       update[x[i]] = i;
       for (int j: g[x[i]]) update[j] = i;
     } else {
-      auto it = find(large.begin(), large.end(), x[i]);
-      update_large[it - large.begin()] = i;
+      update_large[x[i]] = i;
     }
   }
 
