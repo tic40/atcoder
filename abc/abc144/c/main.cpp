@@ -1,27 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
-#define COUT(x) cout<<(x)<<endl
-#define dump(x) cout<<#x<<" = "<<(x)<<endl;
-#define Yes(x) cout<<(x?"Yes":"No")<<endl;
+#define REP(i,n) for(int i=0;i<(n);i++)
 using ll = long long;
-using P = pair<int,int>;
-using Graph = vector<vector<int>>;
-using M = map<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int, vector<int>, greater<int>>;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
+const ll LINF = 1e18+5;
+
+vector<ll> divisor(ll n) {
+  vector<ll> res;
+  for(ll i = 1; i*i <= n; i++) {
+    if (n % i == 0) {
+      res.push_back(i);
+      if (i != n/i) res.push_back(n/i);
+    }
+  }
+  return res;
+}
 
 int main() {
   ll n; cin >> n;
-  ll ans = n-1;
-  for (ll i=2; i*i <= n; ++i) {
-    if (n % i == 0) {
-      ans = min(ans, i+n/i-2);
-    }
+
+  auto d = divisor(n);
+  ll ans = LINF;
+  for(ll v: d) {
+    ll now = v-1 + (n/v-1);
+    ans = min(ans,now);
   }
-  COUT(ans);
+  cout << ans << endl;
   return 0;
 }
