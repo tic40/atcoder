@@ -11,7 +11,8 @@ int main() {
   ll ok = 4e9, ng = 0;
   while(abs(ok-ng) > 1) {
     ll mid = (ok+ng)/2;
-    bool judge = [&]() {
+
+    auto judge = [&]() {
       // dp[i][j] := iからjへの移動が可能であれば1
       vector dp(n, vector<int>(n));
 
@@ -23,15 +24,17 @@ int main() {
       REP(k,n) REP(i,n) REP(j,n) {
         dp[i][j] |= dp[i][k] & dp[k][j];
       }
+
+      // 支点をiと置いて、全てに移動可能であればtrue
       REP(i,n) {
         bool ok = true;
         REP(j,n) if (dp[i][j] == 0) ok = false;
         if (ok) return true;
       }
       return false;
-    }();
+    };
 
-    if (judge) ok = mid;
+    if (judge()) ok = mid;
     else ng = mid;
   }
 
