@@ -12,27 +12,26 @@ int main() {
     g[b].push_back(a);
   }
 
-  int q; cin >> q;
-  vector<int> x(q),y(q);
-  REP(i,q) { cin >> x[i] >> y[i]; x[i]--; }
-
-  int b = sqrt(2*m); // 次数がb以上を大きい頂点とする
-  vector<int> large; // largeにb以上の頂点を入れておく
+  const int b = sqrt(2*m); // 次数がb以上を大きい頂点とする
+  vector<int> large; // b以上の頂点の集合
   REP(i,n) if ((int)g[i].size() >= b) large.push_back(i);
 
+  // link[i] = iからlargeに向かっている集合
   vector<vector<int>> link(n);
   for(int i: large) {
     link[i].push_back(i);
     for(int j: g[i]) link[j].push_back(i);
   }
 
-  // 最後に更新したときのindexを入れる
+  // 最後に更新した時間(index)を入れる
   vector<int> update(n,-1), update_large(n,-1);
+
+  int q; cin >> q;
+  vector<int> x(q),y(q);
   REP(i,q) {
+    cin >> x[i] >> y[i]; x[i]--;
     int last = update[x[i]];
-    for(int j: link[x[i]]) {
-      last = max(last, update_large[j]);
-    }
+    for(int j: link[x[i]]) last = max(last, update_large[j]);
     cout << (last == -1 ? 1 : y[last]) << endl;
 
     if ((int)g[x[i]].size() < b) {
