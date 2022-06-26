@@ -1,29 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
 using ll = long long;
 
 int n, ans = 0;
+const vector<int> t = {7,5,3};
 
-bool ok (ll x) {
-  vector<int> cnt(10);
-  while(0 < x) {
-    cnt[x%10]++;
-    x/=10;
-  }
-  return cnt[3] && cnt[5] && cnt[7];
-}
+// bit: 753 で 3bit flagを持つ
+void dfs(ll now, int bit) {
+  if (n < now) return;
+  if (bit == 7) ans++;
 
-void dfs(ll x) {
-  if (n < x) return;
-  if (ok(x)) ans++;
-  for(int v: {3,5,7}) dfs(x*10+v);
+  REP(i,3) dfs(now*10+t[i], bit|(1<<i));
+  return;
 }
 
 int main() {
   cin >> n;
-  for(int v: {3,5,7}) dfs(v);
-
+  dfs(0,0);
   cout << ans << endl;
   return 0;
 }
