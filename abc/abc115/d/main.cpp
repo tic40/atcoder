@@ -1,29 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
-#define COUT(x) cout<<(x)<<endl
+#define REP(i,n) for(int i=0;i<(n);i++)
 using ll = long long;
 
-// a[i]: レベルiバーガーの層の総数
-// p[i]: レベルiバーガーのパティの総数
-vector<ll> a(51),p(51);
+vector<ll> a(51); // a[i]: レベルiバーガーの層の総数
+vector<ll> p(51); // p[i]: レベルiバーガーのパティの総数
 
-// n: レベルnバーガー, x: 下からx層
 ll f(ll n, ll x) {
-  if (n == 0) {
-    // レベル0バーガー
-    return 0 < x ? 1 : 0;
-  } else if (x <= 1+a[n-1]) {
-    // 一番下のバン + レベルn-1バーガーの層以下
+  if (n == 0) return 0 < x ? 1 : 0;
+
+  // x <= 端のバン1枚 + レベルn-1バーガーの総数
+  if (x <= 1+a[n-1]) {
     return f(n-1, x-1);
+  // x > 端のバン1枚 + レベルn-1バーガーの総数
   } else {
-    // 一番下のバン + レベルn-1バーガーの層より大きい
-    return p[n-1] + 1 + f(n-1, x-2-a[n-1]);
+    // 左側 + 右側(中央のパティ + レベルn-1バーガーのパティの総数)
+    return f(n-1, x-2-a[n-1]) + 1 + p[n-1];
   }
 }
 
 int main() {
-  ll n,x;
+  int n; ll x;
   cin >> n >> x;
 
   a[0] = p[0] = 1;
