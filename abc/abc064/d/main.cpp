@@ -1,23 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-using ll = long long;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
+#define REP(i,n) for(int i=0;i<(n);i++)
 
 int main() {
-  int n;
-  string s;
+  int n; string s;
   cin >> n >> s;
 
-  int cursor = 0, addL = 0;
+  int addL = 0;
+  int cnt = 0;
   REP(i,n) {
-    if (s[i] == '(') cursor++;
-    else cursor == 0 ? addL++ : cursor--;
+    if (s[i] == '(') cnt++;
+    if (s[i] == ')') {
+      if (0 < cnt) cnt--;
+      else addL++;
+    }
   }
-
-  string ans = string(addL, '(') + s + string(cursor, ')');
-  cout << ans << endl;
+  cout << string(addL, '(') + s + string(cnt, ')');
   return 0;
 }
