@@ -1,31 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+using ll = long long;
 
 int main() {
   int n,k; string s;
   cin >> n >> k >> s;
 
-  vector<int> nums;
-  int cnt = 1;
-  REP(i,n-1) {
-    if (s[i+1] == s[i]) cnt++;
-    else { nums.push_back(cnt); cnt=1; }
+  // ランレングス圧縮
+  vector<pair<char,int>> vs;
+  vs.push_back({ s[0], 1 });
+  for(int i = 1; i < n; i++) {
+    if (s[i] == s[i-1]) vs.back().second++;
+    else vs.push_back({ s[i], 1 });
   }
-  nums.push_back(cnt);
 
-  vector<int> sum(nums.size()+1);
-  REP(i,sum.size()-1) sum[i+1] = nums[i]+sum[i];
-
+  int zero = 0;
+  int now = 0;
   int ans = 0;
-  int st0 = s[0]=='0';
-  REP(i,sum.size()) {
-    int add = 2*k;
-    if (st0) add += i%2;
-    else add += i%2==0;
+  int l = 0;
+  REP(i,(int)vs.size()) {
+    if (vs[i].first == '0') zero++;
+    now += vs[i].second;
 
-    int right = min(i+add, (int)sum.size()-1);
-    ans = max(ans, sum[right]-sum[i]);
+    while(k < zero) {
+      if (vs[l].first == '0') zero--;
+      now -= vs[l].second;
+      l++;
+    }
+    ans = max(ans,now);
   }
 
   cout << ans << endl;
