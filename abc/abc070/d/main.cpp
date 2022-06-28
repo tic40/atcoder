@@ -1,58 +1,46 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
 using ll = long long;
-const int INF = 1e9;
-const int MOD = 1e9+7;
 const ll LINF = 1e18;
-using P = pair<int, int>;
 
-int n,q,k;
-vector<vector<P>> g;
-vector<ll> x,y,d;
+struct Edge {
+  int to, cost;
+  Edge(int to, int cost): to(to), cost(cost) {}
+};
 
-void dfs(int cur) {
-  for(auto v: g[cur]) {
-    int to = v.first;
-    int c = v.second;
-    ll nd = d[cur]+c;
-    if (nd < d[to]) {
-      d[to] = nd;
-      dfs(to);
-    }
+vector<vector<Edge>> g;
+vector<ll> dist;
+
+void dfs(int now, int p) {
+  for(auto [nv,c]: g[now]) {
+    if (nv == p) continue;
+    dist[nv] = dist[now] + c;
+    dfs(nv,now);
   }
-  return;
-}
-
-void solve() {
-  d.resize(n, LINF);
-  d[k] = 0;
-  dfs(k);
-  REP(i,q) cout << d[x[i]] + d[y[i]] << endl;
-
   return;
 }
 
 int main() {
-  cin >> n;
+  int n; cin >> n;
   g.resize(n);
-  int a,b,c;
+  dist.resize(n,LINF);
   REP(i,n-1) {
-    cin >> a >> b >> c;
+    int a,b,c; cin >> a >> b >> c;
     a--; b--;
-    g[a].emplace_back(P({b, c}));
-    g[b].emplace_back(P({a, c}));
+    g[a].emplace_back(b,c);
+    g[b].emplace_back(a,c);
   }
 
-  cin >> q >> k;
+  int q,k; cin >> q >> k;
   k--;
-  x.resize(q);
-  y.resize(q);
-  REP(i,q) {
-    cin >> x[i] >> y[i];
-    x[i]--; y[i]--;
-  }
+  dist[k] = 0;
+  dfs(k,-1);
 
-  solve();
+  REP(i,q) {
+    int x,y; cin >> x >> y;
+    x--; y--;
+    cout << dist[x] + dist[y] << endl;
+  }
   return 0;
 }
