@@ -1,41 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-
-int h,w;
-int a[500][500];
+#define REP(i,n) for(int i=0;i<(n);i++)
+using P = pair<int,int>;
 
 int main() {
-  cin >> h >> w;
+  int h,w; cin >> h >> w;
+  vector a(h,vector<int>(w));
   REP(i,h) REP(j,w) cin >> a[i][j];
 
-  vector<vector<int>> ans;
-  auto rec = [&](int y, int x, int ny, int nx) {
-    if (h <= ny || w <= nx) return false;
-    ans.push_back({ y, x, ny, nx });
-    a[y][x]--;
-    a[ny][nx]++;
-    return true;
+  vector<pair<P,P>> ans;
+  auto f = [&](int i, int j, int ni, int nj) {
+    a[i][j]--;
+    a[ni][nj]++;
+    ans.emplace_back(P{i+1,j+1}, P{ni+1,nj+1});
   };
 
   REP(i,h) REP(j,w) {
-    // 偶数枚はスキップ
     if (a[i][j] % 2 == 0) continue;
-    // 右方向に配る
-    if (rec(i,j,i,j+1)) continue;
-    // 下方向に配る
-    rec(i,j,i+1,j);
+
+    if (j < w-1) f(i,j,i,j+1);
+    else if (i < h-1) f(i,j,i+1,j);
   }
 
-  // output
   cout << ans.size() << endl;
-  for(auto v: ans) {
-    REP(i,4) {
-      if (i != 0) cout << " ";
-      cout << v[i]+1;
-    }
-    cout << endl;
+  for(auto [v,nv]: ans) {
+    cout << v.first << " " << v.second << " ";
+    cout << nv.first << " " << nv.second << endl;
   }
-
   return 0;
 }
