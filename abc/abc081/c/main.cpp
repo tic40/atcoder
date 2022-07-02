@@ -1,28 +1,36 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
 using namespace std;
-#define REP(i, n) for(int i = 0; i < n; i++)
-#define COUT(x) cout<<(x)<<endl
-#define dump(x)  cout << #x << " = " << (x) << endl;
-using ll = long long;
-using P = pair<int,int>;
-using Graph = vector<vector<int>>;
-using M = map<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int, vector<int>, greater<int>>;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
+#define REP(i,n) for(int i=0;i<(n);i++)
+using mint = modint1000000007;
 
-int cut[200005];
 int main() {
-  int n,k; cin >> n >> k;
-  REP(i,n) {
-    int a; cin >> a;
-    cut[a-1]++;
+  int n; cin >> n;
+  vector<string>s(2);
+  REP(i,2) cin >> s[i];
+
+  int i = 0;
+  mint ans = 1;
+  int pre = -1;
+  while(i < n) {
+    // 縦置き
+    if (s[0][i] == s[1][i]) {
+      if (pre == -1) ans = 3;
+      else if (pre == 0) ans *= 2;
+      pre = 0;
+      i++;
+    // 横置き
+    } else {
+      if (pre == -1) ans = 6;
+      else if (pre == 0) ans *= 2;
+      else ans *= 3;
+      pre = 1;
+      i+=2;
+    }
   }
-  sort(cut, cut+n);
-  int ans = 0;
-  REP(i,n-k) ans+=cut[i];
-  COUT(ans);
+
+  cout << ans.val() << endl;
+
   return 0;
 }
