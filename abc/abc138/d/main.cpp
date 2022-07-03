@@ -1,54 +1,43 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-using ll = long long;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
+#define REP(i,n) for(int i=0;i<(n);i++)
 
-int n,q;
-vector<int> a,b,p,x;
 vector<vector<int>> g;
-vector<int> s;
+vector<int> c, ans;
 
-void dfs(int now, int from = -1) {
-  for(int ni: g[now]) {
-    if (ni == from) continue;
-    s[ni]+=s[now];
-    dfs(ni, now);
+void dfs(int i, int p) {
+  if (p != -1) ans[i] += ans[p];
+  ans[i] += c[i];
+
+  for(int v: g[i]) {
+    if (v == p) continue;
+    dfs(v,i);
   }
-  return;
-}
-
-void solve() {
-  g.resize(n);
-  REP(i,n-1) {
-    g[a[i]].push_back(b[i]);
-    g[b[i]].push_back(a[i]);
-  }
-
-  // 累積和
-  s.resize(n);
-  REP(i,q) s[p[i]] += x[i];
-
-  dfs(0);
-  REP(i,n) cout << s[i] << " ";
   return;
 }
 
 int main() {
-  cin >> n >> q;
-  a.resize(n-1),b.resize(n-1);
-  p.resize(q); x.resize(q);
+  int n,q; cin >> n >> q;
+  g.resize(n);
+  c.resize(n);
+  ans.resize(n);
+
   REP(i,n-1) {
-    cin >> a[i] >> b[i];
-    a[i]--; b[i]--;
-  }
-  REP(i,q) {
-    cin >> p[i] >> x[i];
-    p[i]--;
+    int a,b; cin >> a >> b;
+    a--; b--;
+    g[a].push_back(b);
+    g[b].push_back(a);
   }
 
-  solve();
+  REP(i,q) {
+    int p,x; cin >> p >> x;
+    p--;
+    c[p] += x;
+  }
+
+  dfs(0, -1);
+  for(int v : ans) cout << v << " ";
+  cout << endl;
+
   return 0;
 }
