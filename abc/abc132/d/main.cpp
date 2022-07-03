@@ -25,6 +25,7 @@ int main() {
 
   init();
   for(int i = 1; i <= k; i++) {
+    // n-kの中にi個区切りを入れる組み合わせ * k個のぼーるにi-1個の区切りを入れる組み合わせ
     mint ans = comb(n-k+1,i) * comb(k-1,i-1);
     cout << ans.val() << endl;
   }
