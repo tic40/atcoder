@@ -1,44 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ALL(x) (x).begin(),(x).end()
-#define COUT(x) cout<<(x)<<"\n"
-#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define REP(i, n) for(int i=0;i<n;i++)
-#define YES(x) cout<<(x?"YES":"NO")<<"\n"
-#define Yes(x) cout<<(x?"Yes":"No")<<"\n"
-#define dump(x) cout<<#x<<" = "<<(x)<<"\n"
-#define endl "\n"
-using G = vector<vector<int>>;
-using M = map<int,int>;
-using P = pair<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int,vector<int>,greater<int>>;
-using V = vector<int>;
-using ll = long long;
-using edge = struct { int to; int cost; };
-template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } return 0; }
-template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
+#define REP(i,n) for(int i=0;i<(n);i++)
 
 int main() {
-  IOS;
-  int h,w; cin >> h >> w;
-  int k; cin >> k;
-  char c[h][w];
-  REP(i,h) REP(j,w) cin >> c[i][j];
+  int h,w,k;
+  cin >> h >> w >> k;
+  vector<string> c(h);
+  REP(i,h) cin >> c[i];
+  int bsum = 0;
+  REP(i,h) REP(j,w) if (c[i][j] == '#') bsum++;
 
   int ans = 0;
-  REP(i,1<<h) REP(j,1<<w) {
-    int count = 0;
-    REP(ih,h) REP(jw,w) {
-      // flagが立っているところは選ばれてない行/列
-      // i,jのフラグが立っており、c[ih][jw]が黒の場合はincrement
-      if ((i&(1<<ih)) && (j&(1<<jw)) && c[ih][jw]=='#') count++;
+  REP(bith, 1<<h) REP(bitw, 1<<w) {
+    int now = bsum;
+    vector<string> t = c;
+
+    REP(i,h) {
+      if ((bith >> i & 1) == 0) continue;
+      REP(j,w) {
+        if (t[i][j] == '#') now--;
+        t[i][j] = '.';
+      }
     }
-    if (count==k) ans++;
+
+    REP(i,w) {
+      if ((bitw >> i & 1) == 0) continue;
+      REP(j,h) {
+        if (t[j][i] == '#') now--;
+        t[j][i] = '.';
+      }
+    }
+    if (now == k) ans++;
   }
-  COUT(ans);
+
+  cout << ans << endl;
   return 0;
 }
