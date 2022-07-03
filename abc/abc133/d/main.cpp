@@ -7,17 +7,11 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  // 各山に降る量をxとすると、
-  // x1 = a1 - a2 + a3 - a4 ... + an となる
   vector<int> x(n);
   REP(i,n) x[0] += i%2 ? -a[i] : a[i];
 
-  for (int i = 1; i < n; i++) {
-    x[i] = 2*a[i-1] - x[i-1];
-  }
-
-  for (int v: x) cout << v << " ";
+  for(int i = 1; i < n; i++) x[i] = 2*a[i-1] - x[i-1];
+  for(int v: x) cout << v << " ";
   cout << endl;
-
   return 0;
 }
