@@ -6,25 +6,23 @@ int main() {
   double a,b,x;
   cin >> a >> b >> x;
 
-  double v = a*a*b;
+  double v = a*a*b; // 容器の体積
 
-  // ラジアンtだけ傾けたときに入る水の体積
-  auto f = [&](double t) {
-    // 半分より多いとき: 容器全体から水が入ってない部分を引くことで入っている水の体積を求める
-    if (v < 2*x) return a*a*b - a*a*(a*tan(t))/2;
-    // 半分以下のとき: 水の体積を直接求める
-    else return a*b*(b/tan(t))/2;
-  };
-
-  // ラジアン. 0度〜90度まで
   double left = 0, right = M_PI/2;
-  // 2分探索. 100回繰り返す
-  REP(i,100) {
-    double mid = (left+right)/2;
-    if (f(mid) >= x) left = mid;
+  // while(right-left > 0.000001) {
+  REP(_,100) {
+    // ラジアン mid だけ傾けたときにギリギリまで入る水の体積を調べる
+    double mid = (right+left)/2;
+
+    // 水の体積が全体の体積の半分以下かどうかで分岐
+    double now = x <= v/2 ?
+      a * (b / tan(mid)) * b / 2
+      : v - (a * a * a * tan(mid) / 2);
+
+    if (now >= x) left = mid;
     else right = mid;
   }
-  cout << printf("%0.10f",left*180/M_PI);
 
+  printf("%.10f\n", left * 180 / M_PI);
   return 0;
 }
