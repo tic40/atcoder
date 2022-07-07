@@ -35,8 +35,11 @@ int main() {
     for(int i = n-1; i >= 0; i--) {
       if (x[i] == b) { // フリップしたとき
         int r = r0;
-        if (b == 0) r = (r+k)%npc; // フリップして1になるとき
-        else r = (r-k+npc)%npc; // フリップして0になるとき. マイナスを考慮する
+        if (b == 0) {
+          r = (r+k)%npc; // フリップして1になるとき
+        } else {
+          r = (r-k+npc)%npc; // フリップして0になるとき. マイナスを考慮する
+        }
         ans[i] = f(r)+1;
       }
       k = (k*2)%npc;
