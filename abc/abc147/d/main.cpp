@@ -14,7 +14,7 @@ int main() {
   mint ans = 0, x = 1;
   REP(i,60) {
     int one = 0;
-    REP(j,n) one += (a[j] >> i & 1);
+    REP(j,n) one += (a[j]>>i & 1) == 1;
     ans += x * one * (n-one);
     x *= 2;
   }
