@@ -5,30 +5,31 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
 using ll = long long;
 
+ll dist(ll a, ll b) { return a*a+b*b; }
+ll pow(ll a) { return a*a; }
+
 int main() {
-  int n,sx,sy,tx,ty;
-  cin >> n >> sx >> sy >> tx >> ty;
+  int n; cin >> n;
+  ll sx,sy,tx,ty;
+  cin >> sx >> sy >> tx >> ty;
+
   vector<ll> x(n),y(n),r(n);
   REP(i,n) cin >> x[i] >> y[i] >> r[i];
 
-  // sqrtすると誤差が発生するため、2乗した整数のまま扱う
-  auto dist = [](ll a, ll b) { return a*a + b*b; };
-  auto pow = [](ll a) { return a*a; };
+  int si = -1, ti = - 1;
+  REP(i,n) {
+    if (dist(x[i]-sx,y[i]-sy) == pow(r[i])) si = i;
+    if (dist(x[i]-tx,y[i]-ty) == pow(r[i])) ti = i;
+  }
 
   dsu uf(n);
   REP(i,n) for(int j = i+1; j < n; j++) {
-    // iとjの距離
-    ll nd = dist(x[i]-x[j], y[i]-y[j]);
-    if (nd < pow(r[j]-r[i]) ) continue;
-    if (pow(r[i]+r[j]) < nd) continue;
-    uf.merge(i,j);
-  }
+    ll nd = dist(x[i]-x[j],y[i]-y[j]);
+    if (nd > pow(r[i]+r[j])) continue; // nd < ri+rj のとき離れすぎている
+    // ri >= rj とすると、 nd + rj < ri のときiの円の中にjの円が円周に接しない形で内包している
+    if (nd < pow(r[i]-r[j])) continue;
 
-  // sx,syとtx,tyはどの円周上にあるかを見つける
-  int si, ti;
-  REP(i,n) {
-    if (dist(x[i] - sx, y[i] - sy) == pow(r[i])) si = i;
-    if (dist(x[i] - tx, y[i] - ty) == pow(r[i])) ti = i;
+    uf.merge(i,j);
   }
 
   cout << (uf.same(si,ti) ? "Yes" : "No") << endl;
