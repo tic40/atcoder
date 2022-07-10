@@ -6,8 +6,6 @@ int main() {
   int n,m,x,t,d;
   cin >> n >> m >> x >> t >> d;
 
-  int a = t - min(x,n)*d;
-  cout << a + min(m,x) * d << endl;
-
+  cout << (x <= m ? t : (t - d*(x-m))) << endl;
   return 0;
 }

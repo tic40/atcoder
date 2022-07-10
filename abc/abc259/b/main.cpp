@@ -3,13 +3,18 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
 
 int main() {
-  double x,y,d; cin >> x >> y >> d;
+  int a,b,d;
+  cin >> a >> b >> d;
 
-  double r = d * M_PI / 180.0;
-  double nx = x*cos(r) - y*sin(r);
-  double ny = x*sin(r) + y*cos(r);
+  // 点a,bへの距離
+  double r = hypot(a,b);
+  // 点a,bの角度(radian)
+  double t = atan2(b,a);
+  t += d * M_PI / 180.0;
 
-  printf("%.10f %.10f\n", nx, ny);
+  double x = r * cos(t);
+  double y = r * sin(t);
 
+  printf("%.15f %.15f\n", x,y);
   return 0;
 }
