@@ -4,18 +4,20 @@ using namespace std;
 using ll = long long;
 using P = pair<char,int>;
 
-int main() {
-  string s,t; cin >> s >> t;
-
-  vector<P> vs,vt;
+vector<P> run_length(string s) {
+  vector<P> vs;
   REP(i,(int)s.size()) {
     if (i > 0 && vs.back().first == s[i]) vs.back().second++;
     else vs.emplace_back(s[i],1);
   }
-  REP(i,(int)t.size()) {
-    if (i > 0 && vt.back().first == t[i]) vt.back().second++;
-    else vt.emplace_back(t[i],1);
-  }
+  return vs;
+}
+
+int main() {
+  string s,t; cin >> s >> t;
+
+  auto vs = run_length(s);
+  auto vt = run_length(t);
 
   if (vs.size() != vt.size()) {
     cout << "No" << endl;
