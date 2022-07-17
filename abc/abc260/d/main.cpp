@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
   int n,k; cin >> n >> k;
@@ -16,23 +17,18 @@ int main() {
     auto it = st.upper_bound(now);
 
     if(it == st.end()) {
-      if (k == 1) ans[now] = i+1;
-      else {
-        st.insert(now);
-        g[now].push_back(now);
-      }
-      continue;
+      st.insert(now);
+      g[now].push_back(now);
+    } else {
+      g[*it].push_back(now);
+      swap(g[*it],g[now]);
+      st.erase(*it);
+      st.insert(now);
     }
 
-    int t = *it; // 場にある対象のカード番号
-    g[t].push_back(now);
-    if ((int)g[t].size() == k) {
-      for(auto v: g[t]) ans[v] = i+1;
-      st.erase(t);
-    } else {
-      swap(g[t],g[now]);
-      st.erase(t);
-      st.insert(now);
+    if ((int)g[now].size() == k) {
+      for(auto v: g[now]) ans[v] = i+1;
+      st.erase(now);
     }
   }
 
