@@ -5,30 +5,27 @@ using namespace std;
 
 int main() {
   int n,k; cin >> n >> k;
-  vector<int> p(n);
-  REP(i,n) { cin >> p[i]; p[i]--; }
 
   set<int> st;
   vector<vector<int>> g(n);
   vector<int> ans(n,-1);
-
   REP(i,n) {
-    int now = p[i];
-    auto it = st.upper_bound(now);
+    int p; cin >> p;
+    p--;
 
+    auto it = st.upper_bound(p);
     if(it == st.end()) {
-      st.insert(now);
-      g[now].push_back(now);
+      st.insert(p);
     } else {
-      g[*it].push_back(now);
-      swap(g[*it],g[now]);
+      swap(g[*it],g[p]);
       st.erase(*it);
-      st.insert(now);
+      st.insert(p);
     }
 
-    if ((int)g[now].size() == k) {
-      for(auto v: g[now]) ans[v] = i+1;
-      st.erase(now);
+    g[p].push_back(p);
+    if ((int)g[p].size() == k) {
+      for(int v: g[p]) ans[v] = i+1;
+      st.erase(p);
     }
   }
 
