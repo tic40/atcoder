@@ -1,22 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-using ll = long long;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int n;
 void dfs(string s, char mx) {
-  if (s.size() == n) {
+  if ((int)s.size() == n) {
     cout << s << endl;
     return;
   }
 
-  for(char c = 'a'; c <= mx+1; c++) {
-    string t = s;
-    t += c;
-    dfs(t, max(mx,c));
+  // 追加するのに使えるのは'a'～今まで使われた文字の次の文字」
+  // というのを満たす文字列の全列挙
+  for(int i = 0; i <= mx-'a'+1; i++) {
+    char c = char('a'+i);
+    dfs(s+c, max(mx,c));
   }
 }
 
