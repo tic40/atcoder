@@ -1,55 +1,40 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ALL(x) (x).begin(),(x).end()
-#define COUT(x) cout<<(x)<<"\n"
-#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define REP(i, n) for(int i=0;i<n;i++)
-#define YES(x) cout<<(x?"YES":"NO")<<"\n"
-#define Yes(x) cout<<(x?"Yes":"No")<<"\n"
-#define dump(x) cout<<#x<<" = "<<(x)<<"\n"
-#define endl "\n"
-using G = vector<vector<int>>;
-using M = map<int,int>;
-using P = pair<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int,vector<int>,greater<int>>;
-using V = vector<int>;
-using ll = long long;
-using edge = struct { int to; int cost; };
-template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } return 0; }
-template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
-int n,w;
-vector<int> weight(100),value(100);
-vector<vector<int>> s(4);
-ll ans = 0;
+int n,w,w1;
+vector<vector<int>> g(4);
+int ans = 0;
 
-void dfs(ll totw=0, ll totv=0, int loop=0) {
-  if (w < totw) return;
-  if (4 <= loop) { chmax(ans, totv); return; }
-
-  ll nw=totw, nv=totv;
-  int nl=loop+1;
-  dfs(nw, nv, nl); // 選択しない
-  for (int v: s[loop]) {
-    nw += weight[0] + loop;
-    nv += v;
-    dfs(nw, nv, nl);
+void dfs(int p, int tw, int tv) {
+  if (p == 4) {
+    ans = max(ans,tv);
+    return;
   }
+
+  dfs(p+1,tw,tv); // w1+p の重さを一つも選択しない
+  // 価値が高い順に行けるところまで試す
+  for (int v: g[p]) {
+    tw += w1+p;
+    tv += v;
+    if (tw > w) break; // 超過
+    dfs(p+1, tw, tv);
+  }
+  return;
 }
 
 int main() {
-  IOS;
   cin >> n >> w;
-  REP(i,n) cin >> weight[i] >> value[i];
+  REP(i,n) {
+    int a,b; cin >> a >> b;
+    if (i == 0) w1 = a;
+    g[a-w1].push_back(b);
+  }
+  // 重さごとに価値が高い順にソート
+  REP(i,4) sort(g[i].rbegin(),g[i].rend());
 
-  REP(i,n) s[weight[i]-weight[0]].push_back(value[i]);
-  REP(i,4) sort(s[i].begin(), s[i].end(), greater<int>());
-
-  dfs();
-  COUT(ans);
+  dfs(0,0,0);
+  cout << ans << endl;
   return 0;
 }
