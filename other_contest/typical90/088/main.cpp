@@ -5,25 +5,27 @@ using namespace std;
 using G = vector<vector<int>>;
 
 int n,q;
-vector<int> c(10000);
+vector<int> a(100),c(10000),vec;
 G g(10000);
 vector<G> ans(10000);
-vector<int> a,vec;
 bool flag = false;
 
-void dfs(int pos, int dep) {
+void dfs(int pos, int sum) {
   if (flag) return;
   if (pos == n) {
-    ans[dep].push_back(vec);
-    if ((int)ans[dep].size() == 2) flag = true;
+    ans[sum].push_back(vec);
+    // 答えが見つかったらdfsを終了させる
+    if ((int)ans[sum].size() == 2) flag = true;
     return;
   }
 
-  dfs(pos+1, dep);
+  // 選ばない
+  dfs(pos+1, sum);
+  // 選ぶ
   if (c[pos] == 0) {
     vec.push_back(pos);
     for(int i: g[pos]) c[i]++;
-    dfs(pos+1, dep+a[pos]);
+    dfs(pos+1, sum+a[pos]);
     for(int i: g[pos]) c[i]--;
     vec.pop_back();
   }
@@ -32,7 +34,6 @@ void dfs(int pos, int dep) {
 
 int main() {
   cin >> n >> q;
-  a.resize(n);
   REP(i,n) cin >> a[i];
   REP(i,q) {
     int x,y; cin >> x >> y;
