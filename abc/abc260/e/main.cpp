@@ -13,19 +13,20 @@ int main() {
 
   int mr = *max_element(a.begin(),a.end());
   int min_b = *min_element(b.begin(),b.end());
-  vector<vector<int>> is(m);
-  REP(i,n) is[a[i]].push_back(i);
 
-  vector<int> d(m+1); // 累積和. 長さkごとの和
-  // min_b までにするのは、min_bより先は調べる必要がないため
-  REP(l,min_b+1) {
-    // 累積和を取る
-    d[mr-l+1]++;
-    d[m-l+1]--;
-    for(int i: is[l]) mr = max(mr, b[i]);
+  vector<vector<int>> g(m);
+  REP(i,n) g[a[i]].push_back(b[i]);
+
+  // 長さkの数列の数の累積和を取る
+  vector<int> d(m+1);
+  REP(i,m) {
+    if (min_b < i) break;
+    d[mr-i+1]++;
+    d[m-i+1]--;
+    for(int v: g[i]) mr = max(mr,v);
   }
 
-  REP(i,m+1) d[i+1] += d[i];
+  REP(i,m) d[i+1] += d[i];
   for(int i = 1; i <= m; i++) cout << d[i] << " ";
   cout << endl;
   return 0;
