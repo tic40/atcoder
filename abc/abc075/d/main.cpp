@@ -8,29 +8,19 @@ const ll LINF = numeric_limits<ll>::max();
 int main() {
   int n,k; cin >> n >> k;
   vector<int> x(n),y(n);
-  set<int> sx,sy;
-  REP(i,n) {
-    cin >> x[i] >> y[i];
-    sx.insert(x[i]);
-    sy.insert(y[i]);
-  }
+  REP(i,n) cin >> x[i] >> y[i];
 
   ll ans = LINF;
-  for(int x1: sx) for(int x2: sx) {
-    for(int y1: sy) for(int y2: sy) {
-      auto [lx,rx] = minmax(x1,x2);
-      auto [ly,ry] = minmax(y1,y2);
-      int cnt = 0;
-      REP(i,n) {
-        if (lx <= x[i] && x[i] <= rx && ly <= y[i] && y[i] <= ry) cnt++;
-      }
-      if (k <= cnt) {
-        ll now = (ll)abs(rx-lx) * abs(ry-ly);
-        ans = min(ans,now);
-      }
+  for(int x1: x) for(int x2: x) for(int y1: y) for(int y2: y) {
+    auto [lx,rx] = minmax(x1,x2);
+    auto [ly,ry] = minmax(y1,y2);
+    int cnt = 0;
+    REP(i,n) {
+      if (lx <= x[i] && x[i] <= rx && ly <= y[i] && y[i] <= ry) cnt++;
     }
+    ll area = abs((ll)(rx-lx) * (ry-ly));
+    if (k <= cnt) ans = min(ans, area);
   }
-
   cout << ans << endl;
   return 0;
 }
