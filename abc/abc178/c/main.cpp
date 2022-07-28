@@ -1,50 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i, n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
 const int MOD = 1e9+7;
 
-int n;
-int dp[1000010][2][2]; // [N][0を含むかどうか][9を含むかどうか]
-
-ll modpow(ll x, ll y) {
-  ll v = 1;
-  REP(i,y) { v *= x; v %= MOD; }
-  return v;
-}
-
-// 包除原理解法
-void solve1() {
-  ll p1 = modpow(10, n);
-  ll p2 = (modpow(9, n) * 2) % MOD;
-  ll p3 = modpow(8, n);
-  ll ans = p1 - (p2 - p3);
-  ans %= MOD;
-  ans = (ans + MOD) % MOD;
-  cout << ans << endl;
-}
-
-// DP解法
-void solve2() {
-  dp[0][0][0] = 1;
+int main() {
+  int n; cin >> n;
+  // dp[i][j] = i個の数列の中に
+  // 00: 0も9も含まない
+  // 01: 0を含む
+  // 10: 9を含む
+  // 11: 0と9を含む
+  vector dp(n+1, vector<ll>(1<<2));
+  dp[0][0] = 1;
   REP(i,n) {
-    REP(j,2) {
-      REP(k,2) {
-        REP(x,10) {
-          int nj = j | x == 0;
-          int nk = k | x == 9;
-          dp[i+1][nj][nk] += dp[i][j][k];
-          dp[i+1][nj][nk] %= MOD;
-        }
-      }
+    REP(j,1<<2) REP(k,(1<<2)-1) {
+      ll add = k == 0 ? dp[i][j] * 8 : dp[i][j];
+      dp[i+1][j|k] += add;
+      dp[i+1][j|k] %= MOD;
     }
   }
-  cout << dp[n][1][1] << endl;
-}
 
-int main() {
-  cin >> n;
-  // solve1();
-  solve2();
+  cout << dp[n][3] << endl;
   return 0;
 }
