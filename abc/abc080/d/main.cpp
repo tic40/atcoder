@@ -4,19 +4,17 @@ using namespace std;
 #define endl '\n'
 
 int main() {
-  int n,C;
-  cin >> n >> C;
-  vector m(30,vector<int>(1e5+1));
+  int n,C; cin >> n >> C;
+  vector m(C,vector<int>(1e5+1));
   REP(i,n) {
-    int s,t,c;
-    cin >> s >> t >> c;
+    int s,t,c; cin >> s >> t >> c;
     s--; c--;
     m[c][s]++;
     m[c][t]--;
   }
 
   REP(i,C) REP(j,1e5) m[i][j+1] += m[i][j];
-  REP(i,C) REP(j,1e5) if (m[i][j]) m[i][j] = 1;
+  REP(i,C) REP(j,1e5+1) m[i][j] = min(1,m[i][j]); // 被っているところは連続して録画できるので1にする
 
   int ans = 0;
   REP(i,1e5+1) {
@@ -25,6 +23,5 @@ int main() {
     ans = max(ans,cnt);
   }
   cout << ans << endl;
-
   return 0;
 }
