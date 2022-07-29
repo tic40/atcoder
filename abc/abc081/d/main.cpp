@@ -1,59 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ALL(x) (x).begin(),(x).end()
-#define COUT(x) cout<<(x)<<"\n"
-#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define REP(i, n) for(int i=0;i<n;i++)
-#define YES(x) cout<<(x?"YES":"NO")<<"\n"
-#define Yes(x) cout<<(x?"Yes":"No")<<"\n"
-#define dump(x) cout<<#x<<" = "<<(x)<<"\n"
-#define endl "\n"
-using G = vector<vector<int>>;
-using M = map<int,int>;
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using P = pair<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int,vector<int>,greater<int>>;
-using V = vector<int>;
-using ll = long long;
-using edge = struct { int to; int cost; };
-template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } return 0; }
-template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
-
 
 int main() {
-  IOS;
-  int n;
-  cin >> n;
+  int n; cin >> n;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  int mx = -INF, mn = INF;
-  REP(i,n) {
-    chmax(mx,a[i]);
-    chmin(mn,a[i]);
-  }
-  int add = abs(mx) >= abs(mn) ? mx : mn;
-  int add_idx = 0;
-  REP(i,n) {
-    if (a[i] == add) {
-      add_idx = i; break;
+  auto m = minmax_element(a.begin(),a.end());
+  int mi = m.first - a.begin();
+  int mx = m.second - a.begin();
+  vector<P> ans;
+
+  // 正負の値が混在する場合は正負のどちらかに揃える
+  if (a[mi] < 0 && 0 < a[mx]) {
+    int add_idx =  abs(a[mi]) < abs(a[mx]) ? mx : mi;
+    REP(i,n) {
+      a[i] += a[add_idx];
+      ans.emplace_back(add_idx,i);
     }
   }
 
-  vector<P> ans;
-  REP(i,n) ans.push_back({ add_idx, i });
-  if (add >= 0) {
-    REP(i,n-1) ans.push_back({ i, i+1 });
+  // 正負が揃っていれば累積和の考えで昇順に並び替えできる
+  if (0 <= a[mi]) {
+    REP(i,n-1) ans.emplace_back(i,i+1);
   } else {
-    REP(i,n-1) ans.push_back({ n-i-1, n-i-2 });
+    REP(i,n-1) ans.emplace_back(n-i-1,n-i-2);
   }
 
-  COUT(ans.size());
-  REP(i,ans.size()) {
-    cout << ans[i].first+1 << " " << ans[i].second+1 << endl;
-  }
+  cout << ans.size() << endl;
+  for(auto v :ans) cout << v.first+1 << " " << v.second+1 << endl;
   return 0;
 }
