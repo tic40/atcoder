@@ -11,8 +11,8 @@ int main() {
 
   int cnt = 0;
   vector<int> c;
-  REP(i,(int)s.size()) {
-    if (s[i] == 'F') { cnt++; continue; }
+  for(char v: s) {
+    if (v == 'F') { cnt++; continue; }
     c.push_back(cnt);
     cnt = 0;
   }
