@@ -7,19 +7,17 @@ const int INF = numeric_limits<int>::max();
 
 int main() {
   int n,m; cin >> n >> m;
-  vector<int> l(m),r(m),d(m);
-  REP(i,m) {
-    cin >> l[i] >> r[i] >> d[i];
-    l[i]--; r[i]--;
-  }
-
   vector<vector<P>> g(n+1);
   REP(i,m) {
-    g[l[i]].emplace_back(r[i], d[i]);
-    g[r[i]].emplace_back(l[i], -d[i]);
+    int l,r,d; cin >> l >> r >> d;
+    l--; r--;
+    g[l].emplace_back(r, d);
+    g[r].emplace_back(l, -d);
   }
+
   queue<P> q;
   vector<int> dist(n,INF);
+  bool ok = true;
 
   REP(i,n) {
     if (dist[i] != INF) continue;
@@ -27,23 +25,20 @@ int main() {
     dist[i] = 0;
 
     while(q.size()) {
-      auto v = q.front(); q.pop();
-      for(auto w: g[v.first]) {
-        int np = w.first;
-        int nd = dist[v.first] + w.second;
+      auto now = q.front(); q.pop();
+      for(auto v: g[now.first]) {
+        int np = v.first;
+        int nd = dist[now.first] + v.second;
         if (dist[np] == INF) {
           dist[np] = nd;
-          q.push(w);
+          q.push(v);
         } else {
-          if (dist[np] != nd) {
-            cout << "No" << endl;
-            return 0;
-          }
+          if (dist[np] != nd) ok = false;
         }
       }
     }
   }
 
-  cout << "Yes" << endl;
+  cout << (ok ? "Yes" : "No") << endl;
   return 0;
 }
