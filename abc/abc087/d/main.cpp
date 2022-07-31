@@ -1,65 +1,49 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define COUT(x) cout<<(x)<<"\n"
-#define REP(i, n) for(int i=0;i<n;i++)
-#define endl "\n"
-using G = vector<vector<int>>;
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using P = pair<int,int>;
-using ll = long long;
-const int INF = 1e9;
-
-int n,m;
-vector<vector<P>> g(100010);
-
-void dfs() {
-  queue<P> q;
-  vector<int> dist(n, INF);
-
-  // 全ての点について矛盾がないか調べる
-  // グラフが連結していないケースがあるためするためnまでループして調べる
-  REP(i,n) {
-    if (dist[i] != INF) continue; // チェック済み
-
-    q.push({ i, 0 });
-    dist[i] = 0;
-    while(!q.empty()) {
-      auto v = q.front(); q.pop();
-      int p = v.first;
-
-      for(auto x: g[p]) {
-        int np = x.first;
-        int nd = dist[p] + x.second;
-
-        if (dist[np] == INF) {
-          dist[np] = nd;
-          q.push(x);
-        } else {
-          // 矛盾しているため終了
-          if (dist[np] != nd) { COUT("No"); return; }
-        }
-      }
-    }
-  }
-  COUT("Yes");
-}
+const int INF = numeric_limits<int>::max();
 
 int main() {
-  cin >> n >> m;
-
-  // m == 0 の場合はそもそも矛盾しない
-  if (m == 0) { COUT("Yes"); return 0; }
-
+  int n,m; cin >> n >> m;
   vector<int> l(m),r(m),d(m);
   REP(i,m) {
     cin >> l[i] >> r[i] >> d[i];
     l[i]--; r[i]--;
   }
 
+  vector<vector<P>> g(n+1);
   REP(i,m) {
-    g[l[i]].push_back({r[i], d[i]});
-    g[r[i]].push_back({l[i], -d[i]});
+    g[l[i]].emplace_back(r[i], d[i]);
+    g[r[i]].emplace_back(l[i], -d[i]);
+  }
+  queue<P> q;
+  vector<int> dist(n,INF);
+
+  REP(i,n) {
+    if (dist[i] != INF) continue;
+    q.push({i,0});
+    dist[i] = 0;
+
+    while(q.size()) {
+      auto v = q.front(); q.pop();
+      for(auto w: g[v.first]) {
+        int np = w.first;
+        int nd = dist[v.first] + w.second;
+        if (dist[np] == INF) {
+          dist[np] = nd;
+          q.push(w);
+        } else {
+          if (dist[np] != nd) {
+            cout << "No" << endl;
+            return 0;
+          }
+        }
+      }
+    }
   }
 
-  dfs();
+  cout << "Yes" << endl;
   return 0;
 }
