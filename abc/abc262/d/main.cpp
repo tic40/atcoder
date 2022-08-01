@@ -17,11 +17,19 @@ int main() {
     // 選んだ項の総和を i で割った余りが l となるようなものの個数
     vector dp(n+1,vector(i+1,vector<mint>(i)));
     dp[0][0][0] = 1;
+
+    // 先頭のj項から選ぶ
     REP(j,n) {
+      // j項からk個選ぶ
       for(int k = 0; k <= i; k++) {
+        // i で割った余りが l となる
         for(int l = 0; l < i; l++) {
+          // 選ばない場合
 					dp[j+1][k][l] += dp[j][k][l];
-					if (k!=i) dp[j+1][k+1][(l+a[j])%i] += dp[j][k][l];
+          // 選ぶ場合
+					if (k != i) {
+            dp[j+1][k+1][ (l+a[j])%i ] += dp[j][k][l];
+          }
         }
       }
     }
