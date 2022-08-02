@@ -4,6 +4,7 @@ using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
 #define endl '\n'
+using ll = long long;
 using mint = modint998244353;
 
 int main() {
@@ -11,29 +12,19 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
+  // m個選ぶ
   mint ans = 0;
-  for(int i = 1; i <= n; i++) {
-    // dp[j][k][l] := A の先頭 j 項から k 個の項を選ぶ方法であって、
-    // 選んだ項の総和を i で割った余りが l となるようなものの個数
-    vector dp(n+1,vector(i+1,vector<mint>(i)));
+  for(int m = 1; m <= n; m++) {
+    vector dp(n+2, vector(n+2, vector<mint>(n+2)));
+    // dp[i][j][k] := iからj項選ぶ
     dp[0][0][0] = 1;
-
-    // 先頭のj項から選ぶ
-    REP(j,n) {
-      // j項からk個選ぶ
-      for(int k = 0; k <= i; k++) {
-        // i で割った余りが l となる
-        for(int l = 0; l < i; l++) {
-          // 選ばない場合
-					dp[j+1][k][l] += dp[j][k][l];
-          // 選ぶ場合
-					if (k != i) {
-            dp[j+1][k+1][ (l+a[j])%i ] += dp[j][k][l];
-          }
-        }
-      }
+    REP(i,n) REP(j,m+1) REP(k,m) {
+      // 選ばない
+      dp[i+1][j][k] += dp[i][j][k];
+      // 選ぶ
+      dp[i+1][j+1][(k + a[i]) % m] += dp[i][j][k];
     }
-    ans += dp[n][i][0];
+    ans += dp[n][m][0];
   }
 
   cout << ans.val() << endl;
