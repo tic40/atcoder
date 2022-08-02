@@ -1,22 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
-#define REP(i,n) for(int i=0;i<n;i++)
 
 int main() {
-  int n,sum=0,r=0; cin >> n;
+  int n; cin >> n;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  ll ans=0;
+  ll sum = 0, ans = 0;
+  int r = 0;
+
   REP(l,n) {
     while(r < n) {
-      if ((sum^a[r]) != (sum+a[r])) break;
+      if ( (sum+a[r]) != (sum^a[r])) break;
       sum += a[r];
       r++;
     }
-    ans += r-l;
 
+    ans += r-l;
     if (r == l) r++;
     sum -= a[l];
   }
