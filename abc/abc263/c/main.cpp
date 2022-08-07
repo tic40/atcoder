@@ -6,26 +6,27 @@ using namespace std;
 int n,m;
 vector<vector<int>> ans;
 
-void dfs(vector<int> cur) {
-  if ((int)cur.size() == n) {
-    ans.push_back(cur);
+void dfs(vector<int> v) {
+  int sz = v.size();
+  if (n == sz) {
+    ans.push_back(v);
     return;
   }
 
-  int l = ((int)cur.size() == 0) ? 1 : cur.back() + 1;
+  int l = sz == 0 ? 1 : v.back()+1;
   for(int i = l; i <= m; i++) {
-    vector nv = cur;
-    nv.push_back(i);
-    dfs(nv);
+    v.push_back(i);
+    dfs(v);
+    v.pop_back();
   }
   return;
 }
-
 int main() {
   cin >> n >> m;
+
   dfs({});
   for(auto v: ans) {
-    for(int t: v) cout << t << " ";
+    for(int a: v) cout << a << " ";
     cout << endl;
   }
   return 0;
