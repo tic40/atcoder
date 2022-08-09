@@ -15,15 +15,10 @@ int main() {
 
   // 都市iから都市jへのコストを事前計算
   vector cost(n,vector<int>(n));
-  REP(i,n) REP(j,n) {
-    int c1 = abs(x[j]-x[i]);
-    int c2 = abs(y[j]-y[i]);
-    int c3 = max(0,z[j]-z[i]);
-    cost[i][j] = c1+c2+c3;
-  }
+  REP(i,n) REP(j,n) cost[i][j] = abs(x[j]-x[i]) + abs(y[j]-y[i]) + max(0,z[j]-z[i]);
 
   // 開始点0から各都市への移動
-  for(int i =1; i < n; i++) dp[1<<i][i] = cost[0][i];
+  REP(i,n) dp[1<<i][i] = cost[0][i];
 
   // bitの状態のときにiからjへの移動
   REP(bit,1<<n) REP(i,n) REP(j,n) {
