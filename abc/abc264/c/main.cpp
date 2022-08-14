@@ -13,26 +13,17 @@ int main() {
   REP(i,h2) REP(j,w2) cin >> b[i][j];
 
   bool ok = false;
-  for(int bith = 1; bith < (1<<h1); bith++) {
-    int bithcnt = __builtin_popcount(bith);
-    if (bithcnt != h2) continue;
-    for(int bitw = 1; bitw < (1<<w1); bitw++) {
-      int bitwcnt = __builtin_popcount(bitw);
-      if (bitwcnt != w2) continue;
+  REP(bith, 1<<h1) {
+    if (__builtin_popcount(bith) != h2) continue;
+    REP(bitw,1<<w1) {
+      if (__builtin_popcount(bitw) != w2) continue;
+      vector<int> is,js;
+      REP(i,h1) if (bith >> i & 1) is.push_back(i);
+      REP(j,w1) if (bitw >> j & 1) js.push_back(j);
+      vector c(h2, vector<int>(w2));
+      REP(i,h2) REP(j,w2) c[i][j] = a[is[i]][js[j]];
 
-      vector cur(bithcnt, vector<int>(bitwcnt));
-      int ni = 0;
-      REP(i,h1) {
-        if ((bith >> i & 1) == 0) continue;
-        int nj = 0;
-        REP(j,w1) {
-          if ((bitw >> j & 1) == 0) continue;
-          cur[ni][nj] = a[i][j];
-          nj++;
-        }
-        ni++;
-      }
-      if (cur == b) ok = true;
+      if (b == c) ok = true;
     }
   }
 

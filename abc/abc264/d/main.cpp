@@ -4,25 +4,21 @@ using namespace std;
 #define endl '\n'
 
 const string atc = "atcoder";
+const int n = 7;
+
 int main() {
   string s; cin >> s;
-
   int ans = 0;
-  REP(i,7) {
-    int t = atc[i];
-    int ni = 0;
-    REP(j,7) {
-      if (t == s[j]) { ni = j; break; }
-    }
+  REP(i,n) {
+    int ni = -1;
+    for(int j = i; j < n; j++) if (atc[i] == s[j]) ni = j;
 
-    while(1) {
-      if (ni == i) break;
+    while(i != ni) {
       swap(s[ni],s[ni-1]);
       ans++;
       ni--;
     }
   }
-
   cout << ans << endl;
   return 0;
 }
