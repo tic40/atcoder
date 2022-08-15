@@ -1,42 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ALL(x) (x).begin(),(x).end()
-#define REP(i, n) for(int i=0;i<n;i++)
-
-const int MX = 1000005;
-int n;
-int a[MX];
-int memo[MX];
-
-int gcd(int a, int b) { return b?gcd(b,a%b):a; }
-
-bool pairwise() {
-  for (int i = 2; i < MX; i++) {
-    int sum = 0;
-    for (int j = i; j < MX; j += i) sum += memo[j];
-    if (1 < sum) return false;
-  }
-
-  return true;
-}
-
-bool setwise() {
-  int res;
-  REP(i,n-1) res = i == 0 ? gcd(a[i], a[i+1]) : gcd(res, a[i+1]);
-
-  return res == 1;
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
-  cin >> n; REP(i,n) cin >> a[i];
-  REP(i,n) memo[a[i]]++;
+  int n; cin >> n;
+  vector<int> a(n),c(1e6+5);
+  REP(i,n) {
+    cin >> a[i];
+    c[a[i]]++;
+  }
 
-  if (pairwise()) {
+  bool pairwise = true;
+  // 同じ倍数で割れる数が2つ以上あればpairwiseではない
+  for(int i = 2; i <= 1e6; i++) {
+    int cnt = 0;
+    for(int j = i; j <= 1e6; j+=i) cnt += c[j];
+    if (cnt > 1) pairwise = false;
+  }
+  if (pairwise) {
     cout << "pairwise coprime" << endl;
     return 0;
   }
 
-  if (setwise()) {
+  int g = 0;
+  REP(i,n) g = gcd(g,a[i]);
+  if (g == 1) {
     cout << "setwise coprime" << endl;
     return 0;
   }
