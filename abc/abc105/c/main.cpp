@@ -1,29 +1,24 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-
-vector<int> convert_base(int n, int base=10) {
-  vector<int> a;
-  while(n) {
-    // baseが負のときを考慮してabsを取る
-    int m = abs(n%base);
-    a.push_back(m);
-    // baseが負のとき
-    if (base < 0 && m) n--;
-    n /= base;
-  }
-  reverse(a.begin(), a.end());
-  return a;
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
   int n; cin >> n;
-  auto ans = convert_base(n, -2);
+  string ans = "";
+  while(n != 0) {
+    if (n%2 != 0) {
+      n--;
+      ans += "1";
+    } else {
+      ans += "0";
+    }
+    n /= -2;
+  }
 
-  if (ans.size()) for(int v: ans) cout << v;
-  else cout << 0;
-
-  cout << endl;
+  if (ans.size() == 0) ans = "0";
+  reverse(ans.begin(),ans.end());
+  cout << ans << endl;
 
   return 0;
 }
