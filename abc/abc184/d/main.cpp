@@ -13,13 +13,14 @@ int main() {
   for(int i = x-1; i >= 0; i--) {
     for(int j = x-1; j >= 0; j--) {
       for(int k = x-1; k >= 0; k--) {
-        if(i+j+k == 0) continue;
+        if (i+j+k == 0) continue;
         dp[i][j][k] += (dp[i+1][j][k]+1) * i / (i+j+k);
         dp[i][j][k] += (dp[i][j+1][k]+1) * j / (i+j+k);
         dp[i][j][k] += (dp[i][j][k+1]+1) * k / (i+j+k);
       }
     }
   }
+
 
   printf("%0.10f\n",dp[a][b][c]);
   return 0;
