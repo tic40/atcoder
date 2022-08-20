@@ -1,30 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-
-const int SIZE = 505;
-int g[SIZE][SIZE];
-int s[SIZE][SIZE];
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
-  int N,M,Q;
-  cin >> N >> M >> Q;
-  REP(i,M) {
+  int n,m,q; cin >> n >> m >> q;
+  vector g(n,vector<int>(n));
+  REP(i,m) {
     int l,r; cin >> l >> r;
-    g[l-1][r-1]++;
+    l--; r--;
+    g[l][r]++;
   }
 
-  // 前計算: 二次元累積和
-  REP(i,N) REP(j,N) {
-    s[i+1][j+1] = g[i][j] + s[i+1][j] + s[i][j+1] - s[i][j];
+  // 2次元累積和
+  vector dp(n+1,vector<int>(n+1));
+  REP(i,n) REP(j,n) {
+     dp[i+1][j+1] = g[i][j] + dp[i+1][j] + dp[i][j+1] - dp[i][j];
   }
 
-  REP(i,Q) {
+  REP(i,q) {
     int l,r; cin >> l >> r;
-    // 二次元累積和から答えを算出する
-    int ans = s[r][r] - s[l-1][r] - s[r][l-1] + s[l-1][l-1];
-    cout << ans << endl;
+    l--; r--;
+    cout << dp[r+1][r+1] - dp[l][r+1] - dp[r+1][l] + dp[l][l] << endl;
   }
-
   return 0;
 }
