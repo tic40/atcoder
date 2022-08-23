@@ -1,49 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ALL(x) (x).begin(),(x).end()
-#define COUT(x) cout<<(x)<<"\n"
-#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define REP(i,n) for(int i=0;i<n;i++)
-#define YES(x) cout<<(x?"YES":"NO")<<"\n"
-#define Yes(x) cout<<(x?"Yes":"No")<<"\n"
-#define dump(x) cout<<#x<<" = "<<(x)<<"\n"
-#define endl "\n"
-using G = vector<vector<int>>;
-using M = map<int,int>;
-using P = pair<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int,vector<int>,greater<int>>;
-using V = vector<int>;
-using ll = long long;
-using edge = struct { int to; int cost; };
-template<class T>bool chmax(T &a,const T &b) {if(a<b){a=b; return 1;} return 0;}
-template<class T>bool chmin(T &a,const T &b) {if(b<a){a=b; return 1;} return 0;}
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
-  IOS;
   int n,m; cin >> n >> m;
   vector<int> a(m);
   REP(i,m) cin >> a[i];
-  sort(ALL(a));
+  a.push_back(0);
   a.push_back(n+1);
+  sort(a.begin(),a.end());
 
-  int cur = 1, k = INF;
-  vector<int> s;
+  vector<int> d;
   REP(i,m+1) {
-    int len = a[i] - cur;
-    if (0 < len) {
-      s.push_back(len);
-      chmin(k,len);
-    }
-    cur = a[i]+1;
+    int diff = a[i+1] - a[i];
+    if (diff > 1) d.push_back(diff-1);
   }
+  int k = *min_element(d.begin(),d.end());
 
   int ans = 0;
-  for (auto v: s) ans += (v+k-1)/k;
+  for(int v: d) ans += (v+k-1)/k;
 
-  COUT(ans);
+  cout << ans << endl;
   return 0;
 }
