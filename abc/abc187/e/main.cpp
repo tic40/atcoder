@@ -1,92 +1,54 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
 
-int n,q;
-vector<int> a,b;
-vector<int> t,e;
-vector<int> depth;
-vector<ll> x, dp;
-vector<vector<ll>> g;
+vector<vector<int>> g(2e5);
+vector<int> depth(2e5);
+vector<ll> dp(2e5);
 
-// グラフの深さを求めるdfs
-void depthDFS(int a, int d) {
-  depth[a] = d;
-
-  for (auto next: g[a]) {
-    if (depth[next] != -1) continue;
-    depthDFS(next, d+1);
-  }
-
+void dfs(int now, int d, int p) {
+  depth[now] = d;
+  for(int v: g[now]) if (v != p) dfs(v,d+1,now);
   return;
 }
 
-// 差分から実際の値を求めるdfs
-void imosDFS(int a, ll now) {
-  now += dp[a];
-  dp[a] = now;
-
-  for (auto next: g[a]) {
-    if (depth[next] <= depth[a]) continue;
-    imosDFS(next, now);
-  }
-
-  return;
-}
-
-void solve() {
-  depth.resize(n,-1); // 未訪問初期値を-1にする
-  g.resize(n); // グラフ
-  dp.resize(n);
-
-  REP(i,n) { // グラフ化
-    g[a[i]].push_back(b[i]);
-    g[b[i]].push_back(a[i]);
-  }
-
-  depthDFS(0,0); // 0を起点に深さを求める
-
-  REP(i,q) { // クエリ処理
-    int va = a[e[i]];
-    int vb = b[e[i]];
-    if (t[i] == 2) swap(va,vb);
-
-    // 通る方がdepthが小さい場合
-    if (depth[va] < depth[vb]) {
-      dp[0] += x[i]; // 根(全体)に足す
-      dp[vb] -= x[i]; // 通らない部分木は引く
-    } else {
-      dp[va] += x[i]; // 部分木に足す
-    }
-  }
-
-  imosDFS(0,0);
-
-  REP(i,n) cout << dp[i] << endl;
+void acc_dfs(int now, ll pv, int p) {
+  dp[now] += pv;
+  for(int v: g[now]) if (v != p) acc_dfs(v,dp[now],now);
   return;
 }
 
 int main() {
-  cin >> n;
-  a.resize(n);
-  b.resize(n);
-
+  int n; cin >> n;
+  vector<int> a(n-1),b(n-1),c(n);
   REP(i,n-1) {
     cin >> a[i] >> b[i];
-    a[i]--; b[i]--; // 0-indexed
+    a[i]--; b[i]--;
+    g[a[i]].push_back(b[i]);
+    g[b[i]].push_back(a[i]);
   }
 
-  cin >> q;
-  t.resize(q);
-  e.resize(q);
-  x.resize(q);
-
+  dfs(0,0,-1);
+  int q; cin >> q;
   REP(i,q) {
-    cin >> t[i] >> e[i] >> x[i];
-    e[i]--; // 0-indexed
+    int t,e,x; cin >> t >> e >> x;
+    e--;
+    int ae = a[e], be = b[e];
+    if (t == 2) swap(ae,be);
+
+    if (depth[ae] < depth[be]) {
+      dp[0] += x;
+      dp[be] -= x;
+    } else {
+      dp[ae] += x;
+    }
   }
 
-  solve();
+  // 累積和の集計
+  acc_dfs(0,0,-1);
+
+  REP(i,n) cout << dp[i] << endl;
   return 0;
 }
