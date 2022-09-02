@@ -1,42 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
-int n,k;
-vector<int> v;
-
-void solve() {
+int main() {
+  int n,k; cin >> n >> k;
+  vector<int> v(n);
+  REP(i,n) cin >> v[i];
 
   int ans = 0;
+  // 操作Aをa回、操作Bをb回として全探索する
+  REP(a,k) REP(b,k-a) {
+    if (a+b == 0) continue;
+    if (a+b > n) continue;
 
-  for (int left = 0; left <= min(k,n); left++) {
-    for (int right = 0; right+left <= min(k,n); right++) {
-      vector<int> tmp;
-      REP(i,left) tmp.push_back(v[i]);
-      REP(i,right) tmp.push_back(v[n - i - 1]);
+    vector<int> t;
+    REP(i,a) t.push_back(v[i]);
+    REP(i,b) t.push_back(v[n-i-1]);
 
-      int tot = 0;
-      for(int x: tmp) tot += x; // 価値のトータル算出
+    sort(t.begin(),t.end());
+    int tot = accumulate(t.begin(),t.end(),0);
 
-      sort(tmp.begin(),tmp.end()); // 昇順に並べかえ
-      REP(i,tmp.size()) { // 宝石捨てるケース: 価値の低いものから捨てる
-        if (k-(left+right) <= i) break; // 操作回数の上限
-        if (0 <= tmp[i]) break; // 価値が正の宝石は捨てる必要はない
-        tot -= tmp[i];
-      }
-      ans = max(ans, tot);
-    }
+    // 負の価値の宝石は捨てられるだけ捨てる
+    REP(i,k-(a+b)) if (t[i] < 0) tot -= t[i];
+    ans = max(ans,tot);
   }
 
   cout << ans << endl;
-  return;
-}
-
-int main() {
-  cin >> n >> k;
-  v.resize(n);
-  REP(i,n) cin >> v[i];
-
-  solve();
   return 0;
 }
