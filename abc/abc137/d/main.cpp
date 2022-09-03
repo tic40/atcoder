@@ -1,56 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ALL(x) (x).begin(),(x).end()
-#define COUT(x) cout<<(x)<<"\n"
-#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define REP(i,n) for(int i=0;i<n;i++)
-#define YES(x) cout<<(x?"YES":"NO")<<"\n"
-#define Yes(x) cout<<(x?"Yes":"No")<<"\n"
-#define dump(x) cout<<#x<<" = "<<(x)<<"\n"
-#define endl "\n"
-using G = vector<vector<int>>;
-using M = map<int,int>;
-using P = pair<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int,vector<int>,greater<int>>;
-using V = vector<int>;
-using ll = long long;
-using edge = struct { int to; int cost; };
-template<class T>bool chmax(T &a,const T &b) {if(a<b){a=b; return 1;} return 0;}
-template<class T>bool chmin(T &a,const T &b) {if(b<a){a=b; return 1;} return 0;}
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
-int n,m;
-vector<int> a,b;
-
-void solve() {
-  vector<vector<int>> ab(m+1);
+int main() {
+  int n,m; cin >> n >> m;
+  vector<vector<int>> g(m+1);
   REP(i,n) {
-    if (m < a[i]) continue;
-    ab[a[i]].push_back(b[i]);
+    int a,b; cin >> a >> b;
+    if (a <= m) g[a].push_back(b);
   }
 
-  ll ans = 0;
+  int ans = 0;
   priority_queue<int> que;
+  // 後ろから見ていく
   for (int i = m-1; 0 <= i; i--) {
-    for (int x: ab[m-i]) que.push(x);
-    if (que.empty()) continue;
+    // 残り日数で報酬をもらえるバイトをpriority_queに入れる
+    for(int v: g[m-i]) que.push(v);
 
+    if (que.size()) continue;
+    // queから最大の報酬のバイトを選ぶ
     ans += que.top();
     que.pop();
   }
 
-  COUT(ans);
-  return;
-}
-
-int main() {
-  cin >> n >> m;
-  a.resize(n); b.resize(n);
-  REP(i,n) cin >> a[i] >> b[i];
-
-  solve();
+  cout << ans << endl;
   return 0;
 }
