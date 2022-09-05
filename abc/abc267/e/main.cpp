@@ -20,30 +20,28 @@ int main() {
   REP(i,n) for(int v: g[i]) cost[i] += a[v];
 
   ll ok = 1e15, ng = -1;
-  while (abs(ok-ng)>1) {
+  while(abs(ok-ng)>1) {
     ll mid = (ok+ng)/2;
+
     queue<int> q;
+    vector<bool> del(n);
     REP(i,n) if (cost[i] <= mid) q.push(i);
 
-    vector<ll> tcost = cost;
-    vector<bool> del(n);
+    auto tcost = cost;
     while(q.size()) {
-      int i = q.front(); q.pop();
-      if (del[i]) continue;
-      del[i] = true;
+      int v = q.front(); q.pop();
+      if (del[v]) continue;
+      del[v] = true;
 
-      for(int v: g[i]) {
-        if (!del[v]) {
-          tcost[v] -= a[i];
-          if (tcost[v] <= mid) q.push(v);
-        }
+      for(int t: g[v]) {
+        if (del[t]) continue;
+        tcost[t] -= a[v];
+        if (tcost[t] <= mid) q.push(t);
       }
     }
 
-    bool possible = true;
-    for(bool v: del) if (!v) possible = false;
-
-    if (possible) ok = mid;
+    int sum = accumulate(del.begin(),del.end(),0);
+    if (sum == n) ok = mid;
     else ng = mid;
   }
 
