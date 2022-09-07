@@ -1,62 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define COUT(x) cout<<(x)<<"\n"
-#define REP(i,n) for(int i=0;i<n;i++)
-template<class T>bool chmin(T &a,const T &b) {if(b<a){a=b; return 1;} return 0;}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 const int INF = 1e9;
 
-int n,m;
-vector<int> a,b;
-vector<vector<int>> c;
-
-int dp[1005][1<<12];
-// dp[ i ][ S ] := 最初の i 個の鍵からいくつか選んで、開いた宝箱の集合が S で表されるような場合についての、最小コスト
-
-void solve() {
-
-  // cの入力をbit数値にする
-  vector<int> cbit(m,0);
-  REP(i,m) {
-    for(int x: c[i]) cbit[i] += 1<<x;
-  }
-
-  // dp配列初期値はINFしておく
-  REP(i,1005) REP(j,1<<n) dp[i][j] = INF;
-  dp[0][0] = 0;
-
-  REP(i,m) REP(j,1<<n) {
-    // 既に開いた宝箱は鍵が1個増えても関係ないのでそのまま移行する
-    chmin(dp[i+1][j], dp[i][j]);
-
-    // 追加した鍵が開けられる宝箱の和を取る
-    int nj = j | cbit[i];
-    // コストが低いければnjを更新
-    chmin(dp[i+1][nj], dp[i][j] + a[i]);
-  }
-
-  // 宝箱を全て開けた状態 [m][(1<<n) - 1]
-  int ans = dp[m][(1<<n)-1];
-
-  if (ans == INF) COUT(-1); // 宝箱を全て開けられなかった場合
-  else COUT(ans);
-
-  return;
-}
-
 int main() {
-  cin >> n >> m;
-  a.resize(m);
-  b.resize(m);
-  c.resize(m);
-  int _c;
+  int n,m; cin >> n >> m;
+  vector<int> a(m), cb(m);
+
   REP(i,m) {
-    cin >> a[i] >> b[i];
-    REP(j,b[i]) {
-      cin >> _c; _c--;
-      c[i].push_back(_c);
+    int b; cin >> a[i] >> b;
+    REP(j,b) {
+      int c; cin >> c;
+      c--;
+      cb[i] |= 1<<c;
     }
   }
 
-  solve();
+  vector<int> dp(1<<n,INF);
+  dp[0] = 0;
+  REP(i,m) {
+    vector<int> p(1<<n,INF);
+    swap(dp,p);
+
+    REP(bit, 1<<n) {
+      dp[bit] = min(dp[bit],p[bit]);
+      dp[bit | cb[i]] = min(dp[bit | cb[i]], p[bit]+a[i]);
+    }
+  }
+
+  cout << (dp[(1<<n)-1] == INF ? -1 : dp[(1<<n)-1]) << endl;
   return 0;
 }
