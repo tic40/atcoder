@@ -1,47 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
-const ll INF = 1e9;
+const ll INF = 1e18;
 
-int n,q;
-vector<ll> a,t,x;
+int main() {
+  int n; cin >> n;
 
-void solve() {
-  ll s = 0, l = -INF, r = INF;
+  ll s = 0, l = -INF, h = INF;
   REP(i,n) {
-    if (t[i] == 1) { // +
-      s += a[i];
-      l += a[i];
-      r += a[i];
-    } else if (t[i] == 2) { // max
-      l = max(l,a[i]);
-      r = max(r,a[i]);
-    } else { // min
-      l = min(l,a[i]);
-      r = min(r,a[i]);
+    ll a; int t;
+    cin >> a >> t;
+
+    if (t == 1) {
+      s += a;
+      l += a;
+      h += a;
+    } else if (t == 2) {
+      l = max(l,a);
+      h = max(h,a);
+    } else {
+      l = min(l,a);
+      h = min(h,a);
     }
   }
 
+  int q; cin >> q;
   REP(i,q) {
-    ll ans = x[i]+s;
-    if (ans < l) ans = l;
-    if (r < ans) ans = r;
-    cout << ans << endl;
+    ll x; cin >> x;
+    x += s;
+    x = max(x,l);
+    x = min(x,h);
+    cout << x << endl;
   }
-  return;
-}
-
-int main() {
-  cin >> n;
-  a.resize(n);
-  t.resize(n);
-  REP(i,n) cin >> a[i] >> t[i];
-
-  cin >> q;
-  x.resize(q);
-  REP(i,q) cin >> x[i];
-
-  solve();
   return 0;
 }
