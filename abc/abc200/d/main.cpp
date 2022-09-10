@@ -1,58 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-
-int n;
-vector<int> a;
-
-void out(vector<int> b, vector<int> c) {
-  cout << "Yes" << endl;
-  cout << b.size() << " ";
-  for(int v: b) cout << v << " ";
-  cout << endl;
-  cout << c.size() << " ";
-  for(int v: c) cout << v << " ";
-  cout << endl;
-
-  return;
-}
-
-void solve() {
-  REP(i,n) a[i] %= 200;
-  // 鳩の巣原理で最大8要素まで調べればよい
-  // 2^8 = 256 なので必ず同じになる配列が存在する
-  int an = min(8,n);
-
-  vector<vector<int>> memo(200);
-  // bit 全探索
-  for(int bit = 1; bit < (1<<an); bit++) {
-    int tot = 0;
-    vector<int> s;
-    REP(i,an) {
-      if ((bit >> i) & 1) {
-        tot += a[i];
-        s.push_back(i+1);
-      }
-    }
-    tot %= 200;
-
-    if (memo[tot].size() == 0) {
-      memo[tot] = s;
-      continue;
-    }
-
-    out(s, memo[tot]);
-    return;
-  }
-  cout << "No" << endl;
-  return;
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
+using ll = long long;
 
 int main() {
-  cin >> n;
-  a.resize(n);
+  int n; cin >> n;
+  vector<int> a(n);
   REP(i,n) cin >> a[i];
+  REP(i,n) a[i] %= 200;
 
-  solve();
+  int bn = min(n,8);
+  vector<int> m(200);
+  REP(bit,1<<bn) {
+    int now = 0;
+    REP(i,bn) if (bit >> i & 1) now += a[i];
+    now %= 200;
+    if (m[now] == 0) { m[now] = bit; continue; }
+
+    vector<int> b,c;
+    REP(j,bn) if (m[now] >> j & 1) b.push_back(j+1);
+    REP(j,bn) if (bit >> j & 1) c.push_back(j+1);
+
+    cout << "Yes" << endl;
+    cout << b.size() << " ";
+    for(int v: b) cout << v << " ";
+    cout << endl;
+    cout << c.size() << " ";
+    for(int v: c) cout << v << " ";
+    cout << endl;
+    return 0;
+  }
+
+  cout << "No" << endl;
   return 0;
 }
