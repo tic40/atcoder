@@ -5,24 +5,20 @@ using namespace std;
 
 int n,m;
 vector<string> s(8);
-vector<string> vs;
 vector<int> b;
+vector<string> vs;
 
-// left := underscoreを入れられる数
 void dfs(int i, string now, int left) {
-  if (now.size() > 16) return;
   if (i == n) {
     if (now.size() >= 3) vs.push_back(now);
-    return;
+    return ;
   }
 
-  string und = "_";
-  REP(j, left) {
-    string ns = now + und + s[b[i]];
-    dfs(i+1, ns, left - (j+1));
-    und += "_";
+  REP(j,left) {
+    string u(j+1, '_');
+    dfs(i+1, now + u + s[b[i]], left - (j+1));
   }
-  return;
+  return ;
 }
 
 int main() {
