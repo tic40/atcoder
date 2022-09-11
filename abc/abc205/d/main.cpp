@@ -5,18 +5,18 @@ using namespace std;
 using ll = long long;
 
 int main() {
-  int n,q; cin >> n >> q;
+  int n,q;
+  cin >> n >> q;
   vector<ll> a(n);
   REP(i,n) cin >> a[i];
 
-  // s[i] = a[i]以下の良い整数の総数
   vector<ll> s(n);
   s[0] = a[0] - 1;
   for(int i = 1; i < n; i++) s[i] = s[i-1] + (a[i] - a[i-1] - 1);
 
   REP(i,q) {
     ll k; cin >> k;
-    auto it = lower_bound(s.begin(), s.end(), k);
+    auto it = lower_bound(s.begin(),s.end(),k);
     if (it == s.end()) {
       cout << a.back() + (k - s.back()) << endl;
     } else {
