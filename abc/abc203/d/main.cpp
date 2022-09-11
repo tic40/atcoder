@@ -1,48 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-const int INF = 1e9;
-
-int n,k;
-int a[810][810], s[810][810];
-
-int binary_search() {
-  int num = k*k/2+1; // 何番目に高い中央値か
-  auto check = [&](int mid) {
-    // 二次元累積和
-    REP(i,n) REP(j,n) {
-      s[i+1][j+1] = a[i][j] > mid ? 1 : 0;
-      s[i+1][j+1] += s[i+1][j];
-      s[i+1][j+1] += s[i][j+1];
-      s[i+1][j+1] -= s[i][j];
-    }
-    // 取りうる池の配置をすべて試す
-    REP(i,n-k+1) REP(j,n-k+1) {
-      int now = s[i+k][j+k];
-      now -= s[i+k][j];
-      now -= s[i][j+k];
-      now += s[i][j];
-      // mid以下の中央値を取れるマスの選び方が一つでもあればtrueを返す
-      if (now < num) return true;
-    }
-    return false;
-  };
-
-  // ok: ok値より小さい中央値の解が存在する
-  int ok = INF; // 解が存在する値
-  int ng = -1; // 解が存在しない値
-  while(abs(ok-ng) > 1) {
-    int mid = (ok+ng)/2;
-    check(mid) ? ok = mid : ng = mid;
-  }
-
-  return ok;
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
-  cin >> n >> k;
+  int n,k; cin >> n >> k;
+  vector a(n, vector<int>(n));
   REP(i,n) REP(j,n) cin >> a[i][j];
 
-  cout << binary_search() << endl;
+  int ok = 1e9, ng = -1;
+  while(ok - ng > 1) {
+    int mid = (ok+ng) / 2;
+
+    // 累積和
+    vector dp(n+1, vector<int>(n+1));
+    REP(i,n) REP(j,n) {
+      dp[i+1][j+1] += a[i][j] > mid ? 1 : 0;
+      dp[i+1][j+1] += dp[i+1][j];
+      dp[i+1][j+1] += dp[i][j+1];
+      dp[i+1][j+1] -= dp[i][j];
+    }
+
+    bool possible = false;
+    REP(i,n-k+1) REP(j,n-k+1) {
+      int now = dp[i+k][j+k] - dp[i+k][j] - dp[i][j+k] + dp[i][j];
+      if (now <= k*k/2) possible = true;
+    }
+
+    if (possible) ok = mid;
+    else ng = mid;
+  }
+
+  cout << ok << endl;
   return 0;
 }
