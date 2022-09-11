@@ -5,18 +5,15 @@ using namespace std;
 
 int main() {
   int n; cin >> n;
-  vector<int> p(n);
-  REP(i,n) cin >> p[i];
-
-  vector<int> cnt(n);
+  vector<int> cost(n);
   REP(i,n) {
-    int d = (p[i] - i - 1 + n) % n;
-    cnt[d % n]++;
-    cnt[(d + 1) % n]++;
-    cnt[(d + 2) % n]++;
+    int p; cin >> p;
+    int d = (p - i - 1 + n) % n;
+    cost[d]++;
+    cost[(d+1)%n]++;
+    cost[(d+2)%n]++;
   }
 
-  int ans = *max_element(cnt.begin(),cnt.end());
-  cout << ans << endl;
+  cout << *max_element(cost.begin(),cost.end()) << endl;
   return 0;
 }
