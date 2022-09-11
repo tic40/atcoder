@@ -10,10 +10,9 @@ vector<int> ans;
 void dfs(int i, int p) {
   ans.push_back(i);
   for(int v: g[i]) {
-    if (v != p) {
-      dfs(v,i);
-      ans.push_back(i);
-    }
+    if (v == p) continue;
+    dfs(v,i);
+    ans.push_back(i);
   }
   return;
 }
@@ -28,10 +27,8 @@ int main() {
   }
 
   for(auto& v: g) sort(v.begin(),v.end());
-
   dfs(0,-1);
 
   for(int v: ans) cout << v+1 << " ";
-  cout << endl;
   return 0;
 }
