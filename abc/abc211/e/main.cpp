@@ -1,43 +1,36 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
+using P = pair<int,int>;
 
-int n,k;
-int ans;
-const int di[] = {-1,0,1,0};
-const int dj[] = {0,-1,0,1};
+const vector<P> moves = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+int n,k,ans = 0;
 
-void dfs(vector<string> s) {
-  int cnt = 0; // 赤マス数
-
-  // 赤マス数をカウント
-  REP(i,n) REP(j,n) if (s[i][j] == '@') ++cnt;
-
-  // 赤マスがk個の場合は終了
-  if (cnt == k) {
-    ++ans;
-    return;
-  }
+void dfs(vector<string> s, int cnt) {
+  if (cnt == k) { ans++; return; }
 
   REP(i,n) REP(j,n) {
-    // 白マスじゃなかったらスキップ
     if (s[i][j] != '.') continue;
 
+    bool ok = false;
     if (cnt > 0) {
-      bool ok = false; // 上下左右で赤マスが連絡しているかどうか
-      REP(v,4) {
-        int ni = i+di[v];
-        int nj = j+dj[v];
-        if (ni < 0 || nj < 0 || ni >= n || nj >= n) continue;
+      for(auto [x,y]: moves) {
+        int ni = i+x, nj = j+y;
+        if (ni < 0 || n <= ni || nj < 0 || n <= nj) continue;
         if (s[ni][nj] == '@') ok = true;
       }
-      if (!ok) continue; // 赤マスが連結してないとき
+    } else {
+      ok = true;
     }
 
-    s[i][j] = '@'; // 今見ている場所を赤マスに塗る
-    dfs(s);
-    s[i][j] = '#'; // 調べ終わったので黒マスに塗る
-    dfs(s); // 再帰的に調べる
+    if (!ok) continue;
+    s[i][j] = '@'; // 今の場所を赤マスに
+    dfs(s,cnt+1);
+    s[i][j] = '#'; // 見終わったので今の場所を黒マスに
+    dfs(s,cnt);
     return;
   }
   return;
@@ -45,10 +38,11 @@ void dfs(vector<string> s) {
 
 int main() {
   cin >> n >> k;
-  vector<string> s(n);
+  vector<string> s(8);
   REP(i,n) cin >> s[i];
 
-  dfs(s);
+  dfs(s,0);
+
   cout << ans << endl;
   return 0;
 }
