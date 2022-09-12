@@ -9,18 +9,17 @@ int main() {
   vector<int> w(n);
   REP(i,n) cin >> w[i];
 
-  map<int, vector<int>> mp;
-  REP(i,n) mp[w[i]].push_back(i);
+  map<int,vector<int>> mp;
+  REP(i,n) mp[w[i]].push_back(s[i]-'0');
 
-  int x = 0;
-  for(char c: s) if (c == '1') x++;
-  int ans = x;
+  int now = 0;
+  for(char c: s) if (c == '1') now++;
+  int ans = now;
 
-  for(auto [_,v]: mp) {
-    for(int i: v) s[i] == '1' ? x-- : x++;
-    ans = max(ans,x);
+  for(auto [a,b]: mp) {
+    for(char c: b) c == 1 ? now-- : now++;
+    ans = max(ans,now);
   }
-
   cout << ans << endl;
   return 0;
 }
