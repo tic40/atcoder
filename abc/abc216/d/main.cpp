@@ -1,50 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-
-int n,m;
-vector<queue<int>> a;
-vector<vector<int>> mem;
-queue<int> que;
-
-void solve() {
-  while(que.size()) {
-    int color = que.front(); que.pop();
-    for(int v: mem[color]) {
-      a[v].pop();
-      if (a[v].size()) {
-        int ncolor = a[v].front();
-        mem[ncolor].push_back(v);
-        if (mem[ncolor].size() == 2) que.push(ncolor);
-      }
-    }
-  }
-
-  int ok = true;
-  REP(i,m) {
-    if (a[i].size()) ok = false;
-  }
-
-  cout << (ok ? "Yes" : "No") << endl;
-  return;
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
-  cin >> n >> m;
-  a.resize(m);
-  mem.resize(n+1);
-
+  int n,m; cin >> n >> m;
+  vector<queue<int>> g(m);
   REP(i,m) {
     int k; cin >> k;
     REP(j,k) {
-      int _a; cin >> _a;
-      a[i].push(_a);
+      int a; cin >> a;
+      a--;
+      g[i].push(a);
     }
-    int color = a[i].front();
-    mem[color].push_back(i);
-    if (mem[color].size() == 2) que.push(color);
   }
 
-  solve();
+  vector<vector<int>> col(n);
+  queue<int> q;
+  REP(i,m) q.push(i);
+
+  while(q.size()) {
+    int i = q.front(); q.pop();
+    if (g[i].empty()) continue;
+
+    int v = g[i].front(); g[i].pop();
+    col[v].push_back(i);
+
+    if (col[v].size() == 2) {
+      q.push(col[v][0]);
+      q.push(i);
+    }
+  }
+
+  bool ok = true;
+  REP(i,m) if (g[i].size()) ok = false;
+  cout << (ok ? "Yes" : "No") << endl;
   return 0;
 }
