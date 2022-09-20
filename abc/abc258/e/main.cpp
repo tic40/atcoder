@@ -10,8 +10,8 @@ int main() {
   REP(i,n) cin >> w[i];
 
   ll s = accumulate(w.begin(),w.end(),0LL);
-  ll rd = x/s; // 箱をいっぱいにするのに何周するか
-  ll rem = x%s; // 箱をいっぱいにする一周未満の数
+  int rd = x/s; // 箱をいっぱいにするのに何周するか
+  int rem = x%s; // 箱をいっぱいにする一周未満の数
 
   vector<int> a(n); // a[i] = i番目からスタートして箱をいっぱいにするのに何個進むか
   ll na = rd*n; // 何個進むか
@@ -28,7 +28,7 @@ int main() {
   // doublingテーブル計算
   const int D = 41;
   // dp[i][j] := j番目のじゃがいもからはじめて、
-  // 箱をi^2回満たすときに最後に入れるじゃがいもの位置
+  // 箱をi^2個満たすときに最後に入れるじゃがいもの位置
   vector dp(D, vector<int>(n));
   REP(i,n) dp[0][i] = (i + a[i]) % n;
   REP(i,D-1) REP(j,n) {
