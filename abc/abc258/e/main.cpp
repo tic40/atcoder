@@ -27,6 +27,8 @@ int main() {
 
   // doublingテーブル計算
   const int D = 41;
+  // dp[i][j] := j番目のじゃがいもからはじめて、
+  // 箱をi^2回満たすときに最後に入れるじゃがいもの位置
   vector dp(D, vector<int>(n));
   REP(i,n) dp[0][i] = (i + a[i]) % n;
   REP(i,D-1) REP(j,n) {
@@ -37,9 +39,7 @@ int main() {
     ll k; cin >> k;
     k--;
     int si = 0;
-    for(int i = D-1; i >= 0; i--) {
-      if (k >> i & 1) si = dp[i][si];
-    }
+    REP(i,D) if (k >> i & 1) si = dp[i][si];
     cout << a[si] << endl;
   }
   return 0;
