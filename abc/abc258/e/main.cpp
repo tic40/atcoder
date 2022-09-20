@@ -10,8 +10,8 @@ int main() {
   REP(i,n) cin >> w[i];
 
   ll s = accumulate(w.begin(),w.end(),0LL);
-  int rd = x/s; // 箱をいっぱいにするのに何周するか
-  int rem = x%s; // 箱をいっぱいにする一周未満の数
+  int rd = x/s; // 箱をいっぱいにするのに何周必要か
+  int rem = x%s; // 箱をいっぱいにするのに必要な一周未満の重さ
 
   vector<int> a(n); // a[i] = i番目からスタートして箱をいっぱいにするのに何個進むか
   ll na = rd*n; // 何個進むか
