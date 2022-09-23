@@ -5,24 +5,25 @@ using namespace std;
 using ll = long long;
 
 int main() {
-  int n,l,r; cin >> n >> l >> r;
+  int n,l,r;
+  cin >> n >> l >> r;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  // dp[j]
-  // j = 0: i <= x;
-  // j = 1: x < y < y
-  // j = 2: y <= i
-  vector<ll> dp = { l, a[0], r };
+  // dp[i][j] := i項までで、x,xでもyでもない,y の状態それぞれの総和最小値
+  vector<ll> dp = {l,a[0],r};
+
   for(int i = 1; i < n; i++) {
     vector<ll> p(3);
     swap(dp,p);
-    dp[0] += p[0] + l;
-    dp[1] += min(p[0],p[1]) + a[i];
-    dp[2] += min(p[1],p[2]) + r;
+    // xへの遷移
+    dp[0] = p[0] + l;
+    // xでもyでもない遷移
+    dp[1] = min(p[0]+a[i], p[1]+a[i]);
+    // yへの遷移
+    dp[2] = min(p[1]+r, p[2]+r);
   }
 
-  ll ans = min({dp[0],dp[1],dp[2]});
-  cout << ans << endl;
+  cout << *min_element(dp.begin(),dp.end()) << endl;
   return 0;
 }
