@@ -1,28 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-
-int h,w,a[2000][2000];
-
-void solve() {
-  // sv[i]: 行iの横一列の和
-  // sh[i]: 列iの縦一列の和
-  vector<int> sv(h),sh(w);
-
-  REP(i,h) REP(j,w) sv[i] += a[i][j];
-  REP(j,w) REP(i,h) sh[j] += a[i][j];
-  REP(i,h) REP(j,w) {
-    cout << (sv[i] + sh[j] - a[i][j]);
-    j == w-1 ? cout << endl : cout << " ";
-  }
-
-  return;
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
-  cin >> h >> w;
+  int h,w; cin >> h >> w;
+  vector a(h,vector<int>(w));
   REP(i,h) REP(j,w) cin >> a[i][j];
 
-  solve();
+  vector<int> sh(h),sw(w);
+  REP(i,h) REP(j,w) {
+    sh[i] += a[i][j];
+    sw[j] += a[i][j];
+  }
+
+  REP(i,h) {
+    REP(j,w) cout << sh[i]+sw[j]-a[i][j] << " ";
+    cout << endl;
+  }
   return 0;
 }
