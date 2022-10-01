@@ -1,59 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
-int n;
-vector<vector<int>> g;
+vector<vector<int>> g(1e5);
+vector<int> d(1e5);
 
-vector<int> dfs(int x) {
-  queue<int> q;
-  vector<int> d(n,-1);
-
-  auto push = [&](int x, int prev) {
-    if (d[x] != -1) return;
-    q.push(x);
-    d[x] = d[prev]+1;
-  };
-  push(x, x);
-
-  while(q.size()) {
-    int cur = q.front(); q.pop();
-    for (int v: g[cur]) {
-      push(v, cur);
-    }
+void dfs(int i, int p) {
+  for(int v: g[i]) {
+    if (v == p) continue;
+    d[v] = d[i]+1;
+    dfs(v,i);
   }
-
-  return d;
-}
-
-void solve() {
-  vector<int> d = dfs(0);
-
-  pair<int,int> pa = { 0, 0 };
-  REP(i,n) {
-    if (pa.second < d[i]) pa = make_pair(i, d[i]);
-  }
-  d = dfs(pa.first);
-
-  pa = make_pair(0,0);
-  REP(i,n) {
-    if (pa.second < d[i]) pa = make_pair(i, d[i]);
-  }
-
-  cout << pa.second+1 << endl;
   return;
 }
 
 int main() {
-  cin >> n;
-  g.resize(n);
-  int a,b;
+  int n; cin >> n;
   REP(i,n-1) {
-    cin >> a >> b; a--; b--;
+    int a,b; cin >> a >> b;
+    a--; b--;
     g[a].push_back(b);
     g[b].push_back(a);
   }
 
-  solve();
+  dfs(0,-1);
+  int idx = 0, mx = 0;
+  REP(i,n) { if (d[i] > mx) { mx = d[i]; idx = i; } }
+  d = vector<int>(n);
+  dfs(idx,-1);
+
+  cout << *max_element(d.begin(),d.end()) + 1 << endl;
   return 0;
 }
