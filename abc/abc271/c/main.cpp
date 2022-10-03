@@ -5,26 +5,17 @@ using namespace std;
 
 int main() {
   int n; cin >> n;
-  vector<int> a(n);
-  set<int> st;
+  unordered_set<int> st;
   REP(i,n) {
-    cin >> a[i];
-    st.insert(a[i]);
+    int a; cin >> a;
+    st.insert(a);
   }
 
-  int ok = 0, ng = n+1;
-  while(abs(ok-ng) > 1) {
-    int mid = (ok+ng)/2; // mid巻まで読めるかどうか
-    int sell = n - st.size();
-    sell += distance(st.upper_bound(mid), st.end());
-
-    for(int i = 1; i <= mid; i++) {
-      if (st.count(i) == 0) sell -= 2;
-    }
-    if (sell >= 0) ok = mid;
-    else ng = mid;
+  int s = 0;
+  for(int i = 1; i <= n+1; i++) {
+    if (st.count(i)) s++;
+    else s+=2;
+    if (n < s) { cout << i-1 << endl; return 0; }
   }
-
-  cout << ok << endl;
   return 0;
 }
