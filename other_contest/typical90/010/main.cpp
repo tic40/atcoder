@@ -1,49 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-using ll = long long;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
-
-int n,q;
-vector<int> c,p,l,r;
-
-void solve() {
-  // s1: クラス1, s2: クラス2 それぞれの累積和
-  vector<ll> s1(n+1),s2(n+1);
-  REP(i,n) {
-    s1[i+1] = s1[i];
-    s2[i+1] = s2[i];
-
-    if (c[i]==1) s1[i+1]+=p[i];
-    else s2[i+1]+=p[i];
-
-  }
-
-  REP(i,q) {
-    cout << (s1[r[i]+1] - s1[l[i]]);
-    cout << " ";
-    cout << (s2[r[i]+1] - s2[l[i]]);
-    cout << endl;
-  }
-
-  return;
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
-  cin >> n;
-  c.resize(n);
-  p.resize(n);
-  REP(i,n) cin >> c[i] >> p[i];
-  cin >> q;
-  l.resize(q);
-  r.resize(q);
-  REP(i,q) {
-    cin >> l[i] >> r[i];
-    l[i]--; r[i]--;
+  int n; cin >> n;
+  vector vp(2,vector<int>(n));
+  REP(i,n) {
+    int c,p; cin >> c >> p;
+    c--;
+    vp[c][i] = p;
+  }
+  vector m(2,vector<int>(n+1));
+  REP(i,n) {
+    m[0][i+1] = m[0][i] + vp[0][i];
+    m[1][i+1] = m[1][i] + vp[1][i];
   }
 
-  solve();
+  int q; cin >> q;
+  REP(_,q) {
+    int l,r; cin >> l >> r;
+    l--;
+    printf("%d %d\n", m[0][r] - m[0][l], m[1][r] - m[1][l]);
+  }
   return 0;
 }
