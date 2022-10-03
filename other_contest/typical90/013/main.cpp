@@ -1,57 +1,57 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
+using ll = long long;
+using P = pair<int,int>;
+const int INF = numeric_limits<int>::max();
 
-struct edge {
-  int to;
-  int cost;
+struct Edge {
+  int to, cost;
+  Edge(int to, int cost) : to(to), cost(cost) {}
 };
+vector<vector<Edge>> g(1e5);
 
-int n,m;
-vector<vector<edge>> g;
+vector<int> dijkstra(int s) {
+  vector<int> dist(g.size(), INF);
+  priority_queue<P, vector<P>, greater<P>> q;
 
-vector<int> bfs(int s) {
-  vector<int> dist(n, 1e9);
-  queue<int> q;
-  q.push(s);
-  dist[s] = 0;
+  // cost: toに移動するときのコスト, to: 移動先
+  auto push = [&](ll cost, ll to) {
+    if (dist[to] <= cost) return;
+    dist[to] = cost;
+    q.emplace(dist[to], to);
+  };
 
-  while(q.size()) {
-    int cur = q.front();
-    q.pop();
+  // スタート位置をコスト0で追加
+  // [現在位置のコスト, 現在位置] priority_queueでコストの小さい順にするためコストを入れる
+  push(0, s);
 
-    for (auto nv: g[cur]) {
-      int ndist = dist[cur] + nv.cost;
-      if (ndist < dist[nv.to]) {
-        dist[nv.to] = ndist;
-        q.push(nv.to);
-      }
+  while (q.size()) {
+    auto [cost,v] = q.top(); q.pop();
+    if (dist[v] != cost) continue;
+    for (Edge e: g[v]) {
+      ll nc = dist[v]+e.cost;
+      push(nc, e.to);
     }
   }
+
   return dist;
 }
 
-void solve() {
-  // 街1からのbfsと街nからのbfs
-  auto dist1 = bfs(0);
-  auto dist2 = bfs(n-1);
-
-  REP(i,n) cout << dist1[i] + dist2[i] << endl;
-  return;
-}
-
 int main() {
-  cin >> n >> m;
-  g.resize(n);
-
-  int a,b,c;
+  int n,m; cin >> n >> m;
   REP(i,m) {
-    cin >> a >> b >> c;
-    a--, b--;
-    g[a].emplace_back(edge({b,c}));
-    g[b].emplace_back(edge({a,c}));
+    int a,b,c; cin >> a >> b >> c;
+    a--; b--;
+    g[a].emplace_back(b,c);
+    g[b].emplace_back(a,c);
   }
 
-  solve();
+  auto d1 = dijkstra(0);
+  auto d2 = dijkstra(n-1);
+  REP(i,n) {
+    cout << d1[i] + d2[i] << endl;
+  }
   return 0;
 }
