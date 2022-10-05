@@ -17,10 +17,12 @@ int main() {
 	for (int i = 3; i < n; i += 2) {
     REP(j,n-i) {
 			int cl = j, cr = j + i;
+			// 最後に人l,rが抜けるケース
+			chmin(dp[cl][cr], dp[cl+1][cr-1] + abs(a[cl] - a[cr]));
+			// それ以外のケース
 			for (int k = cl; k <= cr-1; k++) {
 				chmin(dp[cl][cr], dp[cl][k] + dp[k+1][cr]);
 			}
-			chmin(dp[cl][cr], dp[cl+1][cr-1] + abs(a[cl] - a[cr]));
 		}
 	}
 
