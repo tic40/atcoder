@@ -16,13 +16,12 @@ int main() {
 
 	for (int i = 3; i < n; i += 2) {
     REP(j,n-i) {
-			int cl = j, cr = j + i;
+			int l = j, r = j+i;
 			// 最後に人l,rが抜けるケース
-			chmin(dp[cl][cr], dp[cl+1][cr-1] + abs(a[cl] - a[cr]));
+			chmin(dp[l][r], dp[l+1][r-1] + abs(a[l] - a[r]));
 			// それ以外のケース
-			for (int k = cl; k <= cr-1; k++) {
-				chmin(dp[cl][cr], dp[cl][k] + dp[k+1][cr]);
-			}
+			// [l,k] の区間と [k+1,r] に分けて考える
+			for (int k = l; k < r; k++) chmin(dp[l][r], dp[l][k] + dp[k+1][r]);
 		}
 	}
 
