@@ -1,11 +1,7 @@
 ## atcoder
 
-[atcoder.jp](https://atcoder.jp/) コンテストへの参加/提出記録
-
-### My Account
-
+[atcoder.jp](https://atcoder.jp/)
 [https://atcoder.jp/users/tic40](https://atcoder.jp/users/tic40)
-
 
 ### C++ Template file
 
