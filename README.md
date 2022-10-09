@@ -1,7 +1,9 @@
-## atcoder
+## AtCoder
 
 [atcoder.jp](https://atcoder.jp/)
-[https://atcoder.jp/users/tic40](https://atcoder.jp/users/tic40)
+
+## My Account
+[tic40](https://atcoder.jp/users/tic40)
 
 ### C++ Template file
 
