@@ -1,58 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-const int INF = 1e9;
-
-int n,m, a[10][10];
-vector<int> x,y;
-vector<bool> used;
-vector<vector<int>> g;
-int ans = INF;
-
-void dfs(int num, int prev, int tot) {
-  if (ans <= tot) return;
-  if (num == n) {
-    ans = min(ans, tot);
-    return;
-  }
-
-  REP(i,n) {
-    if (used[i]) continue;
-    if (prev != -1) {
-      bool ok = true;
-      for(int x: g[prev]) if (x == i) ok = false;
-      if (!ok) continue;
-    }
-    used[i] = true;
-    dfs(num+1, i, tot+a[i][num]);
-    used[i] = false;
-  }
-  return;
-}
-
-void solve() {
-  used.resize(n,false);
-  REP(i,n) dfs(0, -1, 0);
-
-  if (ans == INF) ans = -1;
-  cout << ans << endl;
-  return;
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
+const int INF = numeric_limits<int>::max();
 
 int main() {
-  cin >> n;
+  int n; cin >> n;
+  vector a(n,vector<int>(n));
   REP(i,n) REP(j,n) cin >> a[i][j];
-  cin >> m;
-
-  g.resize(n);
-  int x,y;
+  int m; cin >> m;
+  vector g(n,vector<int>(n));
   REP(i,m) {
-    cin >> x >> y;
-    x--, y--;
-    g[x].push_back(y);
-    g[y].push_back(x);
+    int x,y; cin >> x >> y;
+    x--; y--;
+    g[x][y] = g[y][x] = true;
   }
 
-  solve();
+  int ans = INF;
+  vector<int> b(n);
+  iota(b.begin(),b.end(), 0);
+  do {
+    int now = a[b[0]][0];
+    for(int i = 1; i < n; i++) {
+      if (g[b[i-1]][b[i]]) { now = INF; break; }
+      now += a[b[i]][i];
+    }
+    ans = min(ans,now);
+  } while (next_permutation(b.begin(), b.end()));
+
+  cout << (ans == INF ? -1 : ans) << endl;
   return 0;
 }
