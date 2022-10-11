@@ -1,53 +1,40 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
-
-int N,Q;
-vector<ll> x,y;
-vector<int> q;
-
-void solve() {
-  ll minX = 1LL << 60;
-  ll maxX = -(1LL << 60);
-  ll minY = 1LL << 60;
-  ll maxY = -(1LL << 60);
-
-  // 45度回転させる
-  REP(i,N) {
-    ll p1 = x[i] + y[i];
-    ll p2 = y[i] - x[i];
-    x[i] = p1;
-    y[i] = p2;
-    minX = min(minX,x[i]);
-    maxX = max(maxX,x[i]);
-    minY = min(minY,y[i]);
-    maxY = max(maxY,y[i]);
-  }
-
-  REP(i,Q) {
-    cout << max({
-      abs(x[q[i]] - minX),
-      abs(x[q[i]] - maxX),
-      abs(y[q[i]] - minY),
-      abs(y[q[i]] - maxY)
-    }) << endl;
-  }
- return;
-
-}
+const ll LINF = numeric_limits<ll>::max();
+template<class T> void chmax(T& a, T b) { if (a < b) a = b; }
+template<class T> void chmin(T& a, T b) { if (a > b) a = b; }
 
 int main() {
-  cin >> N >> Q;
-  x.resize(N);
-  y.resize(N);
-  q.resize(Q);
-  REP(i,N) cin >> x[i] >> y[i];
-  REP(i,Q) {
-    cin >> q[i];
-    q[i]--;
+  int n,q; cin >> n >> q;
+  vector<ll> x(n),y(n);
+  REP(i,n) cin >> x[i] >> y[i];
+
+  ll minX = LINF, maxX = -LINF;
+  ll minY = LINF, maxY = -LINF;
+  REP(i,n) {
+    ll nx = x[i]-y[i];
+    ll ny = x[i]+y[i];
+    x[i] = nx;
+    y[i] = ny;
+    chmin(minX, nx);
+    chmax(maxX, nx);
+    chmin(minY, ny);
+    chmax(maxY, ny);
   }
 
-  solve();
+  REP(_,q) {
+    int t; cin >> t;
+    t--;
+    ll ans = max({
+      abs(minX - x[t]),
+      abs(maxX - x[t]),
+      abs(minY - y[t]),
+      abs(maxY - y[t])
+    });
+    cout << ans << endl;
+  }
   return 0;
 }
