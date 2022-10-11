@@ -70,19 +70,18 @@ ll op(ll a, ll b) { return max(a,b); }
 ll e() { return -1; }
 // atcoder libraryを使う解法
 void solve2() {
+  // 重さ毎の最大の価値を持つsegtree
   segtree<ll, op, e> seg(w+1);
   seg.set(0,0);
   dp[0][0] = 0;
 
   REP(i,n) {
-    REP(j,w+1) dp[i+1][j] = dp[i][j];
     REP(j,w+1) {
+      dp[i+1][j] = dp[i][j];
       ll nl = max(0LL, j - r[i]);
       ll nr = max(0LL, j - l[i]+1);
-      if (nl == nr) continue;
-
-      ll val = seg.prod(nl, nr);
-      if (val != -1) dp[i+1][j] = max(dp[i+1][j], val+v[i]);
+      ll mx = seg.prod(nl, nr);
+      if (mx != -1) dp[i+1][j] = max(dp[i+1][j], mx+v[i]);
     }
     REP(j,w+1) seg.set(j, dp[i+1][j]);
   }
