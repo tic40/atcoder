@@ -36,7 +36,8 @@ public:
 };
 
 int n,w;
-vector<ll> l(1e4),r(1e4),v(1e4);
+vector<int> l(1e4),r(1e4);
+vector<ll> v(1e4);
 // dp[i][j] := i種類で香辛料の量がjのときの最大の価値
 vector dp(501, vector<ll>(1e4+1,-1));
 RangeMax z[501];
@@ -50,8 +51,8 @@ void solve1() {
   for(int i = 0; i < n; i++) {
     REP(j,w+1) dp[i+1][j] = dp[i][j];
     REP(j,w+1) {
-      ll nl = max(0LL, j - r[i]);
-      ll nr = max(0LL, j - l[i] + 1);
+      int nl = max(0, j - r[i]);
+      int nr = max(0, j - l[i] + 1);
       if (nl == nr) continue;
 
       ll val = z[i].query(nl, nr);
@@ -73,20 +74,21 @@ void solve2() {
   // 重さ毎の最大の価値を持つsegtree
   segtree<ll, op, e> seg(w+1);
   seg.set(0,0);
-  dp[0][0] = 0;
 
   REP(i,n) {
+    segtree<ll, op, e> pseg(w+1);
+    swap(seg,pseg);
     REP(j,w+1) {
-      dp[i+1][j] = dp[i][j];
-      ll nl = max(0LL, j - r[i]);
-      ll nr = max(0LL, j - l[i]+1);
-      ll mx = seg.prod(nl, nr);
-      if (mx != -1) dp[i+1][j] = max(dp[i+1][j], mx+v[i]);
+      seg.set(j, pseg.get(j));
+      int nl = max(0, j - r[i]);
+      int nr = max(0, j - l[i]+1);
+
+      ll nx = pseg.prod(nl,nr);
+      if (nx != -1) seg.set(j, max(seg.get(j),nx+v[i]));
     }
-    REP(j,w+1) seg.set(j, dp[i+1][j]);
   }
 
-  cout << dp[n][w] << endl;
+  cout << seg.get(w) << endl;
   return;
 }
 
