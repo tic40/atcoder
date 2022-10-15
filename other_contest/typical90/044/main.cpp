@@ -1,36 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-
-int n,q;
-vector<int> a,t,x,y;
-
-void solve() {
-  int shift = 0;
-  REP(i,q) {
-    int cx = x[i] - shift;
-    int cy = y[i] - shift;
-    if (cx < 0) cx += n;
-    if (cy < 0) cy += n;
-
-    if (t[i] == 1) swap( a[cx], a[cy]);
-    else if (t[i] == 2) shift = (shift+1) % n;
-    else cout << a[cx] << endl;
-  }
-  return;
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
-  cin >> n >> q;
-  a.resize(n);
+  int n,q; cin >> n >> q;
+  vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  t.resize(q); x.resize(q); y.resize(q);
-  REP(i,q) {
-    cin >> t[i] >> x[i] >> y[i];
-    x[i]--, y[i]--;
+  int shift = 0;
+  REP(_,q) {
+    int t,x,y; cin >> t >> x >> y;
+    x--; y--;
+    x = (x-shift%n+n)%n;
+    y = (y-shift%n+n)%n;
+    if (t == 1) swap(a[x],a[y]);
+    else if (t == 2) shift++;
+    else cout << a[x] << endl;
   }
-
-  solve();
   return 0;
 }
