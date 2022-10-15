@@ -1,55 +1,39 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
-using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<(int)(n);i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
-const int INF = 1e9;
-const ll LINF = 1e18;
-
-int n,k;
-vector<int> x,y;
-
-ll dist(int i, int j) {
-  return (ll)(x[i]-x[j])*(x[i]-x[j]) + (ll)(y[i]-y[j])*(y[i]-y[j]);
-}
-
-void solve() {
-  vector<vector<ll>> d(n, vector<ll>(n));
-  // 全点間の距離を前計算
-  REP(i,n) REP(j,n) d[i][j] = dist(i,j);
-
-  // グループに含まれる集合がbitのときの2点間距離の最大値
-  vector<ll> cost(1<<n);
-  REP(bit,1<<n) {
-    REP(i,n) REP(j,i) {
-      if ( ((bit >> i) & 1) && ((bit >> j) & 1) ) {
-        cost[bit] = max(cost[bit], d[i][j]);
-      }
-    }
-  }
-
-  // dp[i][j] : dp[すでに選んだ点のbit][何個のグループ数に分けたときか]
-  vector<vector<ll>> dp(1<<n, vector<ll>(k+1, LINF));
-  dp[0][0] = 0;
-  REP(bit, 1<<n) {
-    for(int i = 1; i <= k; i++) {
-      for(int j = bit; j > 0; j = (j-1) & bit) {
-        dp[bit][i] = min(dp[bit][i], max(dp[bit-j][i-1], cost[j]));
-      }
-    }
-  }
-
-  cout << dp[(1<<n)-1][k] << endl;
-  return;
-}
+const ll LINF = numeric_limits<ll>::max();
 
 int main() {
-  cin >> n >> k;
-  x.resize(n);
-  y.resize(n);
+  int n,k; cin >> n >> k;
+  vector<int> x(n),y(n);
   REP(i,n) cin >> x[i] >> y[i];
 
-  solve();
+  vector dist(n,vector<ll>(n));
+  REP(i,n) REP(j,n) dist[i][j] = powl(x[i]-x[j],2) + powl(y[i]-y[j],2);
+
+  // s[bit] := 集合がbitのときの2点間の最大値
+  vector<ll> s(1<<n);
+  REP(bit,1<<n) REP(i,n) REP(j,n) {
+    if (bit >> i & 1 && bit >> j & 1) {
+      s[bit] = max(s[bit], dist[i][j]);
+    }
+  }
+
+  // dp[i][j]: [何個のグループ数に分けたときか][すでに選んだ点の集合(bit)]
+  vector<ll> dp(1<<n, LINF);
+  dp[0] = 0;
+  REP(i,k) {
+    vector<ll> p(1<<n, LINF);
+    swap(dp,p);
+    REP(bit,1<<n) {
+      for(int j = bit; j > 0; j = (j-1) & bit) {
+        dp[bit] = min(dp[bit], max(p[bit-j], s[j]));
+      }
+    }
+  }
+
+  cout << dp[(1<<n)-1] << endl;
   return 0;
 }
