@@ -1,33 +1,23 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-using ll = long long;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
-
-int k;
-ll dp[100005]; // dp[各桁の数字の和] = 通りの数
-
-ll solve() {
-  // kが9の倍数ではない
-  if (k % 9 != 0) {
-    return 0;
-  }
-
-  dp[0]=1;
-  for(int i = 1; i <= k; i++) {
-    for (int j = 1; j <= min(i,9); j++) {
-      dp[i] += dp[i-j];
-      dp[i] %= MOD;
-    }
-  }
-
-  return dp[k];
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
+using mint = modint1000000007;
 
 int main() {
-  cin >> k;
-  cout << solve() << endl;
+  int k; cin >> k;
+  if (k % 9) { cout << 0 << endl; return 0; }
+
+  vector<mint> dp(k+1);
+  dp[0] = 1;
+  REP(i,k+1) for(int j = 1; j <= 9; j++) {
+    if (i-j < 0 || i-j > k) continue;
+    if (dp[i-j] == 0) continue;
+    dp[i] += dp[i-j];
+  }
+
+  cout << dp[k].val() << endl;
   return 0;
 }
