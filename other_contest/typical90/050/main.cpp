@@ -1,33 +1,19 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-using ll = long long;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-
-int n,l;
-ll dp[100005];
-
-void solve() {
-  dp[0] = 1;
-
-  REP(i,n+1) {
-    if (i+1 <= n) {
-      dp[i+1] += dp[i];
-      dp[i+1] %= MOD;
-    }
-    if (i+l <= n) {
-      dp[i+l] += dp[i];
-      dp[i+l] %= MOD;
-    }
-  }
-
-  cout << dp[n] << endl;
-  return;
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
+using mint = modint1000000007;
 
 int main() {
-  cin >> n >> l;
-  solve();
+  int n,l; cin >> n >> l;
+  vector<mint> dp(n+1);
+  dp[0] = 1;
+  for(int i = 1; i <= n; i++) {
+    dp[i] = dp[i-1];
+    if (i - l >= 0) dp[i] += dp[i-l];
+  }
+  cout << dp[n].val() << endl;
   return 0;
 }
