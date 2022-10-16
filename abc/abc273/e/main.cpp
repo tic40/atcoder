@@ -7,25 +7,25 @@ using namespace std;
 
 struct Node {
   int v, p;
-  Node(int v, int p): v(v), p(p) {}
+  Node(int v, int p) : v(v),p(p) {}
 };
 
 int main() {
   int q; cin >> q;
-  vector<Node> vec;
-  vec.emplace_back(-1,0);
-  map<int,int> mp;
+  vector<Node> vc;
+  vc.emplace_back(-1,0);
   int v = 0;
+  map<int,int> mp;
 
   string s; int x;
   REP(_, q) {
     cin >> s;
     if (s == "ADD") {
       cin >> x;
-      vec.emplace_back(x,v);
-      v = vec.size() - 1;
+      vc.emplace_back(x,v);
+      v = vc.size() - 1;
     } else if (s == "DELETE") {
-      v = vec[v].p;
+      v = vc[v].p;
     } else if (s == "SAVE") {
       cin >> x;
       mp[x] = v;
@@ -33,8 +33,7 @@ int main() {
       cin >> x;
       v = mp[x];
     }
-    cout << vec[v].v << " ";
+    cout << vc[v].v << " ";
   }
-  cout << endl;
   return 0;
 }
