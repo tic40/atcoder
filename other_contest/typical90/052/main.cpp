@@ -1,30 +1,21 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
-using ll = long long;
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
-
-int n;
-ll a[105][6];
-
-void solve() {
-  ll ans = 1;
-  REP(i,n) {
-    ll p = 0;
-    REP(j,6) p += a[i][j];
-    ans *= p;
-    ans %= MOD;
-  }
-  cout << ans;
-  return;
-}
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
+using mint = modint1000000007;
 
 int main() {
-  cin >> n;
-  REP(i,n) REP(j,6) cin >> a[i][j];
+  int n; cin >> n;
+  vector<int> s(n);
+  REP(i,n) REP(j,6) {
+    int a; cin >> a;
+    s[i] += a;
+  }
 
-  solve();
+  mint now = 1;
+  REP(i,n) now *= s[i];
+  cout << now.val() << endl;
   return 0;
 }
