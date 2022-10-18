@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 const int INF = 1e9;
 
 int main() {
@@ -9,28 +10,32 @@ int main() {
   REP(i,m) {
     int k; cin >> k;
     REP(j,k) {
-      int v; cin >> v;
-      v--;
-      g[v].push_back(n+i);
-      g[n+i].push_back(v);
+      int x; cin >> x;
+      x--;
+      g[x].push_back(n+i);
+      g[n+i].push_back(x);
     }
   }
 
-  queue<int> q({0});
+  queue<int> q;
+  q.push(0);
   vector<int> dist(n+m,INF);
   dist[0] = 0;
 
   while(q.size()) {
-    int now = q.front(); q.pop();
-    int nd = dist[now]+1;
-    for(int v: g[now]) {
-      if (nd < dist[v]) {
-        q.push(v);
-        dist[v] = nd;
+    int v = q.front(); q.pop();
+    for(int nv: g[v]) {
+      int nd = dist[v]+1;
+      if (nd < dist[nv]) {
+        q.push(nv);
+        dist[nv] = nd;
       }
     }
   }
 
-  REP(i,n) cout << (dist[i] == INF ? -1 : dist[i]/2) << endl;
+  REP(i,n) {
+    if (dist[i] == INF) cout << -1 << endl;
+    else cout << dist[i]/2 << endl;
+  }
   return 0;
 }
