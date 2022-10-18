@@ -1,35 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
 
-ll n,p,q;
-vector<ll> a;
-ll ans = 0;
+int n; ll p,q;
+vector<int> a(100);
 
-void dfs(ll tot, int idx, int cnt) {
-  if (cnt == 5) {
-    if (tot == q) ans++;
-    return;
-  }
-  if (n <= idx) return;
+int dfs(int i, ll now, int cnt) {
+  if (cnt == 5) return now % p == q ? 1 : 0;
+  if (i == n) return 0;
 
-  dfs(tot, idx+1, cnt);
-  dfs(tot*a[idx]%p, idx+1, cnt+1);
-  return;
-}
-
-void solve() {
-  dfs(1, 0, 0);
-  cout << ans << endl;
-  return;
+  int res = 0;
+  res += dfs(i+1, now, cnt);
+  res += dfs(i+1, (now*a[i])%p, cnt+1);
+  return res;
 }
 
 int main() {
   cin >> n >> p >> q;
-  a.resize(n);
   REP(i,n) cin >> a[i];
-
-  solve();
+  cout << dfs(0,1,0) << endl;
   return 0;
 }
