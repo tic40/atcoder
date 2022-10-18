@@ -1,37 +1,36 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
   int n,s; cin >> n >> s;
   vector<int> a(n),b(n);
   REP(i,n) cin >> a[i] >> b[i];
 
-  vector<vector<bool>> dp(n+1,vector<bool>(s+1));
-  dp[0][0] = true;
+  vector dp(n+1,vector<int>(s+1));
+  dp[0][0] = 1;
   REP(i,n) REP(j,s+1) {
-    if (dp[i][j] && j+a[i] <= s) dp[i+1][j+a[i]] = true;
-    if (dp[i][j] && j+b[i] <= s) dp[i+1][j+b[i]] = true;
+    if (j - a[i] >= 0) dp[i+1][j] |= dp[i][j-a[i]];
+    if (j - b[i] >= 0) dp[i+1][j] |= dp[i][j-b[i]];
   }
 
-  if (!dp[n][s]) {
+  if (dp[n][s] == 0) {
     cout << "Impossible" << endl;
     return 0;
   }
 
-  string ans;
   int now = s;
-  for(int i = n-1; 0 <= i; i--) {
-    if (0 <= now - a[i] && dp[i][now - a[i]]) {
-      now -= a[i];
-      ans += 'A';
+  string ans = "";
+  for(int i = n-1; i >= 0; i--) {
+    if (now-a[i] >= 0 && dp[i][now-a[i]] == 1) {
+      now -= a[i]; ans = "A" + ans;
     } else {
-      now -= b[i];
-      ans += 'B';
+      now -= b[i]; ans = "B" + ans;
     }
   }
-
-  reverse(ans.begin(),ans.end());
   cout << ans << endl;
   return 0;
 }
