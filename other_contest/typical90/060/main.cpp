@@ -1,38 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
-const int INF = 1e9;
+const int INF = numeric_limits<int>::max();
 
-int n;
-vector<int> a;
-
-void solve() {
-  vector<int> p(n),q(n);
-  vector<int> dp1(n, INF), dp2(n, INF);
-
+vector<int> lis(const vector<int> &a) {
+  int n = a.size();
+  vector<int> dp(n,INF), res(n);
   REP(i,n) {
-    int pos = lower_bound(dp1.begin(), dp1.end(), a[i]) - dp1.begin();
-    dp1[pos] = a[i];
-    p[i] = pos+1;
+    auto it =lower_bound(dp.begin(), dp.end(), a[i]);
+    int pos = it - dp.begin();
+    dp[pos] = a[i];
+    res[i] = pos+1;
   }
 
-  for (int i = n-1; 0 <= i; i--) {
-    int pos = lower_bound(dp2.begin(), dp2.end(), a[i]) - dp2.begin();
-    dp2[pos] = a[i];
-    q[i] = pos+1;
-  }
-
-  int ans = 0;
-  REP(i,n) ans = max(ans, p[i] + q[i] - 1);
-  cout << ans << endl;
-  return;
+  return res;
 }
 
 int main() {
-  cin >> n;
-  a.resize(n);
+  int n; cin >> n;
+  vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  solve();
+  auto lis1 = lis(a);
+  reverse(a.begin(),a.end());
+  auto lis2 = lis(a); // aをreverseした際のlis
+  reverse(lis2.begin(),lis2.end());
+
+  int ans = 0;
+  REP(i,n) ans = max(ans, lis1[i] + lis2[i]-1);
+  cout << ans << endl;
   return 0;
 }
