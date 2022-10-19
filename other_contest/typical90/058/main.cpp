@@ -1,49 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
-const int mod = 100000;
+const int MOD = 1e5;
 
-int digit_sum(int x) {
-  int res = 0;
-  while(x > 0) {
-    res += x%10;
-    x /= 10;
-  }
-  return res;
-}
+int main() {
+  int n; ll k;
+  cin >> n >> k;
 
-int n;
-ll k;
+  auto dsum = [](int x) {
+    int res = 0;
+    while(x>0) { res+=x%10; x/=10; }
+    return res;
+  };
 
-void solve() {
-  vector<int> visited(100000, -1);
-  int pos = n, cnt = 0;
-  while(visited[pos] == -1) {
-    visited[pos] = cnt;
-    pos = (pos + digit_sum(pos)) % mod;
+  vector<int> mem(1e5,-1);
+  int cnt = 0;
+  while(mem[n] == -1) {
+    mem[n] = cnt;
+    n += dsum(n);
+    n %= MOD;
     cnt++;
   }
 
-  // visited[pos] がサイクルに入るまでの回数
-  int cycle = cnt - visited[pos];
-  if (visited[pos] <= k) {
-    k = (k-visited[pos]) % cycle;
-    k += visited[pos];
+  // mem[n] := サイクルに入るまでのカウント
+  // rd := サイクル一周のカウント
+  int rd = cnt - mem[n];
+  if (mem[n] < k) {
+    k = (k - mem[n]) % rd;
+    k += mem[n];
   }
 
-  REP(i, 100000) {
-    if (visited[i] == k) {
-      cout << i << endl;
-      return;
-    }
+  REP(i,1e5) {
+    if (mem[i] == k) { cout << i << endl; break; }
   }
-
-  return;
-}
-
-int main() {
-  cin >> n >> k;
-  solve();
   return 0;
 }
