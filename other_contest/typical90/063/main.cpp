@@ -1,38 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
-int h,w;
-int p[10000][10000];
+int main() {
+  int h,w; cin >> h >> w;
+  vector p(h,vector<int>(w));
+  REP(i,h) REP(j,w) cin >> p[i][j];
 
-void solve() {
   int ans = 0;
-  for(int bit = 1; bit < 1<<h; bit++) {
-    vector<int> d;
-    REP(j,h) if (bit >> j & 1) d.push_back(j);
-
+  REP(hbit,1<<h) {
     map<int,int> mp;
-    REP(i,w) {
-      int cur = -1, ok = true;
-      for(int x: d) {
-        if (cur == -1) cur = p[x][i];
-        if (p[x][i] != cur) ok = false;
+    vector<int> d;
+    REP(i,h) if (hbit>>i & 1) d.push_back(i);
+
+    REP(j,w) {
+      int now = -1;
+      bool ok = true;
+      for(int i: d) {
+        if (now == -1) now = p[i][j];
+        if (now != p[i][j]) ok = false;
       }
-      if (ok) mp[cur] += d.size();
+      if (ok) mp[now] += d.size();
     }
-    int sum = 0;
-    for(auto v: mp) sum = max(sum, v.second);
-    ans = max(ans,sum);
+    for(auto [k,v]: mp) ans = max(ans,v);
   }
 
   cout << ans << endl;
-  return;
-}
-
-int main() {
-  cin >> h >> w;
-  REP(i,h) REP(j,w) cin >> p[i][j];
-
-  solve();
   return 0;
 }
