@@ -1,42 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 
 int main() {
   int n; cin >> n;
   vector<vector<int>> g(n);
-  vector<bool> usable(n);
   queue<int> q;
+  vector<bool> used(n);
   REP(i,n) {
     int a,b; cin >> a >> b;
     a--; b--;
     g[a].push_back(i);
     g[b].push_back(i);
-    if (a == i || b == i) {
-      usable[i] = true;
-      q.push(i);
-    }
+    if (i == a || i == b) q.push(i);
   }
 
-  vector<int> v;
+  vector<int> ans;
   while(q.size()) {
-    int pos = q.front(); q.pop();
-    v.push_back(pos);
-    for (int i: g[pos]) {
-      if (!usable[i]) {
-        usable[i] = true;
-        q.push(i);
-      }
+    int now = q.front(); q.pop();
+    if (used[now]) continue;
+    used[now] = true;
+    ans.push_back(now);
+
+    for(int v: g[now]) {
+      if (!used[v]) q.push(v);
     }
   }
 
-  if ((int)v.size() != n) {
-    cout << -1 << endl;
-    return 0;
-  }
-
-  reverse(v.begin(), v.end());
-  for(int x: v) cout << x+1 << endl;
-
+  if ((int)ans.size() != n) { cout << -1 << endl; return 0; }
+  reverse(ans.begin(),ans.end());
+  for(int v: ans) cout << v+1 << endl;
   return 0;
 }
