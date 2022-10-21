@@ -1,46 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
 
-int n,q;
-vector<ll> a,l,r,v;
+int main() {
+  int n,q; cin >> n >> q;
+  vector<int> a(n);
+  REP(i,n) cin >> a[i];
 
-void solve() {
-  vector<ll> b(n);
+  vector<ll> e(n);
+  REP(i,n-1) e[i] = a[i+1]-a[i];
   ll ans = 0;
+  REP(i,n-1) ans += abs(e[i]);
 
-  REP(i,n-1) {
-    b[i] += a[i+1]-a[i];
-    ans += abs(b[i]);
-  }
+  REP(_,q) {
+    int l,r,v; cin >> l >> r >> v;
+    l--; r--;
 
-  REP(i,q) {
-    ll before = abs(b[l[i] - 1]) + abs(b[r[i]]);
+    ll before = abs(e[r]);
+    if (l-1 >= 0) before += abs(e[l-1]);
 
-    if (0 < l[i]) b[l[i] - 1] += v[i];
-    if (r[i] < n-1) b[r[i]] -= v[i];
+    if (l-1 >= 0) e[l-1] += v;
+    if (r < n-1) e[r] -= v;
 
-    ll after = abs(b[l[i] - 1]) + abs(b[r[i]]);
+    ll after = abs(e[r]);
+    if (l-1 >= 0) after += abs(e[l-1]);
 
     ans += after - before;
     cout << ans << endl;
   }
-  return;
-}
-
-int main() {
-  cin >> n >> q;
-  a.resize(n);
-  REP(i,n) cin >> a[i];
-  l.resize(q);
-  r.resize(q);
-  v.resize(q);
-  REP(i,q) {
-    cin >> l[i] >> r[i] >> v[i];
-    l[i]--; r[i]--;
-  }
-
-  solve();
   return 0;
 }
