@@ -8,32 +8,19 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  vector<bool> vx(1e4+1),vy(1e4+1); // x,yそれぞれまでの距離
-  vx[abs(x-a[0])] = true;
-  vy[abs(y)] = true;
-
+  set<int> sx,sy;
+  sx.insert(a[0]);
+  sy.insert(0);
   for(int i = 1; i < n; i++) {
-    vector<bool> vp(1e4+1);
-    if (i % 2 == 0) {
-      swap(vx,vp);
-      REP(j, 1e4+1) {
-        if (vp[j]) {
-          vx[j+a[i]] = true;
-          vx[abs(j-a[i])] = true;
-        }
-      }
-    } else {
-      swap(vy,vp);
-      REP(j, 1e4+1) {
-        if (vp[j]) {
-          vy[j+a[i]] = true;
-          vy[abs(j-a[i])] = true;
-        }
-      }
+    set<int> t,p;
+    i % 2 == 0 ? swap(p,sx) : swap(p,sy);
+    for(int v: p) {
+      t.insert(v+a[i]);
+      t.insert(v-a[i]);
     }
+    i % 2 == 0 ? swap(t,sx) : swap(t,sy);
   }
 
-  if (vx[0] && vy[0]) cout << "Yes" << endl;
-  else cout << "No" << endl;
+  cout << (sx.count(x) && sy.count(y) ? "Yes" : "No") << endl;
   return 0;
 }
