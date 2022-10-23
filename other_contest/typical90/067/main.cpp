@@ -1,36 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
 
-// 8進数(string) to 10進数(ll)
-ll base8_to_long(string s) {
+ll base8_to_ll(string s) {
   ll res = 0;
-  REP(i,s.size()) {
-    res = res * 8 + (s[i]-'0');
-  }
+  for(auto c: s) res = res * 8 + (c-'0');
   return res;
 }
 
-// 10進数(ll) to 9進数(string)
-string long_to_base9(ll n) {
-  if (n == 0) return "0";
-  string res;
-  while(n > 0) {
-    res = char(n % 9 + '0') + res;
-    n /= 9;
+string ll_to_base9(ll x) {
+  if (x == 0) return "0";
+  string res = "";
+  while(x > 0) {
+    res = char(x % 9 + '0') + res;
+    x /= 9;
   }
   return res;
 }
 
 int main() {
-  string s;
-  int k;
+  string s; int k;
   cin >> s >> k;
 
-  REP(i,k) {
-    s = long_to_base9(base8_to_long(s));
-    REP(j,s.size()) if (s[j] == '8') s[j] = '5';
+  REP(_,k) {
+    s = ll_to_base9(base8_to_ll(s));
+    for(char& v: s) if (v == '8') v = '5';
   }
   cout << s << endl;
   return 0;
