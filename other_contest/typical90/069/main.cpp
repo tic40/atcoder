@@ -17,12 +17,12 @@ mint f(ll base, ll n) {
 }
 
 int main() {
-  ll n, k; cin >> n >> k;
+  ll n,k; cin >> n >> k;
 
   mint ans = 1;
-  REP(i,min(3,(int)n)) ans *= (k-i);
+  REP(i,min((ll)2,n)) ans *= (k-i);
 
-  if (n > 3) ans *= f(max(0LL,k-2), max(0LL,n-3) );
+  if (n >= 3) ans *= f(max(0LL,k-2), max(0LL,n-2) );
   cout << ans.val() << endl;
   return 0;
 }
