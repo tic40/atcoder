@@ -1,33 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
 
-int n;
-vector<int> x,y;
+int main() {
+  int n; cin >> n;
+  vector<int> x(n),y(n);
+  REP(i,n) cin >> x[i] >> y[i];
 
-void solve() {
-  sort(x.begin(), x.end());
-  sort(y.begin(), y.end());
-
+  sort(x.begin(),x.end());
+  sort(y.begin(),y.end());
+  int mid = n/2;
   ll ans = 0;
-  int a = x[n/2], b = y[n/2];
   REP(i,n) {
-    ans += abs(x[i]-a);
-    ans += abs(y[i]-b);
+    ans += abs(x[i] - x[mid]);
+    ans += abs(y[i] - y[mid]);
   }
   cout << ans << endl;
-  return;
-}
-
-int main() {
-  cin >> n;
-  x.resize(n);
-  y.resize(n);
-  REP(i,n) {
-    cin >> x[i] >> y[i];
-  }
-
-  solve();
   return 0;
 }
