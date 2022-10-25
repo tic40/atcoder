@@ -1,51 +1,45 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
+using P = pair<int,int>;
+const int INF = numeric_limits<int>::max();
 
+const vector<P> moves = { {1,0}, {-1,0}, {0,1}, {0,-1} };
 int h,w;
-vector<string> s;
-vector<pair<int, int>> moves = { {1,0},{0,1},{-1,0},{0,-1} };
-int visited[16][16];
-int ans = 0;
-int sx, sy;
+vector<string> c(16);
+vector dist(16,vector<int>(16));
+int gx, gy;
+int ans = -1;
 
-void dfs(int x, int y) {
-  if (x == sx && y == sy && visited[x][y] > 0) {
-    ans = max(ans, visited[x][y]);
+void dfs(int i, int j) {
+  int k = dist[i][j];
+  if (k > 0 && i == gx && j == gy) {
+    if (k >= 3) ans = max(ans,k);
     return;
   }
 
-  for(auto v: moves) {
-    int nx = x + v.first;
-    int ny = y + v.second;
-    if (visited[nx][ny] > 0) continue;
-    if (nx < 0 || ny < 0 || h <= nx || w <= ny) continue;
-    if (s[nx][ny] == '#') continue;
-
-    visited[nx][ny] = visited[x][y]+1;
-    dfs(nx,ny);
+  for(auto [di,dj]: moves) {
+    int ni = i+di, nj = j+dj;
+    if (ni < 0 || nj < 0 || ni >= h || nj >= w) continue;
+    if (c[ni][nj] == '#') continue;
+    if (dist[ni][nj] > 0) continue;
+    dist[ni][nj] = k+1;
+    dfs(ni,nj);
+    dist[ni][nj] = 0;
   }
-  return;
-}
-
-void solve() {
-  REP(i,h) REP(j,w) {
-    REP(_i, h) REP(_j, w) visited[_i][_j] = 0;
-    if (s[i][j] == '#') continue;
-    sx = i; sy = j;
-    dfs(sx, sy);
-  }
-
-  if (ans < 3) ans = -1;
-  cout << ans << endl;
   return;
 }
 
 int main() {
   cin >> h >> w;
-  s.resize(h);
-  REP(i,h) cin >> s[i];
-
-  solve();
+  REP(i,h) cin >> c[i];
+  REP(i,h) REP(j,w) {
+    if (c[i][j] == '#') continue;
+    dist = vector(h,vector<int>(w,0));
+    gx = i, gy = j;
+    dfs(i,j);
+  }
+  cout << ans << endl;
   return 0;
 }
