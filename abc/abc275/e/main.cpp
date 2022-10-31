@@ -10,6 +10,7 @@ int main() {
   int n,m,k; cin >> n >> m >> k;
 
   mint m_inv = mint(1) / m;
+  // dp[i][j] := i回振ってjへたどり着ける確率
   vector<mint> dp(n+1);
   dp[0] = 1;
   REP(i,k) {
