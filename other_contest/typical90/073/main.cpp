@@ -14,7 +14,7 @@ vector<vector<int>> g(1e5);
 vector dp(1e5, vector<mint>(3));
 
 void dfs(int i, int p) {
-  // val1: a,b両方含まない数,
+  // val1: a or b片方だけ含む
   // val2: 全体の数
   // val2 - val1 = a,b両方含む数
   mint val1 = 1, val2 = 1;
@@ -24,13 +24,12 @@ void dfs(int i, int p) {
     dfs(v,i);
 
     if (c[i] == 'a') {
-      // 削除しないとき: dp[i][0]
-      // 削除するとき: dp[i][2]
+      // 今いる場所がaなら、dp[v][0], dp[v][1]は削除してよい
       val1 *= (dp[v][0] + dp[v][2]);
     } else {
       val1 *= (dp[v][1] + dp[v][2]);
     }
-    // dp[i][2]*2 しているのは削除するときとしないとき
+    // dp[i][2]*2 しているのは削除する場合はdp[v][2]から遷移する必要があるため
     val2 *= (dp[v][0] + dp[v][1] + dp[v][2]*2);
   }
 
