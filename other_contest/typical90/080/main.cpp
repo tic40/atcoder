@@ -13,9 +13,7 @@ ll solve1() {
     ll bit = 0;
 
     // フラグが立っているa[j]の論理和を取る
-    REP(j,n) {
-      if ((i >> j) & 1) bit |= a[j];
-    }
+    REP(j,n) if (i >> j & 1) bit |= a[j];
 
     // d桁の中で0の数をカウントする
     int free_digits = d - __builtin_popcountll(bit);
@@ -30,24 +28,28 @@ ll solve1() {
 // DP解
 ll solve2() {
   // dp[i][j] := i桁目のjまでのaの組み合わせをみたときのパターン数
-  vector<vector<ll>> dp(d+1,vector<ll>(1<<n));
+  vector<ll> dp(1<<n);
+  dp[0]=1;
 
-  dp[0][0]=1;
   REP(i,d) {
-    // a[j]の iビット目が1
+    vector<ll> p(1<<n);
+    swap(dp,p);
+
     int m = 0;
-    REP(j,n) {
-      if (a[j] & (1LL << i)) m |= (1 << j);
-    }
+    REP(j,n) if (a[j] >> i & 1) m |= (1<<j);
+
     REP(bit, 1<<n) {
+      if (p[bit] == 0) continue;
       // iビット目を0にするとき
-      dp[i+1][bit] += dp[i][bit];
+      // (Ai&x) ≠ 0 となる m の集合は変わらないので、bitsの内容はそのまま
+      dp[bit] += p[bit];
       // iビット目を1にするとき
-      dp[i+1][bit | m] += dp[i][bit];
+      // Ai の iビット目が 1 であるような m が集合に加わるので、bitsの値もそれに従って改める
+      dp[bit|m] += p[bit];
     }
   }
 
-  return dp[d][(1 << n) - 1];
+  return dp.back();
 }
 
 int main() {
