@@ -4,45 +4,40 @@ using namespace std;
 #define endl '\n'
 const int INF = numeric_limits<int>::max();
 
-map<int,int> prime_factorize(int n) {
-  map<int,int> res;
-  for(int a = 2; a*a <= n; a++) {
-    if (n%a != 0) continue;
-    int ex = 0;
-    while(n%a == 0) { ex++; n /= a; }
-    res[a] = ex;
-  }
-  if (n != 1) res[n] = 1;
-  return res;
-}
-
 int main() {
   int n; cin >> n;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  vector<map<int,int>> memo(n);
-  vector<int> m(4,INF);
+  auto f = [&](int x) {
+    vector<int> res(4);
+    for(int i = 2; i <= 3; i++) {
+      int ex = 0;
+      while(x%i == 0) { ex++; x/=i; }
+      res[i] = ex;
+    }
+    return res;
+  };
+
+  vector<int> mv(4,INF);
+  vector<vector<int>> mem(n);
   REP(i,n) {
-    auto pf = prime_factorize(a[i]);
-    memo[i] = pf;
-    m[2] = min(m[2],pf[2]);
-    m[3] = min(m[3],pf[3]);
+    mem[i] = f(a[i]);
+    mv[2] = min(mv[2],mem[i][2]);
+    mv[3] = min(mv[3],mem[i][3]);
   }
 
   int ans = 0;
   REP(i,n) {
-    auto pf = memo[i];
-    REP(j,2) {
-      int now = 2+j;
-      int d = pf[now] - m[now];
-      a[i] /= pow(now,d);
+    auto v = mem[i];
+    for(int j = 2; j <= 3; j++) {
+      int d = v[j] - mv[j];
+      a[i] /= pow(d,j);
       ans += d;
     }
   }
 
-  bool ok = true;
-  REP(i,n-1) if (a[i] != a[i+1]) ok = false;
-  cout << (ok ? ans : -1) << endl;
+  REP(i,n-1) if (a[i] != a[i+1]) ans = -1;
+  cout << ans << endl;
   return 0;
 }
