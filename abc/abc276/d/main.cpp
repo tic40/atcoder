@@ -32,7 +32,7 @@ int main() {
     auto v = mem[i];
     for(int j = 2; j <= 3; j++) {
       int d = v[j] - mv[j];
-      a[i] /= pow(d,j);
+      a[i] /= pow(j,d);
       ans += d;
     }
   }
