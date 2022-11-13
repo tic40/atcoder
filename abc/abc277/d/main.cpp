@@ -8,10 +8,7 @@ int main() {
   int n,m; cin >> n >> m;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
-
   ll tot = accumulate(a.begin(),a.end(),0LL);
-  if (n == 1) { cout << 0 << endl; return 0; }
-
   sort(a.begin(),a.end());
   a.insert(a.end(),a.begin(),a.end());
   int n2 = a.size();
