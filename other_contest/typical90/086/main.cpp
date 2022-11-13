@@ -1,39 +1,39 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<n;i++)
+#define REP(i,n) for(int i=0;i<(n);i++)
+#define endl '\n'
 using ll = long long;
-const int MOD = 1e9+7;
+using mint = modint1000000007;
 
 int main() {
-  ll n,q;
-  cin >> n >> q;
-  vector<ll> x(q),y(q),z(q),w(q);
+  int n,q; cin >> n >> q;
+  vector<int> x(q),y(q),z(q);
+  vector<ll> w(q);
   REP(i,q) {
     cin >> x[i] >> y[i] >> z[i] >> w[i];
-    x[i]--, y[i]--, z[i]--;
+    x[i]--; y[i]--; z[i]--;
   }
 
-  ll ans = 1;
+  mint ans = 1;
+  vector<int> b(n);
   REP(i,60) {
-    ll cnt = 0;
-    REP(bit, 1<<n) {
-      vector<ll> arrb(n);
-      REP(k,n) arrb[k] = bit >> k & 1;
+    int cnt = 0;
+    REP(bit,1<<n) {
+      REP(j,n) b[j] = bit >> j & 1;
 
       bool ok = true;
-      REP(k,q) {
-        if ( (arrb[x[k]] | arrb[y[k]] | arrb[z[k]]) != (w[k] >> i & 1)) {
+      REP(j,q) {
+        if ((b[x[j]] | b[y[j]] | b[z[j]]) != (w[j] >> i & 1)) {
           ok = false;
           break;
         }
       }
-
       if (ok) cnt++;
     }
     ans *= cnt;
-    ans %= MOD;
   }
-
-  cout << ans << endl;
+  cout << ans.val() << endl;
   return 0;
 }
