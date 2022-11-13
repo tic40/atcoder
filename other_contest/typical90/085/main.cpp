@@ -18,8 +18,12 @@ vector<ll> divisor(ll n) {
 int main() {
   ll k; cin >> k;
   auto d = divisor(k);
+  sort(d.begin(),d.end());
+  int sz = d.size();
+
   ll ans = 0;
-  for(auto a: d) for(auto b: d) {
+  for(int i = 0; i < sz; i++) for(int j = i; j < sz; j++) {
+    ll a = d[i], b = d[j];
     if ((k/a) % b == 0) {
       ll c = (k / a) / b;
       if (a <= b && b <= c) ans++;
