@@ -16,10 +16,7 @@ int count(ll x) {
     dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j]);
   }
   int cnt = 0;
-  REP(i,n) for(int j = i+1; j < n; j++) {
-    if (dp[i][j] <= p) cnt++;
-  }
-
+  REP(i,n) for(int j = i+1; j < n; j++) if (dp[i][j] <= p) cnt++;
   return cnt;
 }
 
