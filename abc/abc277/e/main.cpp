@@ -4,11 +4,11 @@ using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
 #define endl '\n'
-const int INF = 1e9;
 using P = pair<int,int>;
+const int INF = numeric_limits<int>::max();
 
 struct Edge {
-  int to, cost;
+  int to,cost;
   Edge(int to, int cost): to(to), cost(cost) {}
 };
 
@@ -27,23 +27,25 @@ int main() {
       g[n+v].emplace_back(n+u,1);
     }
   }
+
   REP(i,k) {
-    int v; cin >> v;
-    v--;
-    g[v].emplace_back(n+v,0);
-    g[n+v].emplace_back(v,0);
+    int s; cin >> s;
+    s--;
+    g[s].emplace_back(n+s,0);
+    g[n+s].emplace_back(s,0);
   }
 
   vector<int> dist(n2,INF);
   dist[0] = 0;
   deque<P> dq;
   dq.emplace_back(0,0);
-  while(dq.size()) {
-    auto [d,v] = dq.front();
-    dq.pop_front();
-    if (d != dist[v]) continue;
 
-    for(auto e: g[v]) {
+  while(dq.size()) {
+    auto [d,i] = dq.front();
+    dq.pop_front();
+    if (d != dist[i]) continue;
+
+    for(auto e: g[i]) {
       int nd = d + e.cost;
       if (nd >= dist[e.to]) continue;
       dist[e.to] = nd;
@@ -52,7 +54,7 @@ int main() {
     }
   }
 
-  int ans = min(dist[n-1],dist[n2-1]);
+  int ans = min(dist[n-1], dist[n2-1]);
   cout << (ans == INF ? -1 : ans) << endl;
   return 0;
 }
