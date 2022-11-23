@@ -1,35 +1,46 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
-using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
 #define endl '\n'
 using ll = long long;
-using P = pair<int,int>;
-const int INF = numeric_limits<int>::max();
-const ll LINF = numeric_limits<ll>::max();
 const int MOD = 1e9+7;
-using mint = modint1000000007;
+const int LOG = 62; // Nの対数
 
 int main() {
-  ll n;
-  int b,k;
+  ll n; int b,k;
   cin >> n >> b >> k;
   vector<int> c(k);
   REP(i,k) cin >> c[i];
 
-  // 小課題1
-  vector dp(n+1,vector<mint>(b));
-  dp[0][0] = 1;
-  REP(i,n) {
-    REP(j,b) {
-      if (dp[i][j] == 0) continue;
-      REP(l,k) {
-        dp[i+1][ (j*10+c[l])%b ] += dp[i][j];
-      }
+  // dp[i] と dp[j] を掛け合わせて dp[i+j] を得る処理
+  // tj: 10^j を b で割ったあまり
+  auto mul = [&](const vector<ll>& dpi, const vector<ll>& dpj, ll tj) {
+    vector<ll> res(b);
+    REP(p,b) REP(q,b) {
+      int now = (p * tj + q) % b;
+      res[now] += dpi[p] * dpj[q];
+      res[now] %= MOD;
     }
-  }
+    return res;
+  };
 
-  cout << dp[n][0].val() << endl;
+  vector<ll> ten(LOG, 10); // ten[i]: 10^(2^i) を b で割ったあまり
+  for (int i = 1; i < LOG; ++i) ten[i] = (ten[i-1] * ten[i-1])%b;
+
+  // dp[2^i][r] を doubl[i][r] で書くことにする
+  vector doubl(LOG, vector<ll>(b));
+  // 初期化 (doubl[0] := dp[1])
+  REP(i,k) doubl[0][c[i] % b] += 1;
+
+  // ダブリング
+  for (int i = 1; i < LOG; ++i) doubl[i] = mul(doubl[i-1],doubl[i-1],ten[i-1]);
+
+  // ダブリングした結果をもとに答えを求める
+  vector<ll> res(b);
+  res[0] = 1;
+  // n を二の冪乗の積で表すときに、2^i を含むかどうか
+  REP(i,LOG) if (n & (1LL << i)) res = mul(res, doubl[i], ten[i]);
+
+  cout << res[0] << endl;
   return 0;
 }
