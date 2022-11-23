@@ -36,11 +36,11 @@ int main() {
   for (int i = 1; i < LOG; ++i) doubl[i] = mul(doubl[i-1],doubl[i-1],ten[i-1]);
 
   // ダブリングした結果をもとに答えを求める
-  vector<ll> res(b);
-  res[0] = 1;
+  vector<ll> ans(b);
+  ans[0] = 1;
   // n を二の冪乗の積で表すときに、2^i を含むかどうか
-  REP(i,LOG) if (n & (1LL << i)) res = mul(res, doubl[i], ten[i]);
+  REP(i,LOG) if (n & (1LL << i)) ans = mul(ans, doubl[i], ten[i]);
 
-  cout << res[0] << endl;
+  cout << ans[0] << endl;
   return 0;
 }
