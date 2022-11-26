@@ -12,7 +12,7 @@ int main() {
   int n = k.size();
 
   // dp[i][j][l] := 上からi桁目まで確定していて
-  // 各桁の 総和%d がlで、K未満かどうかがj(j=1ならK未満)
+  // 各桁の総和%dがlで、K未満かどうか確定or未確定(j=1なら確定)で条件を満たすもの
   vector dp(n+1,vector(2,vector<mint>(d)));
   dp[0][0][0]=1;
   REP(i,n) REP(j,d) {
@@ -25,6 +25,6 @@ int main() {
     // Kより大きいからKより大きいへの遷移
     dp[i+1][0][(j+nk)%d] += dp[i][0][j];
   }
-  cout << (dp[n][0][0] + dp[n][1][0]- 1).val() << endl;
+  cout << (dp[n][0][0] + dp[n][1][0] - 1).val() << endl;
   return 0;
 }
