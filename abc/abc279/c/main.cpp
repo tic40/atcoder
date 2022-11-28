@@ -12,23 +12,14 @@ int main() {
   REP(i,h) cin >> s[i];
   REP(i,h) cin >> t[i];
 
-  vector rs(w,vector<char>(h));
-  vector rt(w,vector<char>(h));
+  vector<string> rs(w),rt(w);
   REP(i,w) REP(j,h) {
-    rs[i][j] = s[h-1-j][i];
-    rt[i][j] = t[h-1-j][i];
+    rs[i] += s[h-1-j][i];
+    rt[i] += t[h-1-j][i];
   }
 
-  REP(i,w) {
-    bool ok = false;
-    for(int j = i; j < w; j++) {
-      if (rs[j] == rt[i]) {
-        swap(rs[i],rs[j]);
-        ok = true; break;
-      }
-    }
-    if (!ok) { cout << "No" << endl; return 0; }
-  }
-  cout << "Yes" << endl;
+  sort(rs.begin(),rs.end());
+  sort(rt.begin(),rt.end());
+  cout << (rs == rt ? "Yes" : "No") << endl;
   return 0;
 }
