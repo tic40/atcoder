@@ -22,10 +22,10 @@ int main() {
   int mxd = w.back().d;
 
   // dp[i] := i日目までで最大の報酬
-  vector<ll> dp(mxd, -1);
+  vector<ll> dp(mxd+1, -1);
   dp[0] = 0;
   REP(i,n) {
-    vector<ll> p(mxd, -1);
+    vector<ll> p(mxd+1, -1);
     swap(dp,p);
     REP(j,w[i].d+1) {
       dp[j] = p[j];
