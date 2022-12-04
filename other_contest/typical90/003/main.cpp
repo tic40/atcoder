@@ -25,11 +25,9 @@ int main() {
   }
 
   dfs(0,-1);
-  int idx = 0, mx = 0;
-  REP(i,n) { if (d[i] > mx) { mx = d[i]; idx = i; } }
+  int idx = max_element(d.begin(),d.end()) - d.begin();
   d = vector<int>(n);
   dfs(idx,-1);
-
-  cout << *max_element(d.begin(),d.end()) + 1 << endl;
+  cout << *max_element(d.begin(),d.end())+1 << endl;
   return 0;
 }
