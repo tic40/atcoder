@@ -8,18 +8,23 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
+  // 最も短いものの長さを何センチ以上にできるか？を二分探索する
   int ok = 1, ng = l;
   while(abs(ok-ng) > 1) {
-    int mid = (ok+ng) / 2;
+    int mid = (ok+ng)/2;
     int cnt = 0, last = 0;
     REP(i,n) {
       int now = a[i] - last;
-      if (mid <= now && mid <= l-a[i]) { cnt++; last = a[i]; }
+      if (now >= mid && l - a[i] >= mid) {
+        cnt++;
+        last = a[i];
+      }
     }
 
-    if (k <= cnt) ok = mid;
+    if (cnt >= k) ok = mid;
     else ng = mid;
   }
+
   cout << ok << endl;
   return 0;
 }
