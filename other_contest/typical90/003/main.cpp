@@ -24,9 +24,12 @@ int main() {
     g[b].push_back(a);
   }
 
+  // 0を根としてdfs
   dfs(0,-1);
-  int idx = max_element(d.begin(),d.end()) - d.begin();
+  // 最も深いindexを取得
+  int find = max_element(d.begin(),d.end()) - d.begin();
   d = vector<int>(n);
+  // 最も深いindexを根としてdfs
   dfs(idx,-1);
   cout << *max_element(d.begin(),d.end())+1 << endl;
   return 0;
