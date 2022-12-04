@@ -3,6 +3,7 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
 #define endl '\n'
 using ll = long long;
+template<class T> void chmax(T& a, T b) { if (a < b) a = b; }
 
 struct Work {
   int d,c,s;
@@ -17,20 +18,20 @@ int main() {
     int d,c,s; cin >> d >> c >> s;
     w.emplace_back(d,c,s);
   }
-  sort(w.begin(),w.end()); // 締切日の昇順
-  int maxd = w.back().d;
-  vector<ll> dp(maxd+1,-1); // dp[i日目] = i日目で最大の報酬
+  sort(w.begin(),w.end());
+  int mxd = w.back().d;
+
+  // dp[i] := i日目までで最大の報酬
+  vector<ll> dp(mxd, -1);
   dp[0] = 0;
-
   REP(i,n) {
-    vector<ll> p(maxd+1, -1);
+    vector<ll> p(mxd, -1);
     swap(dp,p);
-
     REP(j,w[i].d+1) {
       dp[j] = p[j];
       if (j - w[i].c < 0) continue;
       if (p[j - w[i].c] == -1) continue;
-      dp[j] = max(dp[j], p[j - w[i].c] + w[i].s);
+      chmax(dp[j], p[j-w[i].c] + w[i].s);
     }
   }
 
