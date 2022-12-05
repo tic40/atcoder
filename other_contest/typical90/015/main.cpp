@@ -34,10 +34,11 @@ int main() {
 
   for(int k = 1; k <= n; k++) {
     mint sum = 0;
-    for(int i = 1; i <= n/k+1; i++) {
-      // 1..nからk以上の差になるものをi個選ぶ場合
+    for(int a = 1; a <= (n+k-1)/k; a++) {
+      // 1..nからk以上の差になるものをa個選ぶ場合
       // k-1個の選ばないボールを挿入することを考える
-      sum += com(n-(k-1)*(i-1), i);
+      // n-(k-1)(a-1) から a個を選ぶ
+      sum += com(n-(k-1)*(a-1), a);
     }
     cout << sum.val() << endl;
   }
