@@ -10,21 +10,21 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-	// dp[l][r] := l,l+1..., r番目の人だけが抜けるのに必要な最小のコスト
-	vector dp(n,vector<int>(n,INF));
-	REP(i,n-1) dp[i][i+1] = abs(a[i]-a[i+1]);
+  // dp[l][r] := l,l+1..., r番目の人だけが抜けるのに必要な最小のコスト
+  vector dp(n,vector<int>(n,INF));
+  REP(i,n-1) dp[i][i+1] = abs(a[i]-a[i+1]);
 
-	for (int i = 3; i < n; i += 2) {
+  for (int i = 3; i < n; i += 2) {
     REP(j,n-i) {
-			int l = j, r = j+i;
-			// 最後に人l,rが抜けるケース
-			chmin(dp[l][r], dp[l+1][r-1] + abs(a[l] - a[r]));
-			// それ以外のケース
-			// [l,k] の区間と [k+1,r] に分けて考える
-			for (int k = l; k < r; k++) chmin(dp[l][r], dp[l][k] + dp[k+1][r]);
-		}
-	}
+      int l = j, r = j+i;
+      // 最後に人l,rが抜けるケース
+      chmin(dp[l][r], dp[l+1][r-1] + abs(a[l] - a[r]));
+      // それ以外のケース
+      // [l,k] の区間と [k+1,r] に分けて考える
+      for (int k = l; k < r; k++) chmin(dp[l][r], dp[l][k] + dp[k+1][r]);
+    }
+  }
 
-	cout << dp[0][n-1] << endl;
-	return 0;
+  cout << dp[0][n-1] << endl;
+  return 0;
 }
