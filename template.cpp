@@ -2,7 +2,7 @@
 #include <atcoder/all>
 using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
 using P = pair<int,int>;
