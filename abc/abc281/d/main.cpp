@@ -6,8 +6,8 @@ using ll = long long;
 template<class T> void chmax(T& a, T b) { if (a < b) a = b; }
 
 int main() {
-  ll n,k,d; cin >> n >> k >> d;
-  vector<ll> a(n);
+  int n,k,d; cin >> n >> k >> d;
+  vector<int> a(n);
   REP(i,n) cin >> a[i];
 
   vector dp(n+1, vector(d+1, vector<ll>(k+2, -1)));
