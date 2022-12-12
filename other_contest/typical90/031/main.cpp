@@ -22,9 +22,12 @@ int main() {
     // mex: 最小除外数を求めるための集合
     // mex[i] = trueのとき、iは集合に含まれる.
     // mex[i] = false になる最小の i が最小除外数となる
+
+    // 操作1: w >= 1 のとき選択可能
+    // 選んだ山に青石をi個加え、白石を1個取り除く
     if (i >= 1) mex[grundy[i-1][j+i]] = true;
 
-    // 操作2 [2 <= b のとき選択可能]
+    // 操作2: 2 <= b のとき選択可能
     // 1 以上 b/2以下の整数 k を選び、選んだ山から青石を k 個取り除く
     if (j >= 2) {
       for(int k = 1; k <= j/2; k++) mex[grundy[i][j-k]] = true;
@@ -35,6 +38,7 @@ int main() {
   }
 
   int ans = 0;
+  // それぞれの山ごとに見ていく
   REP(i,n) ans ^= grundy[w[i]][b[i]];
   cout << (ans == 0 ? "Second" : "First") << endl;
 
