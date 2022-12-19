@@ -1,14 +1,39 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
-using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
 
+int n,m;
+vector<vector<int>> g(2e5);
+vector<int>col(2e5,-1);
+vector<int>cnt(2);
+
+bool bfs(int i) {
+  queue<int> que;
+  cnt = vector<int>(2);
+  col[i] = 0;
+  que.push(i);
+
+  while(que.size()) {
+    int qi = que.front(); que.pop();
+    cnt[col[qi]]++;
+    for (auto ni : g[qi]) {
+      if (col[ni] != -1) {
+        if (col[ni] == col[qi]) return false;
+        continue;
+      }
+      col[ni] = 1 - col[qi];
+      que.push(ni);
+    }
+  }
+  return true;
+}
+
+ll c2(ll n) { return n * (n-1) / 2; }
+
 int main() {
-  int n,m; cin >> n >> m;
-  vector<vector<int>> g(n);
+  cin >> n >> m;
   REP(i,m) {
     int u,v; cin >> u >> v;
     u--; v--;
@@ -16,45 +41,18 @@ int main() {
     g[v].push_back(u);
   }
 
-  vector<int> col(n,-1);
-  // cnt[i][j] := 連結成分i の 色0,1 の総数
-  vector cnt(n, vector<int>(2));
-  // bg[i] := i頂点が所属している連結成分の番号
-  vector<int> bg(n);
-  bool ok = true;
+  ll ans = c2(n)-m; // 全体の数
+  ans -= m; // 全体の数からすでに接続している辺の分を減らす
   REP(i,n) {
     if (col[i] != -1) continue;
-    queue<int> que;
+    // 2部グラフでないので終了
+    if (!bfs(i)) { cout << 0 << endl; return 0; }
 
-    col[i] = 0;
-    que.push(i);
-
-    while(que.size()) {
-      int qi = que.front(); que.pop();
-      bg[qi] = i;
-      cnt[i][col[qi]]++;
-      for (auto ni : g[qi]) {
-        if (col[ni] != -1) {
-          if (col[ni] == col[qi]) ok = false;
-          continue;
-        }
-        col[ni] = 1 - col[qi];
-        que.push(ni);
-      }
-    }
+    // 同じ色同士は接続できないので減らす
+    ans -= c2(cnt[0]);
+    ans -= c2(cnt[1]);
   }
 
-  // 2部グラフでないので終了
-  if (!ok) { cout << 0 << endl; return 0; }
-
-  ll ans = 0;
-  REP(i,n) {
-    // 連結成分内で接続可能な数
-    ans += cnt[bg[i]][1-col[i]] - (int)g[i].size();
-    // 連結成分外で接続可能な数
-    ans += n - (cnt[bg[i]][0] + cnt[bg[i]][1]);
-  }
-
-  cout << ans/2 << endl;
+  cout << ans << endl;
   return 0;
 }
