@@ -7,15 +7,13 @@ int main() {
   string s; cin >> s;
   int n = s.size();
 
-  int ans = 0;
-  bool flag = false;
-  REP(i,n) {
-    if (s[i] != '0') {
-      ans++;
-      flag = false;
+  int ans = 0, i = 0;
+  while(i < n) {
+    ans++;
+    if (i+1 < n && s[i] == '0' && s[i+1] == '0') {
+      i+=2;
     } else {
-      if (!flag) ans++;
-      flag = !flag;
+      i++;
     }
   }
 
