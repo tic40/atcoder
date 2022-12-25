@@ -8,14 +8,14 @@ int main() {
   int n = s.size();
 
   vector<bool> a(26);
-  stack<char> stk;
+  stack<char> st;
   REP(i,n) {
     if (s[i] == '(') {
-      stk.push(s[i]);
+      st.push(s[i]);
     } else if (s[i] == ')') {
       int cnt = 1;
-      while(stk.size()) {
-        char v = stk.top(); stk.pop();
+      while(st.size()) {
+        char v = st.top(); st.pop();
         if (v == '(') cnt--;
         else if (v == ')') cnt++;
         else a[ v-'a' ] = false;
@@ -23,7 +23,7 @@ int main() {
         if (cnt == 0) break;
       }
     } else {
-      stk.push(s[i]);
+      st.push(s[i]);
       if (a[ s[i]-'a' ]) { cout << "No" << endl; return 0; }
       a[ s[i]-'a' ] = true;
     }
