@@ -15,6 +15,7 @@ int main() {
     return res;
   };
 
+  // a1 が条件を満たしているかをチェックする関数
   auto check = [&](
     const vector<int>& a0,
     const vector<int>& a1,
@@ -30,15 +31,15 @@ int main() {
     return true;
   };
 
+  // dp[i][j] := i行目まで決めて、j(4状態)のときの最小手数
+  // 4状態: 今チェックしている行(a1)と、一つ次の行(a2) の組み合わせ4通り
+  // 00, 01, 10, 11: 1のときフリップする
   vector<int> dp(4,INF);
   REP(s,4) {
     vector<int> a0(w, -1);
     auto a1 = get(0, s&2);
     auto a2 = get(1, s&1);
-    int cnt = 0;
-    if (s&1) cnt++;
-    if (s&2) cnt++;
-    if (check(a0,a1,a2)) dp[s] = cnt;
+    if (check(a0,a1,a2)) dp[s] = __builtin_popcount(s);
   }
 
   for(int i = 2; i < h; i++) {
