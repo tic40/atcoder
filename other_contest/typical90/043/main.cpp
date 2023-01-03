@@ -17,6 +17,7 @@ int main() {
 
   priority_queue<T, vector<T>, greater<T>> q;
   vector dist(h, vector(w, vector<int>(4,INF)));
+
   auto push = [&](int a, int b, int dir, int cost) {
     if (a < 0 || b < 0 || a >= h || b >= w) return;
     if (s[a][b] == '#') return;
@@ -24,8 +25,8 @@ int main() {
     q.emplace(cost, a, b, dir);
     dist[a][b][dir] = cost;
   };
-  REP(i,4) push(rs,cs,i,0);
 
+  REP(i,4) push(rs,cs,i,0);
   while(q.size()) {
     auto [cost,x,y,dir] = q.top(); q.pop();
     REP(i,4) {
@@ -35,8 +36,7 @@ int main() {
     }
   }
 
-  int ans = INF;
-  REP(i,4) ans = min(ans, dist[rt][ct][i]);
+  int ans = *min_element(dist[rt][ct].begin(), dist[rt][ct].end());
   cout << ans << endl;
   return 0;
 }
