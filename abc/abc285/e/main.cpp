@@ -10,17 +10,17 @@ int main() {
   REP(i,n) cin >> a[i+1];
 
   vector<ll> b(n+1);
-  REP(w,n+1) for(int i = 1; i < w; i++) {
-    int j = w-i;
-    b[w] += a[min(i,j)];
+  REP(i,n) {
+    int w = n-i;
+    for(int j = i; j < n; j++) {
+      b[w] += a[min(j-i,n-j)];
+    }
   }
 
   // dp[i] := 最後の休日がi日目であるときの生産量max
   vector<ll> dp(n+1);
-  for(int i = 1; i <= n; i++) {
-    for(int j = 0; j < i; j++) {
-      dp[i] = max(dp[i], dp[j]+b[i-j]);
-    }
+  REP(i,n+1) for(int j = 0; j < i; j++) {
+    dp[i] = max(dp[i], dp[j]+b[i-j]);
   }
 
   cout << dp[n] << endl;
