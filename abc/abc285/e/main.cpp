@@ -8,12 +8,11 @@ int main() {
   int n; cin >> n;
   vector<int> a(n+1);
   REP(i,n) cin >> a[i+1];
+
   vector<ll> b(n+1);
-  REP(w,n+1) {
-    for(int i = 1; i < w; i++) {
-      int j = w-i;
-      b[w] += a[min(i,j)];
-    }
+  REP(w,n+1) for(int i = 1; i < w; i++) {
+    int j = w-i;
+    b[w] += a[min(i,j)];
   }
 
   // dp[i] := 最後の休日がi日目であるときの生産量max
