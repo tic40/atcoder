@@ -7,7 +7,7 @@ using namespace std;
 using ll = long long;
 
 int main() {
-  int n; ll a,b;
+  int n, a,b;
   cin >> n >> a >> b;
   string s; cin >> s;
 

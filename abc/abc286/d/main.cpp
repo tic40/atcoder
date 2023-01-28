@@ -18,7 +18,8 @@ int main() {
       if (!p[j]) continue;
       REP(k,b[i]+1) {
         int nj = j+a[i]*k;
-        if (nj <= x) dp[nj] = true;
+        if (nj > x) break;
+        dp[nj] = true;
       }
     }
   }
