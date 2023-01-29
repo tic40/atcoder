@@ -1,27 +1,24 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
-using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 
 int main() {
   string s,t; cin >> s >> t;
-  int ns = s.size(), ts = t.size();
+  int m = t.size();
 
-  unordered_set<int> st;
-  auto match = [&](char a, char b) { return a == '?' || b == '?' || a == b; };
-  auto out = [&]() { cout << (st.size() ? "No" : "Yes") << endl; };
-
-  REP(i,ts) if (!match(s[ns-ts+i], t[i])) st.insert(i);
-  out();
-
-  REP(i,ts) {
-    if (!match(s[i], t[i])) st.insert(i);
-    else st.erase(i);
-
-    out();
+  vector<bool> ans(m+1,true);
+  REP(_,2) {
+    bool ok = true;
+    REP(i,m) {
+      if (s[i] != '?' && t[i] != '?' && s[i] != t[i]) ok = false;
+      ans[i+1] = ans[i+1] && ok;
+    }
+    reverse(s.begin(),s.end());
+    reverse(t.begin(),t.end());
+    reverse(ans.begin(),ans.end());
   }
 
+  for(auto v: ans) cout << (v ? "Yes" : "No") << endl;
   return 0;
 }
