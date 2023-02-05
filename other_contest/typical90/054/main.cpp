@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
-const int INF = 1e9;
+const int INF = numeric_limits<int>::max();
 
 int main() {
   int n,m; cin >> n >> m;
@@ -17,25 +17,21 @@ int main() {
     }
   }
 
-  queue<int> q;
-  q.push(0);
   vector<int> dist(n+m,INF);
-  dist[0] = 0;
+  queue<int> q;
+  auto push = [&](int i, int nd) {
+    if (dist[i] <= nd) return;
+    q.push(i);
+    dist[i] = nd;
+  };
 
+  push(0,0);
   while(q.size()) {
-    int v = q.front(); q.pop();
-    for(int nv: g[v]) {
-      int nd = dist[v]+1;
-      if (nd < dist[nv]) {
-        q.push(nv);
-        dist[nv] = nd;
-      }
-    }
+    int now = q.front(); q.pop();
+    int nd = dist[now]+1;
+    for(auto v: g[now]) push(v,nd);
   }
 
-  REP(i,n) {
-    if (dist[i] == INF) cout << -1 << endl;
-    else cout << dist[i]/2 << endl;
-  }
+  REP(i,n) cout << (dist[i] == INF ? -1 : dist[i]/2) << endl;
   return 0;
 }
