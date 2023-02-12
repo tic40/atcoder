@@ -9,13 +9,15 @@ int main() {
   vector a(m,vector<int>(n));
   REP(i,m) REP(j,n) cin >> a[i][j];
 
+  vector<int> abit(m);
+  REP(i,m) REP(j,n) if (a[i][j]) abit[i] |= 1<<j;
+
   vector<int> dp(1<<n,INF);
   dp[0] = 0;
   REP(bit,1<<n) {
     if (dp[bit] == INF) continue;
     REP(i,m) {
-      int nbit = bit;
-      REP(j,n) if (a[i][j]) nbit += 1<<j;
+      int nbit = bit | abit[i];
       dp[nbit] = min(dp[nbit], dp[bit]+1);
     }
   }
