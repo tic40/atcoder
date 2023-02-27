@@ -11,7 +11,7 @@ int main() {
   REP(i,n) cin >> s[i];
 
   // 前後からdpする
-  vector<int> d1(n,INF), dn(n,INF);
+  vector<int> d1(n,INF),dn(n,INF);
   d1[0] = 0; dn[n-1] = 0;
   REP(i,n) REP(j,m) {
     if (s[i][j] == '1') chmin(d1[i+j+1], d1[i]+1);
@@ -20,18 +20,15 @@ int main() {
     if (s[i][j] == '1') chmin(dn[i], dn[i+j+1]+1);
   }
 
-  for(int v = 1; v <= n-2; v++) {
+  for(int i = 1; i < n-1; i++) {
     int ans = INF;
-    for (int l = v-m; l < v; l++) {
-      if (l < 0) continue;
-      for (int r = v+1; r <= v+m; r++) {
-        if (r >= n || r-l > m) break;
-        if (s[l][r-l-1] == '1') chmin(ans, d1[l]+dn[r]+1);
+    for(int l = max(0,i-m); l < i; l++) {
+      REP(k,m) {
+        int r = l+k+1;
+        if (s[l][k] == '1' && i < r) chmin(ans,d1[l]+dn[r]+1);
       }
     }
-
     cout << (ans == INF ? -1 : ans) << " ";
   }
-
   return 0;
 }
