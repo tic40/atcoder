@@ -10,18 +10,16 @@ int main() {
   int n,w,l,r; cin >> n >> w >> l >> r;
   vector<int> x(n+2);
   for(int i = 1; i <= n; i++) cin >> x[i];
-  x[0] = 0; x[n+1] = w;
+  x[n+1] = w;
 
-  vector<mint> dp(n+2), sum(n+2);
-  dp[0] = 1; sum[0] = 1;
-  for(int i = 1; i <= n+1; i++) {
-    int posL = lower_bound(x.begin(),x.end(),x[i]-r) - x.begin();
-    int posR = lower_bound(x.begin(),x.end(),x[i]-l+1) - x.begin();
-    posR--;
+  vector<mint> dp(n+2), s(n+2);
+  dp[0] = 1; s[0] = 1;
+  for(int i = 1; i < n+2; i++) {
+    int nl = lower_bound(x.begin(),x.end(),x[i]-r) - x.begin();
+    int nr = upper_bound(x.begin(),x.end(),x[i]-l) - x.begin() - 1;
 
-    if (posR != -1) dp[i] = sum[posR];
-    if (posL >= 1) dp[i] -= sum[posL - 1];
-    sum[i] = sum[i-1] + dp[i];
+    if (nl > 0 && nl <= nr) dp[i] = s[nr] - s[nl-1];
+    s[i] = s[i-1] + dp[i];
   }
   cout << dp[n+1].val() << endl;
   return 0;
