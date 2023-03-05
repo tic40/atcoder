@@ -4,6 +4,7 @@ using namespace std;
 #define endl '\n'
 using ll = long long;
 
+// nC2: n個から2個選ぶ
 ll c2(ll n) { return n * (n-1) / 2; }
 
 int main() {
@@ -15,6 +16,7 @@ int main() {
 
   ll same = 0;
   REP(i,n) same += c2(cnt[i]);
+
   auto del = [&](int x) {
     same -= c2(cnt[x]);
     cnt[x]--;
