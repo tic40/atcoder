@@ -11,7 +11,8 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  vector dp(n+1, vector<int>(n,INF));
+  // dp[i][j] := 範囲 i から j を削除するときの最小コスト
+  vector dp(n,vector<int>(n,INF));
   REP(i,n-1) dp[i][i+1] = abs(a[i+1]-a[i]);
 
   for(int i = 3; i < n; i+=2) REP(j,n-i) {
