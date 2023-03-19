@@ -3,11 +3,6 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
-using P = pair<ll,ll>;
-const int INF = numeric_limits<int>::max();
-const ll LINF = numeric_limits<ll>::max();
-const int MOD = 1e9+7;
-// using mint = modint998244353; // modint1000000007;
 
 struct V {
   ll left,right,x;
@@ -30,9 +25,9 @@ int main() {
     pos += b;
   }
 
-  ll ans = 0;
   auto now1 = v1.front(); v1.pop();
   auto now2 = v2.front(); v2.pop();
+  ll ans = 0;
 
   auto f = [&]() {
     if (now1.right <= now2.right) {
