@@ -4,43 +4,46 @@ using namespace std;
 #define endl '\n'
 using ll = long long;
 
-struct V {
-  ll left,right,x;
-};
+struct V { ll l,r,x; };
 
 int main() {
-  ll l,n1,n2;
+  ll l; int n1,n2;
   cin >> l >> n1 >> n2;
+
   queue<V> v1,v2;
   ll pos = 0;
   REP(i,n1) {
-    ll a,b; cin >> a >> b;
-    v1.push({ pos, pos+b-1, a });
+    int a,b; cin >> a >> b;
+    v1.push({pos,pos+b-1,a});
     pos += b;
   }
   pos = 0;
   REP(i,n2) {
-    ll a,b; cin >> a >> b;
-    v2.push({ pos, pos+b-1, a });
+    int a,b; cin >> a >> b;
+    v2.push({pos,pos+b-1,a});
     pos += b;
   }
 
-  auto now1 = v1.front(); v1.pop();
-  auto now2 = v2.front(); v2.pop();
+  auto pop = [&](queue<V> &v) {
+    auto res = v.front(); v.pop();
+    return res;
+  };
+
   ll ans = 0;
+  auto now1 = pop(v1);
+  auto now2 = pop(v2);
 
   auto f = [&]() {
-    if (now1.right <= now2.right) {
-      if (now1.x == now2.x && now1.right >= now2.left) {
-        ans += now1.right - max(now2.left, now1.left) + 1;
+    if (now1.r <= now2.r) {
+      if (now1.x == now2.x && now2.l <= now1.r) {
+        ans += now1.r - max(now2.l, now1.l) + 1;
       }
-      if (v1.size()) { now1 = v1.front(); v1.pop(); }
-    }
-    else {
-      if (now1.x == now2.x && now2.right >= now1.left) {
-        ans += now2.right - max(now1.left, now2.left) + 1;
+      if (v1.size()) now1 = pop(v1);
+    } else {
+      if (now1.x == now2.x && now1.l <= now2.r) {
+        ans += now2.r - max(now2.l, now1.l) + 1;
       }
-      if (v2.size()) { now2 = v2.front(); v2.pop(); }
+      if (v2.size()) now2 = pop(v2);
     }
   };
 
