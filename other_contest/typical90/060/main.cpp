@@ -7,8 +7,7 @@ vector<int> lis(const vector<int> &a) {
   int n = a.size();
   vector<int> dp(n,INF), res(n);
   REP(i,n) {
-    auto it =lower_bound(dp.begin(), dp.end(), a[i]);
-    int pos = it - dp.begin();
+    int pos = lower_bound(dp.begin(), dp.end(), a[i]) - dp.begin();
     dp[pos] = a[i];
     res[i] = pos+1;
   }
@@ -23,7 +22,7 @@ int main() {
 
   auto lis1 = lis(a);
   reverse(a.begin(),a.end());
-  auto lis2 = lis(a); // aをreverseした際のlis
+  auto lis2 = lis(a); // a を reverse して lis
   reverse(lis2.begin(),lis2.end());
 
   int ans = 0;
