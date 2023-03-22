@@ -9,10 +9,10 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  vector<ll> e(n);
+  vector<ll> e(n-1);
   REP(i,n-1) e[i] = a[i+1]-a[i];
-  ll ans = 0;
-  REP(i,n-1) ans += abs(e[i]);
+  ll now = 0;
+  REP(i,n-1) now += abs(e[i]);
 
   REP(_,q) {
     int l,r,v; cin >> l >> r >> v;
@@ -20,15 +20,14 @@ int main() {
 
     ll before = abs(e[r]);
     if (l-1 >= 0) before += abs(e[l-1]);
-
     if (l-1 >= 0) e[l-1] += v;
     if (r < n-1) e[r] -= v;
 
     ll after = abs(e[r]);
     if (l-1 >= 0) after += abs(e[l-1]);
 
-    ans += after - before;
-    cout << ans << endl;
+    now += after - before;
+    cout << now << endl;
   }
   return 0;
 }
