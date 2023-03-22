@@ -4,18 +4,18 @@ using namespace std;
 #define endl '\n'
 using ll = long long;
 
-ll base8_to_ll(string s) {
+ll base_to_ll(int base, string s) {
   ll res = 0;
-  for(auto c: s) res = res * 8 + (c-'0');
+  for(auto c: s) res = res * base + (c-'0');
   return res;
 }
 
-string ll_to_base9(ll x) {
+string ll_to_base(int base, ll x) {
   if (x == 0) return "0";
   string res = "";
   while(x > 0) {
-    res = char(x % 9 + '0') + res;
-    x /= 9;
+    res = char(x % base + '0') + res;
+    x /= base;
   }
   return res;
 }
@@ -25,7 +25,7 @@ int main() {
   cin >> s >> k;
 
   REP(_,k) {
-    s = ll_to_base9(base8_to_ll(s));
+    s = ll_to_base(9, base_to_ll(8,s));
     for(char& v: s) if (v == '8') v = '5';
   }
   cout << s << endl;
