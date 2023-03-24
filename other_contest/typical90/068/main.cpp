@@ -23,15 +23,14 @@ int main() {
   dsu uf(n);
   REP(i,q) {
     if (t[i] == 0) { uf.merge(x[i],y[i]); continue; }
-
+    // 連結していない
     if (!uf.same(x[i],y[i])) { cout << "Ambiguous" << endl; continue; }
 
     ll diff = v[i] - potential[x[i]];
-    if((x[i]+y[i])%2 == 0) {
-      cout << potential[y[i]] + diff << endl;
-    } else {
-      cout << potential[y[i]] - diff << endl;
-    }
+    ll ans = potential[y[i]];
+    if(abs(x[i]-y[i])%2 == 0) ans += diff;
+    else ans -= diff;
+    cout << ans << endl;
   }
   return 0;
 }
