@@ -19,10 +19,9 @@ mint f(ll base, ll n) {
 int main() {
   ll n,k; cin >> n >> k;
 
-  mint ans = 1;
-  REP(i,min((ll)2,n)) ans *= (k-i);
-
-  if (n >= 3) ans *= f(max(0LL,k-2), max(0LL,n-2) );
+  mint ans = k;
+  if (n > 1) ans *= k-1;
+  if (k-2 >= 0 && n-2 >= 0) ans *= f(k-2,n-2);
   cout << ans.val() << endl;
   return 0;
 }
