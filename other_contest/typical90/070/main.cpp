@@ -11,11 +11,10 @@ int main() {
 
   sort(x.begin(),x.end());
   sort(y.begin(),y.end());
-  int mid = n/2;
   ll ans = 0;
   REP(i,n) {
-    ans += abs(x[i] - x[mid]);
-    ans += abs(y[i] - y[mid]);
+    ans += abs(x[i] - x[n/2]);
+    ans += abs(y[i] - y[n/2]);
   }
   cout << ans << endl;
   return 0;
