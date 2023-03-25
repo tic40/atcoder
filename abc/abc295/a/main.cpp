@@ -8,7 +8,7 @@ int main() {
   auto r = regex("^((and)|(not)|(that)|(the)|(you))$");
   REP(i,n) {
     string w; cin >> w;
-    if (regex_search(w,r)) { cout << "Yes" << endl; return 0;}
+    if (regex_match(w,r)) { cout << "Yes" << endl; return 0;}
   }
   cout << "No" << endl;
   return 0;
