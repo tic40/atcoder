@@ -4,19 +4,18 @@ using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
 #define endl '\n'
-const int MOD = 1e9+7;
 using mint = modint1000000007;
 
 vector<char> c(1e5);
 vector<vector<int>> g(1e5);
 // dp[i][j(今の連結成分にどれがあるか)] := 頂点iの部分木を考えたとき何通りか
-// jは0: 'a' しかない, 1: 'b' しかない, 2: 'a','b' 両方ある
+// j := 0: 'a' しかない, 1: 'b' しかない, 2: 'a','b' 両方ある
 vector dp(1e5, vector<mint>(3));
 
 void dfs(int i, int p) {
-  // val1: a or b片方だけ含む
+  // val1: a or b 片方だけ含む数
   // val2: 全体の数
-  // val2 - val1 = a,b両方含む数
+  // val2 - val1 = a,b 両方含む数
   mint val1 = 1, val2 = 1;
 
   for(int v: g[i]) {
@@ -24,12 +23,17 @@ void dfs(int i, int p) {
     dfs(v,i);
 
     if (c[i] == 'a') {
-      // 今いる場所がaなら、dp[v][0], dp[v][1]は削除してよい
+      // 今いる場所が a のとき
+      // dp[v][0]: 切らない
+      // dp[v][2]: 切る
       val1 *= (dp[v][0] + dp[v][2]);
     } else {
       val1 *= (dp[v][1] + dp[v][2]);
     }
-    // dp[i][2]*2 しているのは削除する場合はdp[v][2]から遷移する必要があるため
+    // 全体の数
+    // dp[v][0]: 切らない
+    // dp[v][1]: 切らない
+    // dp[v][2]*2: 切らない分と切る分
     val2 *= (dp[v][0] + dp[v][1] + dp[v][2]*2);
   }
 
@@ -50,8 +54,8 @@ int main() {
     g[b].push_back(a);
   }
 
-  dfs(1,-1);
-  cout << dp[1][2].val() << endl;
+  dfs(0,-1);
+  cout << dp[0][2].val() << endl;
 
   return 0;
 }
