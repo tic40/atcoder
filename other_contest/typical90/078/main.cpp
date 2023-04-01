@@ -9,12 +9,10 @@ int main() {
   REP(i,m) {
     int a,b; cin >> a >> b;
     a--; b--;
-    if (a > b) cnt[a]++;
-    else cnt[b]++;
+    a > b ? cnt[a]++ : cnt[b]++;
   }
   int ans = 0;
   REP(i,n) if (cnt[i] == 1) ans++;
   cout << ans << endl;
-
   return 0;
 }
