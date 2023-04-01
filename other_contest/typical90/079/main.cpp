@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
-using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
 
@@ -22,6 +20,5 @@ int main() {
 
   if (a == b) cout << "Yes" << endl << ans << endl;
   else cout << "No" << endl;
-
   return 0;
 }
