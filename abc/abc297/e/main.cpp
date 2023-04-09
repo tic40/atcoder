@@ -9,19 +9,20 @@ int main() {
   vector<ll> a(n);
   REP(i,n) cin >> a[i];
 
-  set<ll> st;
   priority_queue<ll, vector<ll>, greater<ll>> q;
   REP(i,n) q.push(a[i]);
 
-  while(q.size() && (int)st.size() <= k) {
-    ll v = q.top(); q.pop();
-    if (st.count(v)) continue;
-    st.insert(v);
-    REP(i,n) q.push(v+a[i]);
+  int cnt = 0;
+  ll now = -1, prev = -1;
+  while(cnt < k) {
+    swap(now,prev);
+    now = q.top(); q.pop();
+    if (now == prev) continue;
+
+    REP(i,n) q.push(now + a[i]);
+    cnt++;
   }
 
-  auto it = st.begin();
-  advance(it, k-1);
-  cout << *it << endl;
+  cout << now << endl;
   return 0;
 }
