@@ -12,35 +12,38 @@ int main() {
     g[b].push_back(a);
   }
 
-  const int b = sqrt(2*m); // 次数がb以上を大きい頂点とする
-  vector<int> large; // b以上の頂点の集合
-  REP(i,n) if ((int)g[i].size() >= b) large.push_back(i);
-
-  // link[i] = iからlargeに向かっている集合
-  vector<vector<int>> link(n);
-  for(int i: large) {
-    link[i].push_back(i);
-    for(int j: g[i]) link[j].push_back(i);
-  }
-
-  // 最後に更新した時間(index)を入れる
-  vector<int> update(n,-1), update_large(n,-1);
-
-  int q; cin >> q;
-  vector<int> x(q),y(q);
-  REP(i,q) {
-    cin >> x[i] >> y[i]; x[i]--;
-    int last = update[x[i]];
-    for(int j: link[x[i]]) last = max(last, update_large[j]);
-    cout << (last == -1 ? 1 : y[last]) << endl;
-
-    if ((int)g[x[i]].size() < b) {
-      update[x[i]] = i;
-      for (int j: g[x[i]]) update[j] = i;
-    } else {
-      update_large[x[i]] = i;
+  // 平方分割. 次数の総数の平方根
+  int b =  sqrt(m*2);
+  // b 以上の次数を持つ頂点集合
+  vector<int> large;
+  // link[i] := 頂点 i と接続している large 頂点の集合
+  // v と隣接している large 頂点の集合
+  vector link(n, vector<int>());
+  REP(i,n) {
+    if ((int)g[i].size() >= b) {
+      large.push_back(i);
+      for(int j: g[i]) link[j].push_back(i);
     }
   }
 
+  // 最後に更新した時刻
+  vector<int> update(n,-1), update_l(n,-1);
+  int q; cin >> q;
+  vector<int> x(q),y(q),ans(q);
+  REP(i,q) {
+    cin >> x[i] >> y[i]; x[i]--;
+    int last = max(update[x[i]], update_l[x[i]]);
+    for(int v: link[x[i]]) last = max(last, update_l[v]);
+    ans[i] = (last == -1 ? 1 : y[last]);
+
+    if ((int)g[x[i]].size() >= b) {
+      update_l[x[i]] = i;
+    } else {
+      update[x[i]] = i;
+      for(int v: g[x[i]]) update[v] = i;
+    }
+  }
+
+  REP(i,q) cout << ans[i] << endl;
   return 0;
 }
