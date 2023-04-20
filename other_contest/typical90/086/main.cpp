@@ -17,19 +17,16 @@ int main() {
   }
 
   mint ans = 1;
-  vector<int> b(n);
+  // bitの桁ごとに見ていく
   REP(i,60) {
     int cnt = 0;
     REP(bit,1<<n) {
+      // b[j] := 数列Aの各数の i 桁目が何か
+      vector<int> b(n);
       REP(j,n) b[j] = bit >> j & 1;
 
-      bool ok = true;
-      REP(j,q) {
-        if ((b[x[j]] | b[y[j]] | b[z[j]]) != (w[j] >> i & 1)) {
-          ok = false;
-          break;
-        }
-      }
+      bool ok = 1;
+      REP(j,q) ok &= (b[x[j]] | b[y[j]] | b[z[j]]) == (w[j] >> i & 1);
       if (ok) cnt++;
     }
     ans *= cnt;
