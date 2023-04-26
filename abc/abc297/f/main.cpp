@@ -40,8 +40,7 @@ mint comb(int n, int k) {
 }
 
 int main() {
-  int h,w,k;
-  cin >> h >> w >> k;
+  int h,w,k; cin >> h >> w >> k;
   mint ans;
 
   for(int r = 1; r <= h; r++) {
@@ -57,6 +56,7 @@ int main() {
         int sg = (__builtin_parity(s)) ? -1 : 1;
         now += comb(nr * nc, k) * sg;
       }
+      // 場合の数 x 面積 x これ以降の場合の数
       ans += now * r * c * (h-r+1) * (w-c+1);
     }
   }
