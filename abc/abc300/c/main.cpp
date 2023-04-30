@@ -4,7 +4,7 @@ using namespace std;
 #define endl '\n'
 using P = pair<int,int>;
 
-const vector<P> m1 = { {1,1}, {1,-1}, {-1,1}, {-1,-1} };
+const vector<P> m = { {1,1}, {1,-1}, {-1,1}, {-1,-1} };
 
 int main() {
   int h,w; cin >> h >> w;
@@ -12,11 +12,12 @@ int main() {
   REP(i,h) cin >> c[i];
   int n = min(h,w);
 
+  // 座標(i,j)を中心とする x印のサイズを返す
   auto f = [&](int i, int j) {
     if (c[i][j] == '.') return 0;
     int res = 0;
     for(int k = 1; k <= n; k++) {
-      for(auto [vi,vj]: m1) {
+      for(auto [vi,vj]: m) {
         int ni = i + vi * k;
         int nj = j + vj * k;
         if (ni < 0 || nj < 0 || ni >= h || nj >= w) return res;
