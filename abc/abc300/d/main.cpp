@@ -2,7 +2,7 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
-using ll = unsigned long long;
+using ll = long long;
 
 vector<int> eratosthenes(int n) {
   vector<int> res;
@@ -21,20 +21,13 @@ int main() {
   sort(p.begin(),p.end());
   int sz = p.size();
 
-  ll ans = 0;
-  REP(i,sz) {
-    ll a = p[i];
-    ll a2 = a*a;
-    for(int j = i+1; j < sz; j++) {
-      ll b = p[j];
-      ll a2b = a2 * b;
-      if (a2 > n || a2b > n) break;
-      ll c = sqrt(n / a2b);
-      if (c < b) break;
-      auto it = upper_bound(p.begin(),p.end(),c);
-      int id = it - p.begin();
-      ans += max(0, id-1-j);
-    }
+  int ans = 0;
+  REP(i,sz) for(int j = i+1; j < sz; j++) {
+    ll a = p[i], b = p[j];
+    ll c = sqrt( n / (a*a*b) );
+    if (c <= b) break;
+    int idx = upper_bound(p.begin(),p.end(),c) - p.begin();
+    ans += max(0, idx-j-1);
   }
 
   cout << ans << endl;
