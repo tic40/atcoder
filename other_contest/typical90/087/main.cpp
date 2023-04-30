@@ -11,7 +11,7 @@ int main() {
 
   auto binary_search = [&](int key) {
     ll l = 1, r = 1e10;
-    REP(i,40) {
+    while(r-l > 1) {
       ll mid = (l+r) / 2;
       auto dp = a;
       REP(i,n) REP(j,n) if (dp[i][j] == -1) dp[i][j] = mid;
