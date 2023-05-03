@@ -1,24 +1,24 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 
-int n;
-void f(int i, int l, string s) {
-  if (l < 0) return;
-  if (i == n) {
-    if (l == 0) cout << s << endl;
-    return;
-  }
-
-  f(i+1, l+1, s+'(');
-  f(i+1, l-1, s+')');
-
-  return;
-}
-
 int main() {
-  cin >> n;
-  f(1,1,"(");
+  int n; cin >> n;
+  vector<string> ans;
+
+  // cnt := 閉じていない開き括弧の数
+  auto dfs = [&](auto self, string s, int cnt) {
+    if ((int)s.size() == n) {
+      if (cnt == 0) ans.push_back(s);
+      return;
+    }
+    self(self, s+"(", cnt+1);
+    if (cnt > 0) self(self, s+")", cnt-1);
+  };
+
+  dfs(dfs,"(",1);
+  sort(ans.begin(),ans.end());
+  for(auto v: ans) cout << v << endl;
   return 0;
 }
