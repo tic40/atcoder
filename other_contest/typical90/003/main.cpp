@@ -1,22 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
+const int INF = numeric_limits<int>::max();
 #define endl '\n'
-
-vector<vector<int>> g(1e5);
-vector<int> d(1e5);
-
-void dfs(int i, int p) {
-  for(int v: g[i]) {
-    if (v == p) continue;
-    d[v] = d[i]+1;
-    dfs(v,i);
-  }
-  return;
-}
 
 int main() {
   int n; cin >> n;
+  vector g(n,vector<int>());
   REP(i,n-1) {
     int a,b; cin >> a >> b;
     a--; b--;
@@ -24,13 +14,27 @@ int main() {
     g[b].push_back(a);
   }
 
-  // 0を根としてdfs
-  dfs(0,-1);
-  // 最も深いindexを取得
-  int find = max_element(d.begin(),d.end()) - d.begin();
-  d = vector<int>(n);
-  // 最も深いindexを根としてdfs
-  dfs(idx,-1);
-  cout << *max_element(d.begin(),d.end())+1 << endl;
+  auto bfs = [&](int i) -> vector<int> {
+    vector<int> dist(n,INF);
+    queue<int> q;
+    q.push(i);
+    dist[i] = 0;
+    while(q.size()) {
+      int now = q.front(); q.pop();
+      for(int v: g[now]) {
+        if (dist[v] != INF) continue;
+        dist[v] = dist[now]+1;
+        q.push(v);
+      }
+    }
+    return dist;
+  };
+
+  auto dist1 = bfs(0);
+  int idx = max_element(dist1.begin(),dist1.end()) - dist1.begin();
+  auto dist2 = bfs(idx);
+  int ans = *max_element(dist2.begin(),dist2.end()) + 1;
+  cout << ans << endl;
+
   return 0;
 }
