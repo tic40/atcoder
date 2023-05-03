@@ -14,7 +14,7 @@ int main() {
     g[b].push_back(a);
   }
 
-  auto bfs = [&](int i) -> vector<int> {
+  auto bfs = [&](int i) {
     vector<int> dist(n,INF);
     queue<int> q;
     q.push(i);
