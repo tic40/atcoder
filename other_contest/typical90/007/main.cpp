@@ -9,7 +9,6 @@ int main() {
   REP(i,n) cin >> a[i];
   sort(a.begin(),a.end());
   int q; cin >> q;
-
   REP(_,q) {
     int b; cin >> b;
     int idx = lower_bound(a.begin(),a.end(),b) - a.begin();
