@@ -1,28 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 
 int main() {
-  int n,k; string s;
-  cin >> n >> k >> s;
+  int n,k; cin >> n >> k;
+  string s; cin >> s;
 
-  vector m(n+1, vector<int>(26,n));
-  for(int i = n-1; i >= 0; i--) REP(j,26) {
-    if (s[i]-'a' == j) m[i][j] = i;
-    else m[i][j] = m[i+1][j];
-  }
+  vector m(26, vector<int>());
+  REP(i,n) m[s[i]-'a'].push_back(i);
 
-  string ans;
-  int pos = 0;
-  REP(i,k) REP(j,26) {
-    int nextPos = m[pos][j];
-    if (k - i <= n - nextPos) {
-      ans += 'a' + j;
-      pos = nextPos + 1;
-      break;
-    }
+  int l = 0, r = n - k + 1;
+  REP(_,k) REP(j,26) {
+    auto it = lower_bound(m[j].begin(), m[j].end(),l);
+    if (it == m[j].end() || *it >= r) continue;
+    l = *it + 1;
+    r++;
+    cout << char('a' + j);
+    break;
   }
-  cout << ans << endl;
   return 0;
 }
