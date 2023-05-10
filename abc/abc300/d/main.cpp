@@ -4,21 +4,23 @@ using namespace std;
 #define endl '\n'
 using ll = long long;
 
-vector<int> eratosthenes(int n) {
-  vector<int> res;
-  vector<bool> is_prime(n+1,true);
-  for(int i = 2; i <= n; i++) {
-    if (!is_prime[i]) continue;
-    for(int j = 2*i; j <= n; j+=i) is_prime[j] = false;
-    res.push_back(i);
+struct Sieve {
+  int n; vector<int> f,primes;
+  Sieve(int n=1): n(n), f(n+1) {
+    f[0] = f[1] = -1;
+    for (ll i = 2; i <= n; i++) {
+      if (f[i]) continue;
+      primes.push_back(i);
+      f[i] = i;
+      for(ll j = i*i; j <= n; j += i) if (!f[j]) f[j] = i;
+    }
   }
-  return res;
-}
+};
 
 int main() {
   ll n; cin >> n;
-  auto p = eratosthenes(sqrt(n));
-  sort(p.begin(),p.end());
+  Sieve sieve(sqrt(n));
+  auto p = sieve.primes;
   int sz = p.size();
 
   int ans = 0;
