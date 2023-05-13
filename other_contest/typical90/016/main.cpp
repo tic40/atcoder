@@ -1,19 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
 
 int main() {
-  int n; cin >> n;
-  ll a,b,c; cin >> a >> b >> c;
-
-  int ans = 1e4;
-  REP(i,1e4) REP(j,1e4-i) {
-    ll now = n - a*i - b*j;
-    if (now >= 0 && now % c == 0) ans = min(ans, (int)(i+j+now/c));
+  ll n,a,b,c; cin >> n >> a >> b >> c;
+  int ans = 10000;
+  REP(i,10000) REP(j,10000) {
+    if (i+j >= ans) break;
+    ll now = a*i + b*j;
+    ll d = n - now;
+    if (d >= 0 && d % c == 0) ans = min(ans, (int)(i+j+d/c));
   }
-
   cout << ans << endl;
   return 0;
 }
