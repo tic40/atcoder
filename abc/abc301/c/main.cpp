@@ -6,22 +6,21 @@ using namespace std;
 int main() {
   const string atc = "atcoder";
   string s,t; cin >> s >> t;
+  set<char> st;
   map<char,int> ms,mt;
-  REP(i,(int)s.size()) { ms[s[i]]++; mt[t[i]]++; }
+  for(auto c: s) { st.insert(c); ms[c]++; }
+  for(auto c: t) { st.insert(c); mt[c]++; }
 
-  auto f = [&](map<char,int> ma, map<char,int> mb) {
-    for(auto [k,v]: ma) {
-      if (k == '@') continue;
-      int d = v - mb[k];
-      if (d <= 0) continue;
-      if (atc.find(k) == string::npos) return false;
-      if (mb['@'] < d) return false;
-      mb['@'] -= d;
-    }
-    return true;
-  };
+  bool ok = true;
+  for(char c: st) {
+    if (c == '@') continue;
+    int d = ms[c] - mt[c];
+    if (d == 0) continue;
+    if (atc.find(c) == string::npos) ok = false;
+    d > 0 ? mt['@'] -= d : ms['@'] -= d;
+  }
 
-  bool ok = f(ms,mt) && f(mt,ms);
+  if (ms['@'] < 0 || mt['@'] < 0) ok = false;
   cout << (ok ? "Yes" : "No") << endl;
   return 0;
 }
