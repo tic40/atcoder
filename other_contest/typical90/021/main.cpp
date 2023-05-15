@@ -5,51 +5,39 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 using ll = long long;
 
-int n,m;
-vector<vector<int>> g(1e5),gr(1e5);
-vector<int> dir;
-vector<bool> used;
-ll cnt = 0;
-
-void dfs1(int cur) {
-  if (used[cur]) return;
-  used[cur]=true;
-  for (int v: g[cur]) dfs1(v);
-  dir.push_back(cur);
-
-  return;
-}
-
-void dfs2(int cur) {
-  if (used[cur]) return;
-  used[cur]=true;
-  cnt++;
-  for (int v: gr[cur]) dfs2(v);
-
-  return;
-}
-
-// 強連結成分分解
 void solve1() {
+  int n,m; cin >> n >> m;
+  vector<vector<int>> g(n),gr(n);
   REP(i,m) {
-    int a,b;
-    cin >> a >> b;
+    int a,b; cin >> a >> b;
     a--; b--;
     g[a].push_back(b);
     gr[b].push_back(a);
   }
 
-  used.resize(n, false);
-  REP(i,n) dfs1(i);
+  vector<int> dir;
+  vector<bool> used(n);
+  auto dfs1 = [&](auto self, int i) {
+    if (used[i]) return;
+    used[i] = true;
+    for(auto v: g[i]) self(self,v);
+    dir.push_back(i);
+  };
+  auto dfs2 = [&](auto self, int i) {
+    if (used[i]) return 0;
+    used[i] = true;
+    int res = 1;
+    for(auto v: gr[i]) res += self(self,v);
+    return res;
+  };
 
-  ll ans = 0;
+  REP(i,n) dfs1(dfs1,i);
   reverse(dir.begin(), dir.end());
-  REP(i,n) used[i] = false;
-
+  used = vector<bool>(n);
+  ll ans = 0;
   for(int i: dir) {
-    cnt = 0;
-    dfs2(i);
-    ans += cnt * (cnt-1) / 2;
+    int cnt = dfs2(dfs2,i);
+    ans += (ll)cnt * (cnt-1) / 2;
   }
   cout << ans << endl;
   return;
@@ -57,10 +45,10 @@ void solve1() {
 
 // ac libraryを使う場合
 void solve2() {
+  int n,m; cin >> n >> m;
   scc_graph sg(n);
   REP(i,m) {
-    int a,b;
-    cin >> a >> b;
+    int a,b; cin >> a >> b;
     a--; b--;
     sg.add_edge(a,b);
   }
@@ -71,8 +59,7 @@ void solve2() {
 }
 
 int main() {
-  cin >> n >> m;
-  // solve1();
-  solve2();
+  solve1();
+  // solve2();
   return 0;
 }
