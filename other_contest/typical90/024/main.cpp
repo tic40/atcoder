@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 
 int main() {
@@ -8,12 +8,9 @@ int main() {
   vector<int> a(n),b(n);
   REP(i,n) cin >> a[i];
   REP(i,n) cin >> b[i];
-
   REP(i,n) k -= abs(a[i]-b[i]);
-  if (k < 0) {
-    cout << "No" << endl;
-  } else {
-    cout << (k%2 == 0 ? "Yes" : "No") << endl;
-  }
+
+  bool ok = k >= 0 && k % 2 == 0;
+  cout << (ok ? "Yes" : "No") << endl;
   return 0;
 }
