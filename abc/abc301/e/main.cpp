@@ -19,8 +19,8 @@ int main() {
 
   int n = ps.size() - 2;
   vector dist(n+2, vector<int>(n+2,INF));
-  REP(si,n+2) {
-    auto [i,j] = ps[si];
+
+  auto bfs = [&](int i, int j) {
     vector d(h, vector<int>(w,INF));
     queue<P> q;
     d[i][j] = 0;
@@ -36,6 +36,12 @@ int main() {
         q.emplace(ni,nj);
       }
     }
+    return d;
+  };
+
+  REP(si,n+2) {
+    auto [i,j] = ps[si];
+    auto d = bfs(i,j);
     REP(ti,n+2) {
       auto [i,j] = ps[ti];
       dist[si][ti] = d[i][j];
@@ -48,7 +54,8 @@ int main() {
   REP(i,n) dp[1<<i][i] = dist[sv][i];
   REP(s,n2) REP(v,n) {
     if (dp[s][v] == INF) continue;
-    REP(u,n) if ((s >> u & 1) == 0) {
+    REP(u,n) {
+      if (s >> u & 1) continue;
       chmin(dp[s|1<<u][u], dp[s][v] + dist[v][u]);
     }
   }
@@ -56,9 +63,8 @@ int main() {
   if (dist[sv][tv] > t) { cout << -1 << endl; return 0; }
   int ans = 0;
   REP(s,n2) REP(v,n) {
-    if (dp[s][v] + dist[v][tv] <= t) {
-      chmax(ans, __builtin_popcount(s));
-    }
+    if (dp[s][v] + dist[v][tv] > t) continue;
+    chmax(ans, __builtin_popcount(s));
   }
   cout << ans << endl;
   return 0;
