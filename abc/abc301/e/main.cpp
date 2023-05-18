@@ -50,6 +50,7 @@ int main() {
 
   int sv = n, tv = n+1;
   int n2 = 1<<n;
+  // dp[i][j] := 集合 i を訪問済みで今いる場所が j のときに訪れているときの最小の移動回数
   vector dp(n2,vector<int>(n,INF));
   REP(i,n) dp[1<<i][i] = dist[sv][i];
   REP(s,n2) REP(v,n) {
