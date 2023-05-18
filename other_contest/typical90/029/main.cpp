@@ -2,7 +2,7 @@
 #include <atcoder/all>
 using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 
 using S = int;
@@ -15,15 +15,12 @@ F id() { return 0; }
 
 int main() {
   int w,n; cin >> w >> n;
-
   lazy_segtree<S, op, e, F, mapping, composition, id> seg(w+1);
   REP(i,n) {
     int l,r; cin >> l >> r;
-    l--; r--;
-    int height = seg.prod(l,r+1) + 1;
-    seg.apply(l,r+1,height);
-    cout << height << endl;
+    int now = seg.prod(l,r+1) + 1;
+    seg.apply(l,r+1,now);
+    cout << now << endl;
   }
-
   return 0;
 }
