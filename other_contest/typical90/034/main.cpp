@@ -9,20 +9,17 @@ int main() {
   REP(i,n) cin >> a[i];
 
   map<int,int> mp;
-  // sum: 種類の合計数
-  int r = 0, sum = 0, ans = 0;
+  int r = 0, ans = 0;
   REP(l,n) {
     while(r < n) {
-      if (mp[a[r]] == 0) {
-        if (sum == k) break;
-        sum++;
-      }
+      if (!mp.count(a[r]) && (int)mp.size() == k) break;
       mp[a[r]]++;
       r++;
     }
     ans = max(ans,r-l);
     mp[a[l]]--;
-    if (mp[a[l]] == 0) sum--;
+    if (mp[a[l]] == 0) mp.erase(a[l]);
+    if (r == l) r++;
   }
 
   cout << ans << endl;
