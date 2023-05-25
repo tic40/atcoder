@@ -11,20 +11,20 @@ int main() {
   REP(i,n) REP(j,n) cin >> a[i][j];
 
   // dp[bit] := グループが決まったうさぎが bit である場合の点数の最大値
-  // cst[bit] := bit のうさぎでグループを作るときの点数
-  vector<ll> dp(1<<n), cst(1<<n);
+  // cost[bit] := bit のうさぎでグループを作るときの点数
+  vector<ll> dp(1<<n), cost(1<<n);
 
-  // すべての bit における cst を前計算しておく
+  // すべての bit における cost を前計算しておく
   REP(bit,1<<n) {
     REP(i,n) for(int j = i+1; j < n; j++) {
-      if ( (bit&(1<<i)) && (bit&(1<<j)) ) cst[bit] += a[i][j];
+      if ((bit&(1<<i)) && (bit&(1<<j))) cost[bit] += a[i][j];
     }
   }
 
   REP(bit,1<<n) {
     // pbit は bit の部分集合
     for(int pbit = bit; pbit > 0; pbit = (pbit-1) & bit) {
-      chmax(dp[bit], dp[bit-pbit] + cst[pbit]);
+      chmax(dp[bit], dp[bit-pbit] + cost[pbit]);
     }
   }
 
