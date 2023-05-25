@@ -14,20 +14,20 @@ int main() {
   // cst[bit] := bit のうさぎでグループを作るときの点数
   vector<ll> dp(1<<n), cst(1<<n);
 
+  // すべての bit における cst を前計算しておく
   REP(bit,1<<n) {
     REP(i,n) for(int j = i+1; j < n; j++) {
-      int ok = (bit&(1<<i)) && (bit&(1<<j));
-      if (ok) cst[bit] += a[i][j];
+      if ( (bit&(1<<i)) && (bit&(1<<j)) ) cst[bit] += a[i][j];
     }
   }
 
-  REP(bit, 1<<n) {
-    for(int bit2 = bit; bit2 > 0; bit2 = (bit2-1) & bit) {
-      ll nxt = dp[bit - bit2] + cst[bit2];
-      chmax(dp[bit],nxt);
+  REP(bit,1<<n) {
+    // pbit は bit の部分集合
+    for(int pbit = bit; pbit > 0; pbit = (pbit-1) & bit) {
+      chmax(dp[bit], dp[bit-pbit] + cst[pbit]);
     }
   }
 
-  cout<<dp[(1<<n)-1]<<endl;
+  cout << dp[(1<<n)-1] << endl;
   return 0;
 }
