@@ -15,25 +15,29 @@ int main() {
     }
   }
 
-  vector g(n+m,vector<int>());
+  vector g(m+n,vector<int>());
   REP(i,n) for(auto j: s[i]) {
     g[j].push_back(m+i);
     g[m+i].push_back(j);
   }
 
-  vector<int> dist(n+m,INF);
-  queue<int> q;
-  dist[0] = 0;
-  q.push(0);
-  while(q.size()) {
-    int v = q.front(); q.pop();
-    for(int u: g[v]) {
-      if (dist[u] != INF) continue;
-      dist[u] = dist[v]+1;
-      q.push(u);
+  auto bfs = [&]() {
+    vector dist(n+m,INF);
+    queue<int> q;
+    q.push(0);
+    dist[0] = 0;
+    while(q.size()) {
+      int v = q.front(); q.pop();
+      for(auto nv: g[v]) {
+        if (dist[nv] != INF) continue;
+        dist[nv] = dist[v] + 1;
+        q.push(nv);
+      }
     }
-  }
+    return dist;
+  };
+
+  auto dist = bfs();
   int ans = dist[m-1];
   cout << (ans == INF ? -1 : (ans-2)/2) << endl;
-  return 0;
 }
