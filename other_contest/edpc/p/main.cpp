@@ -2,33 +2,13 @@
 #include <atcoder/all>
 using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
+#define endl '\n'
 using mint = modint1000000007;
-
-vector<vector<int>> g;
-// dp[i][j] := dp[頂点i][白or黒] = 組み合わせの数
-vector<vector<mint>> dp;
-
-void dfs(int cur, int p) {
-  dp[cur][0] = 1;
-  dp[cur][1] = 1;
-
-  for(int v: g[cur]) {
-    if (v == p) continue; // 親に帰るのはだめ
-    dfs(v, cur);
-    // 白で塗る
-    dp[cur][0] *= (dp[v][0]+dp[v][1]);
-    // 黒で塗る
-    dp[cur][1] *= dp[v][0];
-  }
-  return;
-}
 
 int main() {
   int n; cin >> n;
-  g.resize(n);
-  dp.resize(n, vector<mint>(2));
-
+  vector g(n,vector<int>());
   REP(i,n-1) {
     int x,y; cin >> x >> y;
     x--; y--;
@@ -36,9 +16,22 @@ int main() {
     g[y].push_back(x);
   }
 
-  dfs(0, -1);
-  mint ans = dp[0][0] + dp[0][1];
-  cout << ans.val() << endl;
+  // 0: 白, 1: 黒
+  // dp[i][j] := i 頂点 で j(0: 白, 1: 黒) のときの組み合わせ数
+  vector dp(n,vector<mint>(2));
+  dp[0][0] = dp[0][1] = 1;
 
+  auto dfs = [&](auto self, int i, int p) -> void {
+    dp[i][0] = dp[i][1] = 1;
+    for(auto v: g[i]) {
+      if (v == p) continue;
+      self(self,v,i);
+      dp[i][0] *= (dp[v][0] + dp[v][1]);
+      dp[i][1] *= dp[v][0];
+    }
+  };
+
+  dfs(dfs,0,-1);
+  cout << (dp[0][0] + dp[0][1]).val() << endl;
   return 0;
 }
