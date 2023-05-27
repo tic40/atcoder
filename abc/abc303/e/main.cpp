@@ -15,7 +15,6 @@ int main() {
     deg[u]++; deg[v]++;
   }
 
-  vector<bool> del(n);
   // 頂点 i から 次数が 1 より大きい頂点を探す
   auto f = [&](int i) {
     if (i >= 0) for(auto v: g[i]) if (deg[v] > 1) return v;
@@ -25,10 +24,8 @@ int main() {
   vector<int> ans;
   queue<int> q;
   REP(i,n) if (deg[i] == 1) q.push(i);
-
   while(q.size()) {
-    int now = q.front(); q.pop();
-    int center = f(now);
+    int center = f(q.front()); q.pop();
     if (center == -1) continue;
     deg[center] = 0;
     for(auto v: g[center]) {
