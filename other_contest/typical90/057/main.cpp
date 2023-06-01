@@ -9,44 +9,37 @@ using mint = modint998244353;
 int main() {
   int n,m; cin >> n >> m;
   vector a(n,vector<int>(m));
+  vector<int> s(m);
   REP(i,n) {
     int t; cin >> t;
     REP(j,t) {
-      int x; cin >> x;
-      x--;
+      int x; cin >> x; x--;
       a[i][x] = 1;
     }
   }
-  vector<int> s(m);
   REP(i,m) cin >> s[i];
 
-  int pos = 0;
-  REP(i,m) {
-    bool found = false;
-    for(int j = pos; j < n; j++) {
-      if (!a[j][i]) continue;
-      swap(a[j],a[pos]);
-      found = true;
-      break;
+  int pos = 0; // pos: 上から何番目まで見たか
+  REP(j,m) { // i: 左から何番目まで見たか
+    int found = -1;
+    for(int i = pos; i < n; i++) if (a[i][j]) { found = i; break; }
+    if (found == -1) continue;
+
+    swap(a[found],a[pos]);
+    for(int i = pos+1; i < n; i++) {
+      if (!a[i][j]) continue;
+      for(int k = j; k < m; k++) a[i][k] ^= a[pos][k];
     }
-
-    if (!found) continue;
-
-    for(int j = pos+1; j < n; j++) {
-      if (!a[j][i]) continue;
-      REP(k,m) a[j][k] ^= a[pos][k];
-    }
-
-    if (s[i]) REP(j,m) s[j] ^= a[pos][j];
+    if (s[j]) { for(int k = j; k < m; k++) s[k] ^= a[pos][k]; }
     pos++;
   }
 
-  if (accumulate(s.begin(),s.end(),0) > 0) {
-    cout << 0 << endl; return 0;
+  if (accumulate(s.begin(),s.end(),0) != 0) {
+    cout << 0 << endl;
+  } else {
+    mint ans = 1;
+    REP(i,n-pos) ans *= 2;
+    cout << ans.val() << endl;
   }
-
-  mint ans = 1;
-  REP(i,n-pos) ans *= 2;
-  cout << ans.val() << endl;
   return 0;
 }
