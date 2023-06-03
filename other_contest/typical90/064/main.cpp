@@ -8,7 +8,6 @@ int main() {
   int n,q; cin >> n >> q;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
-
   vector<ll> e(n-1);
   REP(i,n-1) e[i] = a[i+1]-a[i];
   ll now = 0;
@@ -17,15 +16,17 @@ int main() {
   REP(_,q) {
     int l,r,v; cin >> l >> r >> v;
     l--; r--;
-
-    ll before = abs(e[r]);
-    if (l-1 >= 0) before += abs(e[l-1]);
-    if (l-1 >= 0) e[l-1] += v;
-    if (r < n-1) e[r] -= v;
-
-    ll after = abs(e[r]);
-    if (l-1 >= 0) after += abs(e[l-1]);
-
+    ll before = 0, after = 0;
+    if (r < n-1) {
+      before += abs(e[r]);
+      e[r] -= v;
+      after += abs(e[r]);
+    }
+    if (l-1 >= 0) {
+      before += abs(e[l-1]);
+      e[l-1] += v;
+      after += abs(e[l-1]);
+    }
     now += after - before;
     cout << now << endl;
   }
