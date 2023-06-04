@@ -27,9 +27,7 @@ int main() {
     if (!uf.same(x[i],y[i])) { cout << "Ambiguous" << endl; continue; }
 
     ll diff = v[i] - potential[x[i]];
-    ll ans = potential[y[i]];
-    if(abs(x[i]-y[i])%2 == 0) ans += diff;
-    else ans -= diff;
+    ll ans = potential[y[i]] + (abs(x[i]-y[i]) % 2 == 0 ? diff : -diff);
     cout << ans << endl;
   }
   return 0;
