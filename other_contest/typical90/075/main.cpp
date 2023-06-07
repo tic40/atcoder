@@ -3,7 +3,6 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
-using P = pair<ll,int>;
 
 vector<pair<ll,int>> prime_factorize(ll n) {
   vector<pair<ll,int>> res;
@@ -21,12 +20,11 @@ int main() {
   ll n; cin >> n;
 
   auto pf = prime_factorize(n);
-  int tot = 0;
-  for(auto [_,cnt]: pf) tot += cnt;
+  int cnt = 0;
+  for(auto [_,v]: pf) cnt += v;
 
-  int ans = 0;
-  ll now = 1;
-  while(now < tot) { now *= 2; ans++; }
+  int ans = 0, now = 1;
+  while(now < cnt) { now *= 2; ans++; }
   cout << ans << endl;
   return 0;
 }
