@@ -8,28 +8,21 @@ int main() {
   int n; cin >> n;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
-  ll tot = accumulate(a.begin(),a.end(),0LL);
-  a.insert(a.end(),a.begin(),a.end());
+  ll tot = accumulate(a.begin(),a.end(),0LL) ;
   n *= 2;
+  a.insert(a.end(),a.begin(),a.end());
 
-  if (tot % 10) { cout << "No" << endl; return 0; }
-
-  ll t = tot / 10;
-  vector<ll> s(n+1);
-  REP(i,n) s[i+1] = s[i]+a[i];
-  bool ok = false;
-
-  int r = 0;
+  int r = 0, ok = 0;
   ll now = 0;
   REP(l,n) {
     while(r < n) {
-      if (t <= now) break;
+      if (now * 10 >= tot) break;
       now += a[r];
       r++;
     }
-    if (t == now) { ok = true; break; }
-    if (r == l) r++;
+    ok |= (now*10 == tot);
     now -= a[l];
+    if (l == r) r++;
   }
 
   cout << (ok ? "Yes" : "No") << endl;
