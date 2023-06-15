@@ -14,14 +14,18 @@ int main() {
     if (i % 2 == 0) s[i] += a[i] - a[i-1];
   }
 
+  auto f = [&](ll x) -> ll {
+    int i = lower_bound(a.begin(),a.end(),x) - a.begin() - 1;
+    if (i < 0) return 0;
+    ll res = s[i];
+    if (i%2 == 1) res += x-a[i];
+    return res;
+  };
+
   int q; cin >> q;
   REP(_,q) {
     ll l,r; cin >> l >> r;
-    auto idxl = lower_bound(a.begin(),a.end(),l) - a.begin();
-    auto idxr = upper_bound(a.begin(),a.end(),r) - a.begin() - 1;
-    ll ans = s[idxr] - s[idxl];
-    if (idxl % 2 == 0) ans += a[idxl] - l;
-    if (idxr % 2 == 1) ans += r - a[idxr];
+    ll ans = f(r) - f(l);
     cout << ans << endl;
   }
   return 0;
