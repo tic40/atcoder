@@ -13,29 +13,28 @@ int main() {
     g[a].push_back(b);
     g[b].push_back(a);
   }
-  vector<P> pa(k);
+
+  vector<int> d(n,-1);
+  priority_queue<P> q;
   REP(i,k) {
     int p,h; cin >> p >> h;
     p--;
-    pa[i] = {h,p};
+    d[p] = h;
+    q.emplace(h,p);
   }
-  sort(pa.rbegin(),pa.rend()); // h の多い順にソート
-  vector<int> mx(n,-1); // mx[i] := 頂点 i に訪問したときの 「警備員の体力 h - 頂点 i までの距離」 の最大値
 
-  auto bfs = [&](int h, int i) -> void {
-    queue<P> q;
-    q.emplace(i,h);
-    while(q.size()) {
-      auto [ni,nh] = q.front(); q.pop();
-      if (mx[ni] >= nh) continue;
-      mx[ni] = nh;
-      for(auto nv: g[ni]) q.emplace(nv,nh-1);
+  while(q.size()) {
+    auto [h,v] = q.top(); q.pop();
+    if (d[v] != h) continue;
+    for(int u: g[v]) {
+      if (d[u] >= h-1) continue;
+      d[u] = h-1;
+      q.emplace(h-1,u);
     }
-  };
+  }
 
-  for(auto [h,p]: pa) bfs(h,p);
   vector<int> ans;
-  REP(i,n) if (mx[i] != -1) ans.push_back(i+1);
+  REP(i,n) if (d[i] >= 0) ans.push_back(i+1);
   cout << ans.size() << endl;
   for(int v: ans) cout << v << " ";
   return 0;
