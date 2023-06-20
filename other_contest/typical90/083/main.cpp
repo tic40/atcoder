@@ -13,7 +13,7 @@ int main() {
   }
 
   // 平方分割. 次数の総数の平方根
-  int b =  sqrt(m*2);
+  int b = sqrt(m*2);
   // b 以上の次数を持つ頂点集合
   vector<int> large;
   // link[i] := 頂点 i と接続している large 頂点の集合
