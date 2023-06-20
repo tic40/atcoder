@@ -7,7 +7,7 @@ using ll = long long;
 vector<ll> divisor(ll n) {
   vector<ll> res;
   for(ll i = 1; i*i <= n; i++) {
-    if (n % i == 0) {
+    if (n%i == 0) {
       res.push_back(i);
       if (i != n/i) res.push_back(n/i);
     }
@@ -20,12 +20,13 @@ int main() {
   auto d = divisor(k);
   int n = d.size();
   sort(d.begin(),d.end());
+
   int ans = 0;
   REP(i,n) for(int j = i; j < n; j++) {
-    ll c = k / d[i] / d[j];
-    if (d[j] <= c && d[i]*d[j]*c == k) ans++;
+    ll a = d[i], b = d[j];
+    ll c = k / a / b;
+    if (b <= c && k == a*b*c)  ans++;
   }
-
   cout << ans << endl;
   return 0;
 }
