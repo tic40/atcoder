@@ -5,25 +5,23 @@ using namespace std;
 using ll = long long;
 
 int main() {
-  int n; string s;
-  cin >> n >> s;
-  vector<int> a(n);
-  REP(i,n) a[i] = s[i] == 'o' ? 0 : 1;
-  vector<int> cnt(2);
+  int n; string s; cin >> n >> s;
+  vector<int> t(n);
+  REP(i,n) t[i] = s[i] == 'o' ? 0 : 1;
 
-  ll ans = 0;
   int r = 0;
+  ll ans = 0;
+  vector<int> cnt(2); // 0: o, 1: x
   REP(l,n) {
     while(r < n) {
       if (cnt[0] && cnt[1]) break;
-      cnt[a[r]]++;
+      cnt[t[r]]++;
       r++;
     }
     if (cnt[0] && cnt[1]) ans += n-r+1;
     if (l == r) r++;
-    cnt[a[l]]--;
+    cnt[t[l]]--;
   }
-
   cout << ans << endl;
   return 0;
 }
