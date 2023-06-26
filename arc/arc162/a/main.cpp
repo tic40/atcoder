@@ -11,7 +11,8 @@ int main() {
     vector<int> p(n);
     REP(i,n) cin >> p[i];
     int mn = INF, ans = 0;
-    for(int i = n; i--;) {
+    reverse(p.begin(),p.end());
+    REP(i,n) {
       if (p[i] <= mn) { ans++; mn = p[i]; }
     }
     cout << ans << endl;
