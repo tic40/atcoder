@@ -9,9 +9,9 @@ int main() {
   vector a(n,vector<ll>(n));
   REP(i,n) REP(j,n) cin >> a[i][j];
 
-  auto binary_search = [&](int key) {
+  auto solve = [&](int key) {
     ll l = 1, r = 1e10;
-    REP(i,40) {
+    REP(_,40) {
       ll mid = (l+r) / 2;
       auto dp = a;
       REP(i,n) REP(j,n) if (dp[i][j] == -1) dp[i][j] = mid;
@@ -24,7 +24,7 @@ int main() {
     return r;
   };
 
-  ll ans = binary_search(k-1) - binary_search(k);
+  ll ans = solve(k-1) - solve(k);
   if (ans >= 1e9) cout << "Infinity" << endl;
   else cout << ans << endl;
   return 0;
