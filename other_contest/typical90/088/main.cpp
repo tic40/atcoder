@@ -11,37 +11,33 @@ int main() {
   REP(_,q) {
     int x,y; cin >> x >> y;
     x--; y--;
-    g[x].push_back(y); // x < y のため一方向で良い
+    g[x].push_back(y);
   }
 
   vector mem(8889, vector<int>());
   vector<int> vec, cnt(n);
 
-  auto output_ans = [](vector<int> v1, vector<int> v2) {
-    for(auto vec: {v1,v2}) {
-      cout << vec.size() << endl;
-      for(auto v: vec) cout << v << " ";
-      cout << endl;
-    }
-  };
-
-  auto dfs = [&](auto self, int i, int now) {
+  auto dfs = [&](auto self, int i, int sum) {
     if (i == n) {
-      if (mem[now].size()) {
-        output_ans(mem[now], vec);
+      if (mem[sum].size()) {
+        for(auto v: {mem[sum], vec}) {
+          cout << v.size() << endl;
+          for(auto k: v) cout << k+1 << " ";
+          cout << endl;
+        }
         exit(0);
       }
-      mem[now] = vec;
+      mem[sum] = vec;
       return;
     }
 
-    self(self, i+1, now);
+    self(self,i+1,sum);
     if (cnt[i] == 0) {
-      vec.push_back(i+1);
-      for(int v: g[i]) cnt[v]++;
-      self(self, i+1, now+a[i]);
+      vec.push_back(i);
+      for(auto v: g[i]) cnt[v]++;
+      self(self,i+1,sum+a[i]);
+      for(auto v: g[i]) cnt[v]--;
       vec.pop_back();
-      for(int v: g[i]) cnt[v]--;
     }
   };
 
