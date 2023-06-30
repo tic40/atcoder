@@ -18,8 +18,6 @@ int main() {
         st.pop();
         sum[idx]++;
         sum[i+1]--;
-      } else {
-        st.emplace('(',i);
       }
     }
   }
