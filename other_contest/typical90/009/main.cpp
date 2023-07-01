@@ -38,7 +38,7 @@ int main() {
     int sz = n-1;
     for(auto angle: va) {
       double target = angle + 180;
-      if (target >= 360) angle -= 360;
+      if (target >= 360) target -= 360;
       int idx = lower_bound(va.begin(),va.end(),target) - va.begin();
       int idx1 = idx % sz;
       int idx2 = ((idx1 - 1) % sz + sz) % sz;
