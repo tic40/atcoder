@@ -41,7 +41,7 @@ int main() {
       if (target >= 360) target -= 360;
       int idx = lower_bound(va.begin(),va.end(),target) - va.begin();
       int idx1 = idx % sz;
-      int idx2 = ((idx1 - 1) % sz + sz) % sz;
+      int idx2 = (idx1 - 1 + sz) % sz;
       res = max({ res, getangle2(angle, va[idx1]), getangle2(angle, va[idx2]) });
     }
     return res;
