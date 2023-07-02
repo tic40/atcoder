@@ -13,13 +13,12 @@ int main() {
   REP(i,m) cin >> l[i];
   REP(i,m) cin >> d[i];
 
-  vector<P> pa(m);
-  REP(i,m) pa[i] = {d[i],l[i]};
-  sort(pa.rbegin(),pa.rend());
+  vector<P> pc(m);
+  REP(i,m) pc[i] = {d[i],l[i]};
+  sort(pc.rbegin(),pc.rend());
 
   ll ans = accumulate(p.begin(),p.end(),0LL);
-  REP(i,m) {
-    auto [nd,nl] = pa[i];
+  for(auto [nd,nl]: pc) {
     auto it = st.lower_bound(nl);
     if (it == st.end()) continue;
     ans -= nd;
