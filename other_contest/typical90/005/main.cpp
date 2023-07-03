@@ -34,13 +34,13 @@ int main() {
   // 繰り返し二乗法により dp[N][i] を求める
   ans[0][0] = 1;
   REP(i,62) {
-    if ((n & (1LL << i)) != 0LL) {
+    if ((n & (1LL << i)) == 0LL) {
+      REP(j,b) ans[i+1][j] = ans[i][j];
+    } else {
       REP(j,b) REP(k,b) {
         int nex = (ll)(j * power10[i].val() + k) % b;
         ans[i+1][nex] += ans[i][j] * dp[i][k];
       }
-    } else {
-      REP(j,b) ans[i+1][j] = ans[i][j];
     }
   }
 
