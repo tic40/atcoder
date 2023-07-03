@@ -15,7 +15,7 @@ int main() {
 
   mintb::set_mod(b);
   vector<mintb> power10(64);
-  vector dp(64,vector<mint>(1009)), ans(64,vector<mint>(1009));
+  vector dp(64,vector<mint>(b)), ans(64,vector<mint>(b));
 
   // 前計算: 10^(1<<i) mod を求めておく
   REP(i,63) power10[i] = (mintb(10)).pow(1LL << i);
@@ -25,6 +25,9 @@ int main() {
   // dp[1][i], dp[2][i], ..., dp[2^n][i] を求める
   REP(i,62) REP(j,b) REP(k,b) {
     int nex = (ll)(j * power10[i].val() + k) % b;
+    // nex(j+k) は i+k 桁分を考えている
+    // 前半 i 桁分が dp[i][j], 後半 k 桁分が dp[i][k]
+    // であるから dp[i][j] * dp[i][k] となる
     dp[i+1][nex] += dp[i][j] * dp[i][k];
   }
 
