@@ -19,8 +19,8 @@ int main() {
   vector dp(64,vector<mint>(1009));
   vector ans(64,vector<mint>(1009));
 
+  // 前計算
   REP(i,63) power10[i] = (mintb(10)).pow(1LL << i);
-
   // dp[0][i] を求める
   REP(i,k) dp[0][c[i] % b]++;
 
