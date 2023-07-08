@@ -23,7 +23,7 @@ int main() {
     while(q.size()) {
       int v = q.front(); q.pop();
       for(auto nv: g[v]) {
-        if (dist[nv] <= dist[v]) continue;
+        if (dist[nv] != INF) continue;
         q.push(nv);
         dist[nv] = dist[v]+1;
       }
