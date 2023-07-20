@@ -40,32 +40,30 @@ int main() {
     int sx = pos/w, sy = pos % w;
     if (dep == w+1) {
       int idx = cnt[sy];
-      bool flag = judge(sx,sy);
       state[sy][idx] = str;
-      mp[sy][str] = {idx,flag};
+      mp[sy][str] = {idx,judge(sx,sy)};
       cnt[sy]++;
       return;
     }
     self(self, pos+1, dep+1, str);
-    if (judge(sx,sy)) {
-      used[sx][sy] = true;
-      self(self,pos+1,dep+1,str + (1 << dep));
-      used[sx][sy] = false;
-    }
+    if (!judge(sx,sy)) return;
+
+    used[sx][sy] = true;
+    self(self,pos+1,dep+1,str + (1 << dep));
+    used[sx][sy] = false;
   };
 
+  // initialize
   REP(i,w) dfs(dfs,i,0,0);
 
+  // dp
   REP(i,w) REP(j,cnt[i]) {
     int t = state[i][j];
     int t0 = t >> 1;
     int t1 = (t >> 1) + (1 << w);
     nex0[i][j] = mp[(i+1) % w][t0].first;
-    if (mp[i][t].second) {
-      nex1[i][j] = mp[(i+1) % w][t1].first;
-    } else {
-      nex1[i][j] = -1;
-    }
+    if (mp[i][t].second) nex1[i][j] = mp[(i+1) % w][t1].first;
+    else nex1[i][j] = -1;
   }
 
   dp[0][0][0] = 1;
@@ -76,9 +74,7 @@ int main() {
     REP(k,cnt[j]) {
       if (dp[i][j][k] == 0) continue;
       dp[n1][n2][nex0[j][k]] += dp[i][j][k];
-      if (nex1[j][k] != -1 && c[i][j] == '.') {
-        dp[n1][n2][nex1[j][k]] += dp[i][j][k];
-      }
+      if (nex1[j][k] != -1 && c[i][j] == '.') dp[n1][n2][nex1[j][k]] += dp[i][j][k];
     }
   }
 
