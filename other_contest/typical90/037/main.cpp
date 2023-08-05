@@ -76,15 +76,12 @@ void solve2() {
   seg.set(0,0);
 
   REP(i,n) {
-    segtree<ll, op, e> pseg(w+1);
-    swap(seg,pseg);
-    REP(j,w+1) {
-      seg.set(j, pseg.get(j));
+    for(int j = w; j >= 0; j--) {
       int nl = max(0, j - r[i]);
       int nr = max(0, j - l[i]+1);
-
-      ll nx = pseg.prod(nl,nr);
-      if (nx != -1) seg.set(j, max(seg.get(j),nx+v[i]));
+      ll nx = seg.prod(nl,nr);
+      if (nx == -1) continue;
+      seg.set(j, max(seg.get(j),nx+v[i]));
     }
   }
 
