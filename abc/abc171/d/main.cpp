@@ -1,50 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ALL(x) (x).begin(),(x).end()
-#define COUT(x) cout<<(x)<<"\n"
-#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-#define REP(i, n) for(int i=0;i<n;i++)
-#define YES(x) cout<<(x?"YES":"NO")<<"\n"
-#define Yes(x) cout<<(x?"Yes":"No")<<"\n"
-#define dump(x) cout<<#x<<" = "<<(x)<<"\n"
-#define endl "\n"
-using G = vector<vector<int>>;
-using M = map<int,int>;
-using P = pair<int,int>;
-using PQ = priority_queue<int>;
-using PQG = priority_queue<int,vector<int>,greater<int>>;
-using V = vector<int>;
+#define REP(i,n) for(int i=0;i<n;i++)
+#define endl '\n'
 using ll = long long;
-using edge = struct { int to; int cost; };
-template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } return 0; }
-template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
-const int INF = 1e9;
-const int MOD = 1e9+7;
-const ll LINF = 1e18;
 
 int main() {
-  IOS;
-  ll n; cin >> n;
-  vector<ll> a(n);
-  M m;
-  ll sum = 0;
+  int n; cin >> n;
+  vector<int> m(1e5+1);
+  ll tot = 0;
   REP(i,n) {
-    cin >> a[i];
-    m[a[i]]++;
-    sum += a[i];
+    int a; cin >> a;
+    m[a]++;
+    tot += a;
   }
-  ll q; cin >> q;
-  vector<ll> b(q),c(q);
-  REP(i,q) cin >> b[i] >> c[i];
-  // input
-
-
+  int q; cin >> q;
   REP(i,q) {
-    m[c[i]] += m[b[i]];
-    sum -= (b[i] * m[b[i]]);
-    sum += (c[i] * m[b[i]]);
-    m[b[i]] = 0;
-    COUT(sum);
+    int b,c; cin >> b >> c;
+    tot += (c - b) * m[b];
+    m[c] += m[b];
+    m[b] = 0;
+    cout << tot << endl;
   }
   return 0;
 }
