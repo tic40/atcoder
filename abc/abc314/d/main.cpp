@@ -5,22 +5,22 @@ using namespace std;
 using P = pair<int,int>;
 
 int main() {
-  int n; string s; int q;
-  cin >> n >> s >> q;
+  int n; cin >> n;
+  string s; cin >> s;
+  int q; cin >> q;
   vector<int> t(q),x(q);
   vector<char> c(q);
-  P last = {0,0};
+  int tl = -1;
   REP(i,q) {
     cin >> t[i] >> x[i] >> c[i];
     x[i]--;
-    if (t[i] != 1) last = {t[i],i};
+    if (t[i] != 1) tl = i;
   }
 
-  auto f = [&](char c, int i) -> char {
-    auto [t,li] = last;
-    if (i <= li) {
-      if (t == 2) return tolower(c);
-      if (t == 3) return toupper(c);
+  auto f = [&](char c, int i) {
+    if (i < tl) {
+      if (t[tl] == 2) c = tolower(c);
+      if (t[tl] == 3) c = toupper(c);
     }
     return c;
   };

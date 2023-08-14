@@ -7,10 +7,8 @@ int main() {
   int n,m; cin >> n >> m;
   string s; cin >> s;
   vector<int> c(n);
-  REP(i,n) {
-    cin >> c[i];
-    c[i]--;
-  }
+  REP(i,n) { cin >> c[i]; c[i]--; }
+
   vector g(m,vector<int>());
   REP(i,n) g[c[i]].push_back(i);
 
@@ -19,6 +17,7 @@ int main() {
     int sz = g[i].size();
     REP(j,sz) t[g[i][(j+1)%sz]] = s[g[i][j]];
   }
+
   cout << t << endl;
   return 0;
 }
