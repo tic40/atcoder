@@ -6,7 +6,7 @@ const int INF = numeric_limits<int>::max();
 
 int main() {
   int n,m; cin >> n >> m;
-  vector<int> c(n),p(n);
+  vector<double> c(n),p(n);
   vector s(n,vector<int>());
   REP(i,n) {
     cin >> c[i] >> p[i];
@@ -21,7 +21,7 @@ int main() {
   REP(i,m+1) {
     REP(j,n) {
       double now = 0;
-      int zero = 0;
+      double zero = 0;
       for(auto v: s[j]) {
         if (v == 0) zero++;
         else now += dp[max(0,i-v)];
