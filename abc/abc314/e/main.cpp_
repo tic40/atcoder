@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
+using namespace std;
+#define REP(i,n) for(int i=0;i<n;i++)
+#define endl '\n'
+using ll = long long;
+using P = pair<int,int>;
+const int INF = numeric_limits<int>::max();
+const ll LINF = numeric_limits<ll>::max();
+const int MOD = 1e9+7;
+// using mint = modint998244353; // modint1000000007;
+
+int main() {
+  int n,m; cin >> n >> m;
+  vector<int> c(n);
+  vector s(n,vector<int>());
+  REP(i,n) {
+    cin >> c[i];
+    int p; cin >> p;
+    s[i].resize(p);
+    REP(j,p) cin >> s[i][j];
+  }
+
+  vector<int> d;
+  auto dfs = [&](auto self, int x, int point, int cost) -> void {
+    if (point >= m) {
+      d.push_back(cost);
+      return;
+    }
+    for(auto v: s[x]) {
+      if (v == 0) continue;
+      self(self, x, point + v, cost + c[x]);
+    }
+    return;
+  };
+
+  // それぞれのスロットの期待値
+  vector<double> e(n);
+  REP(i,n) {
+    d = vector<int>();
+    dfs(dfs,i,0,0);
+    double tot = accumulate(d.begin(),d.end(),0);
+    double e = tot / d.size();
+    cout << e << endl;
+  }
+
+
+  return 0;
+}
