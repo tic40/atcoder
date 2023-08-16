@@ -1,37 +1,30 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
-using P = pair<int,int>;
+using mint = modint998244353;
 
 int main() {
   int n; cin >> n;
-  vector<vector<P>> pe(n);
-  map<int,int> mx; // 素数毎に指数が最大のものを保持する
-  REP(i,n) {
-    int m; cin >> m;
-    REP(j,m) {
-      int p,e; cin >> p >> e;
-      pe[i].emplace_back(p,e);
-      mx[p] = max(mx[p],e);
-    }
+  vector<int> a(n-1);
+  REP(i,n-1) cin >> a[i];
+
+  vector<mint> dp(n);
+  vector<mint> s(n+1); // dp の累積和
+  for(int i = n-2; i >= 0; i--) {
+    // サイコロの出目をすべて求めると O(N^2) となるため、累積和で高速化
+    mint now = s[i+1] - s[i+1+a[i]];
+    now *= mint(1) / (a[i]+1);
+    now += 1;
+    // 0 出ることを考慮する
+    // 0　以外が出る確率を p としたとき、1/p が 0 以外が出る期待値となる
+    now *= mint(a[i]+1)/a[i];
+    dp[i] = now;
+    s[i] = s[i+1] + dp[i];
   }
 
-  map<int,int> cnt; // 素数の指数が最大のもののカウントを取る
-  REP(i,n) for(auto [p,e]: pe[i]) {
-    if (mx[p] == e) cnt[p]++;
-  }
-
-  int ans = 0;
-  REP(i,n) for(auto [p,e]: pe[i]) {
-    // 素数毎に最大の指数の数が1個のものがあれば
-    if (mx[p] == e && cnt[p] == 1) {
-      ans++; break;
-    }
-  }
-
-  // n未満のときは重複を取り除いた分もあるので+1する
-  if (ans < n) ans++;
-  cout << ans << endl;
+  cout << dp[0].val() << endl;
   return 0;
 }
