@@ -9,22 +9,16 @@ int main() {
   REP(i,n) {
     int c; cin >> c;
     g[i].resize(c);
-    REP(j,c) {
-      cin >> g[i][j];
-      g[i][j]--;
-    }
+    REP(j,c) { cin >> g[i][j]; g[i][j]--; }
   }
 
-  vector<int> ans, visited(n);
+  vector<bool> visited(n);
   auto dfs = [&](auto self, int i) {
     if (visited[i]) return;
     visited[i] = true;
     for(auto v: g[i]) self(self,v);
-    ans.push_back(i);
+    if (i != 0) cout << i+1 << " ";
   };
-
   dfs(dfs,0);
-  ans.pop_back();
-  for(auto v: ans) cout << v+1 << " ";
   return 0;
 }
