@@ -7,9 +7,9 @@ using P = pair<int,int>;
 
 int main() {
   int n,m; cin >> n >> m;
-  vector<vector<P>> g(n);
+  vector g(n,vector<P>());
   REP(i,m) {
-    ll a,b,c; cin >> a >> b >> c;
+    int a,b,c; cin >> a >> b >> c;
     a--; b--;
     g[a].emplace_back(b,c);
     g[b].emplace_back(a,c);
@@ -20,7 +20,7 @@ int main() {
     for(auto [to,cost]: g[i]) {
       if (bit & (1<<to)) continue;
       int nbit = bit | (1<<to);
-      int ncost = now+cost;
+      int ncost = now + cost;
       res = max(res,self(self,to,nbit,ncost));
     }
     return res;
