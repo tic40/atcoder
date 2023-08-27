@@ -10,7 +10,9 @@ int main() {
   int n; cin >> n;
   dsu uf(n);
   vector g(n,vector<int>());
+  // sv[i] := 頂点 i のプレイヤー数
   vector<int> sz(n*2-1,1);
+  // gv[i] := 直近でプレイヤー i を含む頂点の番号
   vector<int> gv(n);
   REP(i,n) gv[i] = i;
 
