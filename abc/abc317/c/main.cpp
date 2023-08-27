@@ -4,6 +4,7 @@ using namespace std;
 #define endl '\n'
 using ll = long long;
 using P = pair<int,int>;
+template<class T> void chmax(T& a, T b) { a = max(a,b); }
 
 int main() {
   int n,m; cin >> n >> m;
@@ -20,14 +21,13 @@ int main() {
     for(auto [to,cost]: g[i]) {
       if (bit & (1<<to)) continue;
       int nbit = bit | (1<<to);
-      int ncost = now + cost;
-      res = max(res,self(self,to,nbit,ncost));
+      chmax(res,self(self,to,nbit,now+cost));
     }
     return res;
   };
 
   ll ans = 0;
-  REP(i,n) ans = max(ans,dfs(dfs,i,1<<i,0));
+  REP(i,n) chmax(ans,dfs(dfs,i,1<<i,0));
   cout << ans << endl;
   return 0;
 }
