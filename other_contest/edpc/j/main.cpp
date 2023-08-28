@@ -20,10 +20,18 @@ int main() {
   REP(i,n+1) REP(j,n+1) REP(k,n+1) {
     double tot = i+j+k;
     if (tot == 0) continue;
-    dp[i][j][k] += (double)n / (tot);
-    if (i > 0) dp[i][j][k] += dp[i-1][j+1][k] * i / (tot);
-    if (j > 0) dp[i][j][k] += dp[i][j-1][k+1] * j / (tot);
-    if (k > 0) dp[i][j][k] += dp[i][j][k-1] * k / (tot);
+
+    // まずトータルの食べる回数を考える
+    // サイコロは n 個の目がでる。
+    // tot 枚の皿に寿司がのっているため、 p = tot / n の確率で寿司を食べられる。
+    // このとき寿司を食べられる期待値は 1 / p のため n / tot
+    dp[i][j][k] += n / tot;
+
+    // i,j,k の状態から、それぞれを食べるケースを考える
+    // 3個乗っている皿の寿司を食べると dp[i-1][j+1][k] へ遷移
+    if (i > 0) dp[i][j][k] += dp[i-1][j+1][k] * i / tot;
+    if (j > 0) dp[i][j][k] += dp[i][j-1][k+1] * j / tot;
+    if (k > 0) dp[i][j][k] += dp[i][j][k-1] * k / tot;
   }
 
   vector<int> m(4);
