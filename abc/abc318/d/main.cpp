@@ -11,7 +11,7 @@ int main() {
     for(int j = i+1; j < n; j++) cin >> d[i][j];
   }
 
-  // dp[bit] := bit で頂点 i1,i2,i3... を端点とする辺を選んだ際の選んだ辺の重みの総和の最大値
+  // dp[bit] := 頂点 i1,i2,i3... を端点とする辺を選んだ際の選んだ辺の重みの総和の最大値
   vector<ll> dp(1<<n,0LL);
   REP(bit,1<<n) {
     REP(i,n) for(int j = i+1; j < n; j++) {
