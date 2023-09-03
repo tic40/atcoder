@@ -22,7 +22,7 @@ int main() {
   vector<ll> sum(n+1);
   ll ans = 0;
 
-  // step1. x?x のケースを数え上げる
+  // step1. k を固定して x?x のケースを数え上げる
   REP(k,n) {
     // Σ(Σ(k-i-1))
     // ΣΣ(k) - ΣΣ(i) - ΣΣ(1)
@@ -34,7 +34,7 @@ int main() {
     sum[a[k]] += k;
   }
   // step2. xxx のケースを引く
-  REP(i,n+1) if (cnt[i] >= 3) ans -= choose(cnt[i],3);
+  REP(i,n+1) ans -= choose(cnt[i],3);
 
   cout << ans << endl;
   return 0;
