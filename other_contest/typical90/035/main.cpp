@@ -22,23 +22,24 @@ int main() {
   REP(_,q) {
     int k; cin >> k;
     vector<int> v(k);
-    REP(j,k) { cin >> v[j]; v[j]--; }
-    vector<int> c(n);
-    REP(j,k) c[v[j]]++;
+    vector<bool> used(n);
+    REP(j,k) {
+      cin >> v[j]; v[j]--;
+      used[v[j]] = true;
+    }
 
-    auto tree_dp = [&](auto self, int now, int pre) -> void {
+    auto tree_used = [&](auto self, int now, int pre) -> void {
       for(int i: g[now]) {
         if (i == pre) continue;
         self(self,i,now);
-        c[now] += c[i];
+        used[now] = used[now] || used[i];
       }
     };
 
-    tree_dp(tree_dp,v[0],-1);
+    tree_used(tree_used,v[0],-1);
     int ans = 0;
-    REP(i,n) {
-      if (i != v[0] && c[i] != 0) ans++;
-    }
+    REP(i,n) if (used[i]) ans++;
+    ans--; // v[0] の分を引く
     cout << ans << endl;
   }
   return 0;
