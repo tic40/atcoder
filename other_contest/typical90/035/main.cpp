@@ -17,30 +17,34 @@ int main() {
     g[a].push_back(b);
     g[b].push_back(a);
   }
-
   int q; cin >> q;
-  REP(_,q) {
-    int k; cin >> k;
-    vector<int> v(k);
-    vector<bool> used(n);
-    REP(j,k) {
-      cin >> v[j]; v[j]--;
-      used[v[j]] = true;
-    }
 
-    auto tree_used = [&](auto self, int now, int pre) -> void {
-      for(int i: g[now]) {
-        if (i == pre) continue;
-        self(self,i,now);
-        used[now] = used[now] || used[i];
+  auto solve1 = [&]() {
+    REP(_,q) {
+      int k; cin >> k;
+      vector<int> v(k);
+      vector<bool> used(n);
+      REP(j,k) {
+        cin >> v[j]; v[j]--;
+        used[v[j]] = true;
       }
-    };
+      auto tree_dp = [&](auto self, int now, int pre) -> void {
+        for(int i: g[now]) {
+          if (i == pre) continue;
+          self(self,i,now);
+          used[now] = used[now] || used[i];
+        }
+      };
 
-    tree_used(tree_used,v[0],-1);
-    int ans = 0;
-    REP(i,n) if (used[i]) ans++;
-    ans--; // v[0] の分を引く
-    cout << ans << endl;
-  }
+      tree_dp(tree_dp,v[0],-1);
+      int ans = 0;
+      REP(i,n) if (used[i]) ans++;
+      ans--; // v[0] の分を引く
+      cout << ans << endl;
+    }
+  };
+
+  // 小課題1解
+  solve1();
   return 0;
 }
