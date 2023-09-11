@@ -14,21 +14,18 @@ int main() {
     g[v].push_back(u);
   }
 
-  // sz[i] := 頂点 i が配下に持つ頂点の個数
   vector<ll> sz(n);
   auto dfs = [&](auto self, int i, int p) -> ll {
-    ll ans = 0;
-    int now = 1;
+    ll res = 0;
+    sz[i] = 1;
     for(auto v: g[i]) {
       if (v == p) continue;
-      ans += self(self,v,i);
-      now += sz[v];
-      ans += sz[v] * (n-sz[v]);
+      res += self(self,v,i);
+      res += sz[v] * (n - sz[v]);
+      sz[i] += sz[v];
     }
-    sz[i] = now;
-    return ans;
+    return res;
   };
-
   cout << dfs(dfs,0,-1) << endl;
   return 0;
 }
