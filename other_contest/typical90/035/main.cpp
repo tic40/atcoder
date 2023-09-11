@@ -12,7 +12,7 @@ struct LCA {
   vector<vector<int>> g; // graph
   vector<vector<int>> parent; // parent[k][u]:= u の 2^k 先の親
   vector<int> dist; // root からの距離
-  vector<int> id;
+  vector<int> id; // id[i] := dfs 順に割り振っった頂点の i の id
   int n; // graph size
   int bits;
   LCA(vector<vector<int>> _g, int root = 0) { init(_g, root); }
