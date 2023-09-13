@@ -12,7 +12,6 @@ int main() {
   int n,w; cin >> n >> w;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
-  // 最小カットを求める
   mf_graph<int> g(n+2);
   REP(i,n) {
     int k; cin >> k;
@@ -29,7 +28,7 @@ int main() {
     g.add_edge(i,n+1,w);
   }
 
-  // トータル - max_flow = min_flow
+  // 最小カットを求める = トータル - max_flow
   ll ans = accumulate(a.begin(),a.end(),0LL);
   ans -= g.flow(n,n+1);
   cout << ans << endl;
