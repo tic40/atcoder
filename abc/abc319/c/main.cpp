@@ -2,73 +2,39 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
+using P = pair<int,int>;
 
 int main() {
-  vector c(3,vector<int>(3));
-  REP(i,3) REP(j,3) cin >> c[i][j];
-  vector visited(3,vector<bool>(3));
+  vector<int> c(9);
+  REP(i,9) cin >> c[i];
 
-  auto check1 = [&](int i, int j) {
-    vector<int> b;
-    REP(ti,3) {
-      if (ti == i) continue;
-      b.push_back(ti);
-    }
-    if (!visited[b[0]][j] || !visited[b[1]][j]) return true;
-    return (c[b[0]][j] != c[b[1]][j]);
-  };
-  auto check2 = [&](int i, int j) {
-    vector<int> b;
-    REP(tj,3) {
-      if (tj == j) continue;
-      b.push_back(tj);
-    }
-    if (!visited[i][b[0]] || !visited[i][b[1]]) return true;
-    return (c[i][b[0]] != c[i][b[1]]);
-  };
-  auto check3 = [&](int i, int j) {
-    vector<int> b;
-    bool ok = false;
-    REP(ti,3) {
-      if (ti == i && ti == j) { ok = true; continue; }
-      b.push_back(ti);
-    }
-    if (!ok) return true;
-    if (!visited[b[0]][b[0]] || !visited[b[1]][b[1]]) return true;
-    return (c[b[0]][b[0]] != c[b[1]][b[1]]);
-  };
-  auto check4 = [&](int i, int j) {
-    vector<int> b;
-    bool ok = false;
-    REP(ti,3) {
-      if (ti == i && (2-ti) == j) { ok=true; continue;}
-      b.push_back(ti);
-    }
-    if (!ok) return true;
-    if (!visited[b[0]][2-b[0]] || !visited[b[1]][2-b[1]]) return true;
-    return (c[b[0]][2-b[0]] != c[b[1]][2-b[1]]);
-  };
+  vector<int> p(9);
+  REP(i,9) p[i] = i;
+  int cnt = 0, tot = 0;
+  do {
+    bool ok = true;
+    auto f = [&](int i, int j, int k) {
+      vector<P> d;
+      d.emplace_back(p[i],c[i]);
+      d.emplace_back(p[j],c[j]);
+      d.emplace_back(p[k],c[k]);
+      sort(d.begin(),d.end());
+      // 最初に選んだ２つが一致しているときがっかりする
+      return d[0].second != d[1].second;
+    };
+    ok &= f(0,1,2);
+    ok &= f(3,4,5);
+    ok &= f(6,7,8);
+    ok &= f(0,3,6);
+    ok &= f(1,4,7);
+    ok &= f(2,5,8);
+    ok &= f(0,4,8);
+    ok &= f(2,4,6);
+    if (ok) cnt++;
+    tot++;
+  } while(next_permutation(p.begin(),p.end()));
 
-  int ok_cnt = 0;
-  auto dfs = [&](auto self, int cnt) -> void {
-    if (cnt == 9) { ok_cnt++; return; }
-    REP(ni,3) REP(nj,3) {
-      if (visited[ni][nj]) continue;
-      bool ok = check1(ni,nj) && check2(ni,nj) && check3(ni,nj) && check4(ni,nj);
-      if (!ok) continue;
-      visited[ni][nj]= true;
-      self(self,cnt+1);
-      visited[ni][nj]= false;
-    }
-  };
-
-  REP(i,3) REP(j,3) {
-    visited[i][j] = true;
-    dfs(dfs,1);
-    visited[i][j] = false;
-  }
-
-  double ans = ok_cnt / 362880.0;
+  double ans = (double)cnt/tot;
   printf("%.10f\n",ans);
   return 0;
 }
