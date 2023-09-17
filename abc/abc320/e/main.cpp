@@ -10,25 +10,25 @@ int main() {
   vector<ll> t(m),w(m),s(m);
   REP(i,m) cin >> t[i] >> w[i] >> s[i];
 
-  // 現在そうめん流しに並んでいる人の priority queue
-  priority_queue<int, vector<int>, greater<int>> q;
-  // 列から外れた人の戻ってくる時間の早い順の priority queue
-  priority_queue<P, vector<P>, greater<P>> pq;
-  REP(i,n) q.push(i);
+  // そうめん流しに並んでいる人
+  priority_queue<int, vector<int>, greater<int>> pq1;
+  // 列から外れた人
+  priority_queue<P, vector<P>, greater<P>> pq2;
+  REP(i,n) pq1.push(i);
 
   vector<ll> ans(n);
   REP(i,m) {
     // 列へ戻ってくる人の処理
-    while(pq.size()) {
-      auto [vt,vi] = pq.top();
+    while(pq2.size()) {
+      auto [vt,vi] = pq2.top();
       if (vt > t[i]) break;
-      pq.pop(); q.push(vi);
+      pq2.pop(); pq1.push(vi);
     }
     // そうめんを食べる人の処理
-    if (q.size() == 0) continue;
-    auto vi = q.top(); q.pop();
+    if (pq1.empty()) continue;
+    auto vi = pq1.top(); pq1.pop();
     ans[vi] += w[i];
-    pq.emplace(t[i]+s[i],vi);
+    pq2.emplace(t[i]+s[i],vi);
   }
 
   for(auto v: ans) cout << v << endl;
