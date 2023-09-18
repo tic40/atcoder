@@ -8,23 +8,25 @@ int main() {
   int n,x,y; cin >> n >> x >> y;
   vector<int> p(n-1),t(n-1);
   REP(i,n-1) cin >> p[i] >> t[i];
-  const int m = 840; // lcm(1,2,...8)
+  int m = 1;
+  // lcm(1,2,...8)
+  for(int i = 1; i <= 8; i++) m = lcm(m,i);
 
   vector<ll> d(m);
-  REP(si,m) {
-    ll now = si+x;
-    REP(i,n-1) {
-      while(now % p[i]) now++;
-      now += t[i];
+  REP(i,m) {
+    ll now = i+x;
+    REP(j,n-1) {
+      if (now % p[j]) now += p[j] - (now % p[j]);
+      now += t[j];
     }
     now += y;
-    d[si] = now - si;
+    d[i] = now - i;
   }
 
   int q; cin >> q;
   REP(_,q) {
     ll t; cin >> t;
-    ll ans = t + d[t % m];
+    ll ans = t + d[t%m];
     cout << ans << endl;
   }
   return 0;
