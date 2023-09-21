@@ -8,8 +8,8 @@ int main() {
   vector<int> p(n);
   REP(i,n) cin >> p[i];
 
-  vector<int> s(n); // 累積和
-  REP(i,n-1) s[i+1] = s[i]+ (p[i+1] > p[i] ? 1 : 0);
+  vector<int> s(n); // p[i] < p[i+1] が成り立つ個数の累積和
+  REP(i,n-1) s[i+1] = s[i] + (p[i+1] > p[i] ? 1 : 0);
   vector<int> sm(n,1e9); // p[n-k]以降の累積min
   for(int i = n-k; i < n; i++) sm[i] = min(sm[i-1], p[i]);
 
