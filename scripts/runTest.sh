@@ -9,7 +9,7 @@ if [ -e a.out ]; then
 fi
 
 # compile with ac-library
-g++ -std=gnu++17 -I ${self_dir}/../libraries/ac-library -Wall -Wextra main.cpp
+g++ -std=gnu++2b -O2 -Wall -Wextra -ld_classic -I ${self_dir}/../libraries/ac-library main.cpp
 
 if [ ! -e a.out ]; then
   echo "Error: Compile error."
