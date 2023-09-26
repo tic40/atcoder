@@ -16,13 +16,9 @@ int main() {
     char c; int x;
     cin >> c >> x;
     if (c == '+') {
-      for(int i = k; i >= x; i--) {
-        dp[i] += dp[i-x];
-      }
+      for(int i = k; i >= x; i--) dp[i] += dp[i-x];
     } else {
-      for(int i = x; i <= k; i++) {
-        dp[i] -= dp[i-x];
-      }
+      for(int i = x; i <= k; i++) dp[i] -= dp[i-x];
     }
     cout << dp[k].val() << endl;
   }
