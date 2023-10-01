@@ -3,22 +3,24 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using P = pair<int,int>;
+const int INF = 1e9;
 
 int main() {
   vector p(3,vector<string>(4));
   REP(i,3) REP(j,4) cin >> p[i][j];
 
-  auto rorate90 = [&](vector<string> &s) {
-    auto res = s;
-    REP(i,4) REP(j,4) res[i][j] = s[3-j][i];
-    s = res;
+  auto rorate90 = [&](vector<string> &s) -> void {
+    auto t = s;
+    REP(i,4) REP(j,4) t[i][j] = s[3-j][i];
+    s = t;
   };
 
-  auto reset = [&](vector<P> &v) {
-    vector<int> a,b;
-    for(auto [x,y]: v) { a.push_back(x); b.push_back(y); }
-    int minx = *min_element(a.begin(),a.end());
-    int miny = *min_element(b.begin(),b.end());
+  auto reset = [&](vector<P> &v) -> void {
+    int minx = INF, miny = INF;
+    for(auto [x,y]: v) {
+      minx = min(minx,x);
+      miny = min(miny,y);
+    }
     for(auto& [x,y]: v) { x -= minx; y -= miny; }
   };
 
