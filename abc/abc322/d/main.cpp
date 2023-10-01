@@ -24,6 +24,7 @@ int main() {
     for(auto& [x,y]: v) { x -= minx; y -= miny; }
   };
 
+  // pa[i][j] := i番目のポリオミノを (j+1)*90 度回転させたときの座標の集合
   vector pa(3,vector(4,vector<P>()));
   REP(k,3) REP(r,4) {
     rorate90(p[k]);
