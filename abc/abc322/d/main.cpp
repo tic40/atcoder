@@ -28,7 +28,7 @@ int main() {
   REP(k,3) REP(r,4) {
     rorate90(p[k]);
     REP(i,4) REP(j,4) if (p[k][i][j] == '#') pa[k][r].emplace_back(i,j);
-    reset(pa[k][r]);
+    reset(pa[k][r]); // 左上に詰める
   }
 
   auto dfs = [&](auto self, int i, vector<vector<bool>> now) {
