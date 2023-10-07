@@ -74,7 +74,13 @@ int main() {
 			ry[ax] = max({ ry[ax], ay, by });
 		} else {
 			for (int i = ax; i <= bx; i++) {
+        // y 座標は
+        // 傾き = (yb-ya)/(bx-ax)
+        // f(x) = 傾き * x + ya
+        // f(i-ax) = (yb-ya)/(bx-ax) * (i-ax) + ya
+        //         = ( ya(xb-i) + yb(i-xa) ) / (bx-ax)
 				ll v1 = (ay * (bx - i) + by * (i - ax)) / (bx - ax);
+        // 切り上げ
 				ll v2 = (ay * (bx - i) + by * (i - ax) + bx - ax - 1LL) / (bx - ax);
 				ly[i] = min(ly[i], v2);
 			  ry[i] = max(ry[i], v1);
