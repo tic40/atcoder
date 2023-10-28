@@ -11,9 +11,8 @@ int main() {
 
   int ans = 0;
   REP(i,n) {
-    auto it = lower_bound(a.begin(),a.end(),a[i]+m);
-    int idx = it - a.begin();
-    ans = max(ans,idx-i);
+    int r = lower_bound(a.begin(),a.end(),a[i]+m) - a.begin();
+    ans = max(ans, r - i);
   }
   cout << ans << endl;
   return 0;
