@@ -13,9 +13,9 @@ int main() {
   vector<int> b(n);
   REP(i,n) b[i] = i;
   do {
-    int first = -1;
     string now = "";
     REP(i,n) now += abc[b[i]];
+    int first = -1;
     REP(i,n) if (now[i] != '.') { first = now[i]-'A'; break; }
     rows[first].push_back(now);
   } while (next_permutation(b.begin(), b.end()));
@@ -48,7 +48,9 @@ int main() {
       m.push_back(v);
       for(auto v2: t) col[v2] = 1;
       REP(j,n) if (v[j] != '.') col_cnt[j][v[j]-'A']++;
+
       self(self);
+
       m.pop_back();
       for(auto v2: t) col[v2] = 0;
       REP(j,n) if (v[j] != '.') col_cnt[j][v[j]-'A']--;
