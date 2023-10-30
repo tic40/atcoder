@@ -37,6 +37,33 @@ int main() {
     cout << ans << endl;
   };
 
-  solve1();
+  auto solve2 = [&]() -> void {
+    auto dijk = [&](int sv, ll b, ll c) {
+      vector<ll> dist(n,LINF);
+      dist[sv] = 0;
+      priority_queue<P, vector<P>, greater<P>> q;
+      q.emplace(0,sv);
+      while(q.size()) {
+        auto [cost,idx] = q.top(); q.pop();
+        if (dist[idx] < cost) continue;
+        REP(to,n) {
+          if (to == idx) continue;
+          ll nc = dist[idx] + d[idx][to]*b+c;
+          if (dist[to] <= nc) continue;
+          dist[to] = nc;
+          q.emplace(dist[to],to);
+        }
+      }
+      return dist;
+    };
+    auto d1 = dijk(0,a,0);
+    auto d2 = dijk(n-1,b,c);
+    ll ans = LINF;
+    REP(i,n) chmin(ans,d1[i]+d2[i]);
+    cout << ans << endl;
+  };
+
+  //solve1();
+  solve2();
   return 0;
 }
