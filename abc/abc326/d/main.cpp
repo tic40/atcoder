@@ -7,57 +7,40 @@ int main() {
   int n; cin >> n;
   string r,c; cin >> r >> c;
   string abc(n,'.');
-  REP(i,3) abc[i] = char('A'+i);
 
-  vector rows(3,vector<string>());
-  vector<int> b(n);
-  REP(i,n) b[i] = i;
-  do {
-    string now = "";
-    REP(i,n) now += abc[b[i]];
-    int first = -1;
-    REP(i,n) if (now[i] != '.') { first = now[i]-'A'; break; }
-    rows[first].push_back(now);
-  } while (next_permutation(b.begin(), b.end()));
-
-  vector<string> m;
-  vector<int> col(n);
-  vector col_cnt(n,vector<int>(3));
-  auto dfs = [&](auto self) -> void {
-    int i = m.size();
-    if (i == n) {
-      if (accumulate(col.begin(),col.end(),0) == n) {
-        cout << "Yes" << endl;
-        for(auto v: m) cout << v << endl;
-        exit(0);
+  auto dfs = [&](auto self, char x, vector<string> s) -> bool {
+    if (x == 'D') {
+      string tr,tc;
+      REP(i,n) REP(j,n) {
+        if (s[i][j] != '.') { tr += s[i][j]; break; }
       }
-      return;
+      REP(j,n) REP(i,n) {
+        if (s[i][j] != '.') { tc += s[i][j]; break; }
+      }
+      if (tr == r && tc == c) {
+        cout << "Yes" << endl;
+        REP(i,n) cout << s[i] << endl;
+        return true;
+      }
+      return false;
     }
 
-    for(auto v: rows[r[i]-'A']) {
+    vector<int> p(n);
+    REP(i,n) p[i] = i;
+    do {
+      auto t = s;
       bool ok = true;
-      vector<int> t;
-      REP(j,n) {
-        if (v[j] == '.') continue;
-        if (col_cnt[j][v[j]-'A'] >= 1) { ok = false; break; }
-        if (col[j]) continue;
-        if (v[j] == c[j]) t.push_back(j);
-        else { ok = false; break; }
+      REP(i,n) {
+        if (t[i][p[i]] != '.') ok = false;
+        t[i][p[i]] = x;
       }
       if (!ok) continue;
-      m.push_back(v);
-      for(auto v2: t) col[v2] = 1;
-      REP(j,n) if (v[j] != '.') col_cnt[j][v[j]-'A']++;
-
-      self(self);
-
-      m.pop_back();
-      for(auto v2: t) col[v2] = 0;
-      REP(j,n) if (v[j] != '.') col_cnt[j][v[j]-'A']--;
-    }
+      if (self(self,x+1,t)) return true;
+    } while (next_permutation(p.begin(),p.end()));
+    return false;
   };
 
-  dfs(dfs);
-  cout << "No" << endl;
+  vector<string> s(n,string(n,'.'));
+  if (!dfs(dfs,'A',s)) cout << "No" << endl;
   return 0;
 }
