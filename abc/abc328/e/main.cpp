@@ -9,7 +9,7 @@ const ll LINF = numeric_limits<ll>::max();
 
 int main() {
   int n,m; ll k; cin >> n >> m >> k;
-  vector<int> u(m), v(m);
+  vector<int> u(m),v(m);
   vector<ll> w(m);
   REP(i,m) {
     cin >> u[i] >> v[i] >> w[i];
@@ -26,7 +26,7 @@ int main() {
         cost += w[ns];
         cost %= k;
       }
-      if ((int)d.size(0) == n) ans = min(ans,cost%k);
+      if (d.size(0) == n) ans = min(ans,cost);
       return;
     }
     if (i >= m) return;
