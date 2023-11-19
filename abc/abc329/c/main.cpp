@@ -2,27 +2,26 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
+using P = pair<char,int>;
 
 int main() {
   int n; cin >> n;
   string s; cin >> s;
 
-  vector<int> mem(26);
-  int r = 1;
-  char now = s[0];
-  int cnt = 1;
-  REP(l,n) {
-    while(r < n) {
-      if (now != s[r]) break;
-      cnt++; r++;
+  // ランレングス圧縮
+  vector<P> m;
+  for(char c: s) {
+    if (m.size() > 0 && m.back().first == c) {
+      m.back().second++;
+    } else {
+      m.emplace_back(c,1);
     }
-    mem[now - 'a'] = max(mem[now - 'a'],cnt);
-    cnt = 0;
-    if (r == l) r++;
-    now = s[r];
   }
 
-  int ans = accumulate(mem.begin(),mem.end(),0);
+  vector<int> a(26);
+  for(auto [c,v]: m) a[c-'a'] = max(a[c-'a'],v);
+  int ans = accumulate(a.begin(),a.end(),0);
   cout << ans << endl;
+
   return 0;
 }
