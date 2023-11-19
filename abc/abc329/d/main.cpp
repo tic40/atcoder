@@ -6,18 +6,13 @@ using P = pair<int,int>;
 
 int main() {
   int n,m; cin >> n >> m;
-  vector<int> a(m);
-  REP(i,m) { cin >> a[i]; a[i]--; }
-
-  P mx = {0,0};
-  vector<int> now(n);
+  vector<int> cnt(n+1);
+  P ans(0,-1);
   REP(i,m) {
-    now[a[i]]++;
-    if (now[a[i]] >= mx.first) {
-      bool ng = now[a[i]] == mx.first && a[i] > mx.second;
-      if (!ng) mx = { now[a[i]], a[i] };
-    }
-    cout << mx.second + 1 << endl;
+    int a; cin >> a;
+    cnt[a]++;
+    ans = max(ans,{ cnt[a], -a });
+    cout << -ans.second << endl;
   }
   return 0;
 }
