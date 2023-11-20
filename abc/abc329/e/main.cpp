@@ -7,25 +7,21 @@ int main() {
   int n,m; cin >> n >> m;
   string s,t; cin >> s >> t;
 
-  vector<bool> checked(n);
   queue<int> q;
-  auto f = [&](int i) -> void {
-    if (i < 0 || i+m > n) return;
+  vector<bool> checked(n);
+  auto push = [&](int i) -> void {
     if (checked[i]) return;
+    REP(j,m) if (s[i+j] != t[j] && s[i+j] != '#') return;
 
-    bool ok = true;
-    REP(j,m) ok = ok && (s[i+j] == t[j] || s[i+j] == '#');
-    if (!ok) return;
-
-    checked[i] = true;
     REP(j,m) s[i+j] = '#';
+    checked[i] = true;
     q.push(i);
   };
 
-  REP(i,n-m+1) f(i);
+  REP(i,n-m+1) push(i);
   while(q.size()) {
     auto v = q.front(); q.pop();
-    for(int i = v-m+1; i < v+m; i++) f(i);
+    for(int j = max(0,v-m+1); j < min(n,v+m); j++) push(j);
   }
 
   cout << (s == string(n,'#') ? "Yes" : "No") << endl;
