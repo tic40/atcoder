@@ -4,6 +4,7 @@ using namespace std;
 #define endl '\n'
 template<class T> void chmin(T& a, T b) { a = min(a,b); }
 
+// TODO: 復習
 int main() {
   int n,d; cin >> n >> d;
   vector<double> w(n);
@@ -11,24 +12,25 @@ int main() {
   int n2 = 1<<n;
   double ave = accumulate(w.begin(),w.end(),0.0) / d;
 
+  // 各状態(bit)での分散を事前に求めておく
   vector<double> x(n2);
-  REP(s,n2) {
-    REP(i,n) if (s>>i & 1) x[s] += w[i];
-    x[s] = (x[s] - ave) * (x[s] - ave);
+  REP(bit,n2) {
+    REP(i,n) if (bit >> i & 1) x[bit] += w[i];
+    x[bit] = (x[bit] - ave) * (x[bit] - ave);
   }
 
   const double INF = 1e18;
   // bit DP
-  // dp[i][s] := i 袋作って残りが s であるときの min
+  // dp[i][bit] := i 袋作って残りが bit であるときの min
   vector<double> dp(n2,INF);
   dp[n2-1] = 0;
   REP(i,d) {
     vector<double> old(n2,INF);
     swap(dp,old);
-    REP(s,n2) {
+    REP(bit,n2) {
       // 部分集合をループ
-      for(int t = s;; t = (t-1)&s) {
-        chmin(dp[s^t], old[s]+x[t]);
+      for(int t = bit;; t = (t-1) & bit) {
+        chmin(dp[bit ^ t], old[bit] + x[t]);
         if (t == 0) break;
       }
     }
