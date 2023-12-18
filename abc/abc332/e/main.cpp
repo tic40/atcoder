@@ -33,9 +33,8 @@ int main() {
       // 現在bit:  1011
       // 部分集合t: 1010
       // bit ^ t:  0001
-      for(int t = bit;; t = (t-1) & bit) {
+      for(int t = bit; t > 0; t = (t-1) & bit) {
         chmin(dp[bit ^ t], old[bit] + x[t]);
-        if (t == 0) break;
       }
     }
   }
