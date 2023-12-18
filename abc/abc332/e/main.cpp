@@ -29,6 +29,10 @@ int main() {
     swap(dp,old);
     REP(bit,n2) {
       // 部分集合をループ
+      // 例:
+      // 現在bit:  1011
+      // 部分集合t: 1010
+      // bit ^ t:  0001
       for(int t = bit;; t = (t-1) & bit) {
         chmin(dp[bit ^ t], old[bit] + x[t]);
         if (t == 0) break;
