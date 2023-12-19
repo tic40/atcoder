@@ -21,7 +21,7 @@ int main() {
 
   const double INF = 1e18;
   // bit DP
-  // dp[i][bit] := i 袋作って残りが bit であるときの min
+  // dp[i][bit] := i 袋使って残りが bit であるときの min
   vector<double> dp(n2,INF);
   dp[n2-1] = 0;
   REP(i,d) {
