@@ -5,10 +5,11 @@ using namespace std;
 
 int main() {
   int n,k; cin >> n >> k;
-  vector<int> a(k);
-  REP(i,k) { cin >> a[i]; a[i]--; }
   vector<int> cnt(n,2);
-  REP(i,k) cnt[a[i]]--;
+  REP(i,k) {
+    int a; cin >> a; a--;
+    cnt[a]--;
+  }
 
   vector<int> x;
   REP(i,n) REP(j,cnt[i]) x.push_back(i);
@@ -16,20 +17,18 @@ int main() {
   n = x.size(); // n := 靴下の枚数
   if (n%2 == 0) {
     int ans = 0;
-    REP(i,n/2) ans += x[i*2+1] - x[i*2];
+    for(int i = 0; i < n; i+=2) ans += x[i+1] - x[i];
     cout << ans << endl;
   } else {
     int now = 0;
-    // 0番を消したときの総和を初期値として求める
-    REP(i,n/2) now += x[i*2+2] - x[i*2+1];
+    // 0番を消したときの総和
+    for(int i = 1; i < n; i+=2) now += x[i+1] - x[i];
     int ans = now;
     // i(奇数番目)を消したときにどうなるかを now との差分を取ることで検証する
     for(int i = 2; i < n; i+=2) {
-      // 差分として追加する分を足す
-      now += x[i-1] - x[i-2];
-      // 差分として消す分を引く
-      now -= x[i] - x[i-1];
-      ans  = min(ans,now);
+      now += x[i-1] - x[i-2]; // 追加分を差分として足す
+      now -= x[i] - x[i-1]; // 削除分を差分として引く
+      ans = min(ans,now);
     }
     cout << ans << endl;
   }
