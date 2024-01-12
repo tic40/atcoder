@@ -20,11 +20,16 @@ struct WeightedUnionFind {
   }
   bool merge(int a, int b, ll w) {
     root(a); root(b);
-    w = w + dif[a] - dif[b];
+    w += dif[a] - dif[b];
     a = root(a);
     b = root(b);
+
+    // 同じ連結成分のとき
+    // w == 0 のとき矛盾しない
     if (a == b) return w == 0;
-    if (-p[a] < -p[b]) swap(a,b), w = -w;
+
+    // a より b の連結成分のほうが大きいときに swap
+    if (-p[a] < -p[b]) { swap(a,b); w = -w; }
     p[a] += p[b];
     p[b] = a;
     dif[b] = w;
