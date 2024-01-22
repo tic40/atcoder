@@ -6,15 +6,16 @@ using ll = long long;
 
 // dp[i][j][s][r]
 // i: 何桁まで決めたか
-// j: 以下フラグ. 1ならばN未満, 0: 何でもok
+// j: 以下フラグ. 1: N以下が確定, 0: 確定していない
 // s: 桁和
-// r: kで割った余り
+// r: 桁和をkで割った余り
 ll dp[16][2][130][130];
 
 int main() {
   ll n; cin >> n;
   n++;
 
+  // n の各桁の値を直接参照できるようにする
   vector<int> digit;
   while(n) {
     digit.push_back(n%10);
@@ -24,17 +25,18 @@ int main() {
   int m = digit.size(); // 桁数
 
   ll ans = 0;
-  for(int k = 1; k <= 126; k++) {
-    // 初期化
+  // k: 桁和
+  for(int k = 1; k < 129; k++) {
+    // dp の初期化
     REP(i,m+1) REP(j,2) REP(s,k+1) REP(r,k) dp[i][j][s][r] = 0;
     dp[0][0][0][0] = 1;
 
     REP(i,m) REP(j,2) REP(s,k+1) REP(r,k) {
       REP(d,10) {
-        int ni = i+1;
-        int nj = j;
-        int ns = s+d;
-        int nr = (r*10+d)%k;
+        int ni = i+1; // 次の桁
+        int nj = j; // 以下フラグ
+        int ns = s+d; // 桁和
+        int nr = (r*10+d)%k; // kで割った余り
         if (ns > k) continue;
         if (j == 0) {
           if (digit[i] < d) continue;
