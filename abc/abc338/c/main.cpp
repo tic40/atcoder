@@ -12,7 +12,7 @@ int main() {
 
   int ans = 0;
   auto f = [&]() -> void {
-    REP(ai,1e6+1) { // i: A を作る数
+    REP(ai,1e6+1) { // ai: A を作る数
       auto t = q;
       REP(j,n) t[j] -= a[j]*ai;
       REP(j,n) if (t[j] < 0) return;
