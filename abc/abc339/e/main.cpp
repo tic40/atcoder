@@ -14,12 +14,12 @@ int main() {
   REP(i,n) cin >> a[i];
 
   const int M = 500005;
+  // dp[i][j] := i 個目までみて最後に選んだのが値 j のときの max
   segtree<int,op,e> dp(M);
 
   REP(i,n) {
-    int l = a[i]-d, r = a[i]+d+1;
-    l = max(l,0);
-    r = min(r,M);
+    int l = max(0, a[i]-d);
+    int r = min(M, a[i]+d+1);
     int now = dp.prod(l,r) + 1;
     dp.set(a[i],now);
   }
