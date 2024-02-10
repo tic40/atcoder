@@ -32,8 +32,9 @@ int main() {
   auto gb = f(b);
   ll ans = 0;
   REP(i,k+1) for(auto v: ga[i]) {
-    auto it = upper_bound(gb[k-i].begin(), gb[k-i].end(),p-v);
-    ans += it - gb[k-i].begin(); // p-v 以下の数を答えに足す。index なのでこれでよい
+    auto& t = gb[k-i];
+    auto it = upper_bound(t.begin(), t.end(),p-v);
+    ans += it - t.begin(); // p-v 以下の数を答えに足す。index なのでこれでよい
   }
   cout << ans << endl;
   return 0;
