@@ -22,11 +22,12 @@ int main() {
 
   REP(_,q) {
     int t,l,r; cin >> t >> l >> r;
+    l--; r--;
     if (t == 1) {
-      seg.set(l-1, seg.get(l-1)^1);
-      seg.set(r, seg.get(r)^1);
+      seg.set(l, seg.get(l)^1);
+      seg.set(r+1, seg.get(r+1)^1);
     } else {
-      auto v = seg.prod(l,r);
+      auto v = seg.prod(l+1,r+1);
       cout << (v == r-l ? "Yes" : "No") << endl;
     }
   }
