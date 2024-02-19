@@ -40,9 +40,8 @@ int main() {
       // dp[u] の値はすでに確定している
       for(int j = w[v]-1; j >= w[u]; j--) chmax(dp2[j], dp2[j-w[u]] + dp[u]);
     }
-    // コーナーケース : w[0]
     // v からの遷移分 + 1 する
-    dp[v] = dp2[max(0,w[v]-1)] + 1;
+    dp[v] = dp2[w[v]-1] + 1;
   }
 
   ll ans = 0;
