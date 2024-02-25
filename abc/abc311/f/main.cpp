@@ -20,12 +20,15 @@ int main() {
 
   // 解説放送解 https://www.youtube.com/watch?v=OA4q9-u8ecg
   auto solve1 = [&]() {
-    // dp[n+1][0] := 左上の白マス領域の経路の総数
     vector dp(n+2,vector<mint>(m+1));
-    dp[0][m]=1;
+    dp[0][m] = 1; // 右上マス
+    // 行ごとに右から見ていく
     for(int j = m; j >= 0; j--) REP(i,n+2) {
       if (i+1 < n+2) dp[i+1][j] += dp[i][j];
       if (i-1 >= 0 && j-1 >= 0) {
+        // 遷移。
+        // ずらしているため i を i-1 として考える。
+        // 左のマスが白マスで、かつ i == 1(一番上) のとき
         if (i == 1 || s[i-2][j-1] == '.') dp[i-1][j-1] += dp[i][j];
       }
     }
@@ -35,7 +38,7 @@ int main() {
   // 解説解 https://atcoder.jp/contests/abc311/editorial/6822
   auto solve2 = [&]() {
     vector<mint> dp(m+1);
-    dp[m]=1;
+    dp[m] = 1;
     for(int c = -m+1; c <= n-1; c++) {
       for(int j = m-1; j >= 0; j--) dp[j]+=dp[j+1];
       REP(j,m) {
