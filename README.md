@@ -23,7 +23,7 @@
 
 e.g.
 ```
-$ node scripts/downloadSampleInput.js https://atcoder.jp/contests/abc342/tasks/abc342_a
+$ node scripts/sampleDownloader.js https://atcoder.jp/contests/abc342/tasks/abc342_a
 [created test1]
 yay
 
@@ -36,6 +36,10 @@ zzzzzwz
 $ ls
 test1 test2 test3
 ```
+
+##### bookmarklet
+
+[scripts/sampleDownloader.js](https://github.com/tic40/atcoder/blob/main/scripts/bookmarkletSampleDownloader.js)
 
 #### Run test
 
