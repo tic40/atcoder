@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
   int n; cin >> n;
-  vector<vector<int>> g(n);
+  vector g(n,vector<int>());
   queue<int> q;
   vector<bool> used(n);
   REP(i,n) {
@@ -22,14 +22,14 @@ int main() {
     if (used[now]) continue;
     used[now] = true;
     ans.push_back(now);
-
-    for(int v: g[now]) {
-      if (!used[v]) q.push(v);
-    }
+    for(int v: g[now]) if (!used[v]) q.push(v);
   }
 
-  if ((int)ans.size() != n) { cout << -1 << endl; return 0; }
-  reverse(ans.begin(),ans.end());
-  for(int v: ans) cout << v+1 << endl;
+  if ((int)ans.size() == n) {
+    reverse(ans.begin(),ans.end());
+    for(int v: ans) cout << v+1 << endl;
+  } else {
+    cout << -1 << endl;
+  }
   return 0;
 }
