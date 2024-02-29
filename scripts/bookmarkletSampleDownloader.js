@@ -4,7 +4,7 @@ javascript:(function() {
   const messages = [];
   document.querySelectorAll("[id^='pre-sample']").forEach(v => {
     const prevTextContent = v.previousSibling.previousSibling.textContent;
-    if (!RegExp('^Sample Input [0-9]+').test(prevTextContent)) return;
+    if (!RegExp('^入力例 [0-9]+').test(prevTextContent)) return;
 
     const blob = new Blob([v.textContent], { type: 'application/octet-stream' });
     const a = document.createElement('a');
