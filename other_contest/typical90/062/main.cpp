@@ -26,7 +26,7 @@ int main() {
   }
 
   if ((int)ans.size() == n) {
-    reverse(ans.begin(),ans.end());
+    reverse(ans.begin(),ans.end()); // 後ろから集計しているので逆順にする
     for(int v: ans) cout << v+1 << endl;
   } else {
     cout << -1 << endl;
