@@ -30,12 +30,11 @@ int main() {
     auto p3 = P(x2,y2,z2);
 
     vector<int> nv(3);
-    nv[2] = calcOverRapped(p1,p2,p3);
+    int v3 = calcOverRapped(p1,p2,p3);
     // 1-2, 1-3, 2-3 それぞれの組み合わせで重なっている部分の面積の合計 - 3つ重なっている部分の面積
-    nv[1] = calcOverRapped(p1,p1,p2) +  calcOverRapped(p1,p1,p3) + calcOverRapped(p2,p2,p3) - nv[2]*3;
-    // 3つの合計面積 - 重なっている部分の面積
-    nv[0] = (7*7*7*3) - (nv[1]*2 + nv[2]*3);
-    return v == nv;
+    int v2 = calcOverRapped(p1,p1,p2) +  calcOverRapped(p1,p1,p3) + calcOverRapped(p2,p2,p3) - v3*3; // 3つの合計面積 - 重なっている部分の面積
+    int v1 = (7*7*7*3) - (v3*3 + v2*2);
+    return v[0] == v1 && v[1] == v2 && v[2] == v3;
   };
 
   for(int i1 = -7; i1 <= 7; i1++) {
