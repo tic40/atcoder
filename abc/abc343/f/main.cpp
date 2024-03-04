@@ -4,7 +4,6 @@ using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
-using ll = long long;
 const int INF = numeric_limits<int>::max();
 
 // 値とその個数のペア
