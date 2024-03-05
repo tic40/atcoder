@@ -6,12 +6,11 @@ using namespace std;
 struct V {
   int x,y;
   V(int x=0, int y=0): x(x),y(y) {};
-  V operator-(const V& a) const {
-    return V(x-a.x, y-a.y);
-  }
-  int cross(const V& a) const {
-    return x*a.y - y*a.x;
-  }
+  V operator-(const V& a) const { return V(x-a.x, y-a.y); }
+  // V a との外積を計算する
+  int cross(const V& a) const { return x*a.y - y*a.x; }
+  // V a との位置関係
+  // 1: 反時計周り, -1: 時計回り, 0: 一直線上
   int ccw (const V& a) const {
     int area = cross(a);
     if (area > 0) return 1; // 反時計周り
