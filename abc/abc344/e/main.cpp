@@ -2,45 +2,69 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
+const int INF = numeric_limits<int>::max();
 
-struct E {
-  int from, to;
-  E(int from=0, int to=0): from(from), to(to) {}
+struct Node {
+  int pre, nxt;
+  Node(int pre = -1, int nxt = -1): pre(pre), nxt(nxt) {}
+};
+
+// 双方向リスト
+struct List {
+  unordered_map<int,Node> nodes;
+  int head, tail;
+  List(): head(-INF), tail(INF) {
+    nodes[head] = Node(-1,tail);
+    nodes[tail] = Node(head,-1);
+  }
+  // リストから値 x の要素を削除する
+  void erase(int x) {
+    Node a = nodes[x];
+    nodes[a.pre].nxt = a.nxt;
+    nodes[a.nxt].pre = a.pre;
+    nodes.erase(x);
+  }
+  // リストの値 x の要素の直後に y を追加する
+  void add(int x, int y) {
+    int z = nodes[x].nxt;
+    nodes[x].nxt = y;
+    nodes[z].pre = y;
+    nodes[y] = Node(x,z);
+  }
+  void print() {
+    int i = nodes[head].nxt;
+    while(i != tail) {
+      cout << i << " ";
+      i = nodes[i].nxt;
+    }
+    cout << endl;
+  }
 };
 
 int main() {
   int n; cin >> n;
-  vector<int> a(n);
-  REP(i,n) cin >> a[i];
-
-  unordered_map<int,E> mp;
-  mp[a[0]] = E{-1,a[1]};
-  mp[a[n-1]] = E{a[n-2],-1};
-  for(int i = 1; i < n-1; i++) mp[a[i]] = E{a[i-1],a[i+1]};
-
-  int first = a[0];
-  int q; cin >> q;
-  REP(i,q) {
-    int t; cin >> t;
-    if (t == 1) {
-      int x,y; cin >> x >> y;
-      auto now = mp[x];
-      mp[x].to = y;
-      mp[y] = E{x,now.to};
-      mp[now.to].from = y;
-    } else {
-      int x; cin >> x;
-      auto now = mp[x];
-      if (now.to != -1) { mp[now.to].from = now.from; }
-      if (now.from != -1) {
-        mp[now.from].to = now.to;
-      } else {
-        first = now.to;
-      }
+  List d;
+  {
+    int now = d.head;
+    REP(i,n) {
+      int a; cin >> a;
+      d.add(now,a);
+      now = a;
     }
   }
 
-  int v = first;
-  while(v != -1) { cout << v << " "; v = mp[v].to; }
+  int q; cin >> q;
+  REP(_,q) {
+    int t; cin >> t;
+    if (t == 1) {
+      int x,y; cin >> x >> y;
+      d.add(x,y);
+    } else {
+      int x; cin >> x;
+      d.erase(x);
+    }
+  }
+
+  d.print();
   return 0;
 }
