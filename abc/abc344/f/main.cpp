@@ -59,6 +59,7 @@ int main() {
   CC cc;
   REP(i,n) REP(j,n) cc.add(p[i][j]);
   int m = cc.size();
+  REP(i,n)REP(j,n) p[i][j] = cc(p[i][j]);
 
   REP(i,n) REP(j,n) REP(k,m) dp[i][j][k] = P(LINF,0);
   dp[0][0][p[0][0]] = P(0,0);
