@@ -10,4 +10,5 @@ for v in ${arr[@]}; do
   mkdir $1/$v
   cp template.cpp $1/$v/main.cpp
 done
-echo "created a new directory $1"
+mv $1 abc/$1
+echo "created a new directory abc/$1"
