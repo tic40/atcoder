@@ -8,7 +8,7 @@ using ll = long long;
 // i: 何桁まで決めたか
 // j: 以下フラグ. 1: N以下が確定, 0: 確定していない
 // s: 桁和
-// r: 桁和をkで割った余り
+// r: 10進法の値をkで割った余り
 ll dp[16][2][130][130];
 
 int main() {
@@ -36,7 +36,7 @@ int main() {
         int ni = i+1; // 次の桁
         int nj = j; // 以下フラグ
         int ns = s+d; // 桁和
-        int nr = (r*10+d)%k; // kで割った余り
+        int nr = (r*10+d)%k; // 10進法の値をkで割った余り
         if (ns > k) continue;
         if (j == 0) {
           if (digit[i] < d) continue;
