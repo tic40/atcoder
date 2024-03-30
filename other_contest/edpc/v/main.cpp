@@ -17,19 +17,25 @@ int main() {
   }
 
   mint::set_mod(m);
-  vector<mint> dp(n+1), ans(n+1);
+  // dp[i] := 頂点 i の部分木の塗り方において、
+  // 頂点 i が黒色に塗られていて黒色の頂点が全て連結である塗り方の組み合わせ
+  vector<mint> dp(n+1);
+  vector<mint> ans(n+1);
 
   auto dfs1 = [&](auto self, int now, int p) -> void {
     dp[now] = 1;
     for(auto to: g[now]) {
       if (to == p) continue;
       self(self,to,now);
+      // +1 は部分木 to 以下が全て白の場合
       dp[now] *= dp[to] + 1;
     }
   };
 
+  // 全方位木の計算
   auto dfs2 = [&](auto self, int now, int p) -> void {
     ans[now] = 1;
+    // now を親としたときの組み合わせを計算
     for(auto to: g[now]) ans[now] *= dp[to] + 1;
 
     int n = g[now].size();
