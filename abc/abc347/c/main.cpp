@@ -2,37 +2,20 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
-using ll = long long;
-const ll LINF = numeric_limits<ll>::max();
 
 int main() {
-  ll n,a,b; cin >> n >> a >> b;
-  vector<ll> d(n);
+  int n,a,b; cin >> n >> a >> b;
+  vector<int> d(n);
   REP(i,n) cin >> d[i];
+  int w = a+b;
+  REP(i,n) d[i] %= w;
+  sort(d.begin(),d.end());
+  // 2 周分にする
+  REP(i,n) d.push_back(d[i]+w);
 
-  ll r = a+b;
-  // d[0] を 1 としたとき
-  vector<ll> diff(n);
-  REP(i,n) {
-    diff[i] = d[i] - d[0];
-    diff[i] %= r;
+  REP(i,(int)d.size()-1) {
+    if (d[i+1]-d[i] >= b+1) { cout << "Yes" << endl; return 0; }
   }
-
-  ll mx = LINF;
-  REP(i,n) {
-    if (diff[i] < a) continue;
-    mx = min(mx,diff[i]);
-  }
-  if (mx == LINF) { cout << "Yes" << endl; return 0; }
-
-  ll nd = r - mx;
-  REP(i,n) {
-    diff[i] += nd;
-    diff[i] %= r;
-  }
-
-  bool ok = true;
-  REP(i,n) { if (diff[i] >= a) ok = false; }
-  cout << (ok ? "Yes" : "No") << endl;
+  cout << "No" << endl;
   return 0;
 }
