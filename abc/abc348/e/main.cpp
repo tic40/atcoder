@@ -3,6 +3,8 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
+const int INF = numeric_limits<int>::max();
+const ll LINF = numeric_limits<ll>::max();
 
 int main() {
   int n; cin >> n;
@@ -57,9 +59,39 @@ int main() {
   // 全方位木DP
   auto solve2 = [&]() {
 
+    // sum_c[i] := 頂点 i の部分木 c の合計値
+    vector<ll> sum_c(n);
+    // sum_cd[i] := 頂点 i の各部分木への辺の数 * c の合計値
+    vector<ll> sum_cd(n);
+    auto dfs1 = [&](auto self,int i, int p) -> void {
+      sum_c[i] = c[i];
+      sum_cd[i] = 0;
+      for(auto v: g[i]) {
+        if (v == p) continue;
+        self(self,v,i);
+        sum_c[i] += sum_c[v];
+        sum_cd[i] += sum_cd[v] + sum_c[v];
+      }
+    };
+
+    ll ans = LINF;
+    auto dfs2 = [&](auto self, int i, int p, ll p_sum_c, ll p_sum_cd) -> void {
+      // 今いる頂点の答え
+      ans = min(ans, p_sum_cd + sum_cd[i]);
+      for(auto v: g[i]) {
+        if (v == p) continue;
+        ll np_sum_c = p_sum_c + sum_c[i] - sum_c[v];
+        ll np_sum_cd = p_sum_cd + sum_cd[i] - sum_c[v] - sum_cd[v] + np_sum_c;
+        self(self, v, i, np_sum_c, np_sum_cd);
+      }
+    };
+
+    dfs1(dfs1,0,-1);
+    dfs2(dfs2,0,-1,0,0);
+    cout << ans << endl;
   };
 
-  solve1(); // 木の重心
-  // solve2(); // 全方位木DP
+  // solve1(); // 木の重心
+  solve2(); // 全方位木DP
   return 0;
 }
