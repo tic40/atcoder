@@ -24,7 +24,7 @@ struct Combination {
 int main() {
   int h,w,k; cin >> h >> w >> k;
   mint ans;
-  Combination comb(1000000);
+  Combination comb(h*w);
 
   for(int r = 1; r <= h; r++) {
     for(int c = 1; c <= w; c++) {
