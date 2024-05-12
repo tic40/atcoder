@@ -9,18 +9,30 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
   sort(a.begin(),a.end());
-  vector<ll> s(n+1);
-  REP(i,n) s[i+1] = s[i] + a[i];
 
-  ll ans = 0;
-  REP(i,n-1) {
-    ll now = (ll)a[i] * (n-1-i) + s[n] - s[i+1];
+  // 二分探索
+  auto solve1 = [&]() {
+    ll ans = (ll)accumulate(a.begin(),a.end(),0LL) * (n-1);
+    REP(i,n-1) {
+      int idx = lower_bound(a.begin(),a.end(),1e8 - a[i]) - a.begin();
+      idx = max(i+1,idx);
+      ans -= (ll)1e8 * (n - idx);
+    }
+    cout << ans << endl;
+  };
 
-    int idx = lower_bound(a.begin(),a.end(),1e8 - a[i]) - a.begin();
-    if (idx <= i) idx = i+1;
-    now -= (ll)1e8 * (max(0, n - idx));
-    ans += now;
-  }
-  cout << ans << endl;
+  // 尺取
+  auto solve2 = [&]() {
+    ll ans = (ll)accumulate(a.begin(),a.end(),0LL) * (n-1);
+    int r = n-1;
+    REP(i,n-1) {
+      while(r >= 0 && a[i] + a[r] >= 1e8) r--;
+      ans -= (ll)1e8 * (n - max(r,i)-1);
+    }
+    cout << ans << endl;
+  };
+
+  //solve1();
+  solve2();
   return 0;
 }
