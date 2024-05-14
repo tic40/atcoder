@@ -7,7 +7,7 @@ using namespace std;
 using ll = long long;
 
 const int p1 = 1000000021;
-const int p2 = 1000000021;
+const int p2 = 1000000033;
 struct mints {
   int d1, d2;
   mints(int val=0): d1(val), d2(val) {}
@@ -23,7 +23,7 @@ struct mints {
   }
 };
 
-struct D {
+ struct D {
   mints h, c;
   D() {}
   D(mints h, mints c): h(h), c(c) {}
