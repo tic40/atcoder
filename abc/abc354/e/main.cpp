@@ -7,9 +7,6 @@ using namespace std;
 using ll = long long;
 using P = pair<int,int>;
 const int INF = numeric_limits<int>::max();
-const ll LINF = numeric_limits<ll>::max();
-const int MOD = 1e9+7;
-// using mint = modint998244353; // modint1000000007;
 
 int main() {
   int n; cin >> n;
@@ -18,23 +15,19 @@ int main() {
 
   // メモ化 DFS
   auto solve1 = [&]() {
-    vector<int> used(20);
-    auto f = [&](int i, int j) {
-      if (used[i] || used[j]) return false;
-      if (a[i] == a[j]) return true;
-      if (b[i] == b[j]) return true;
-      return false;
-    };
+    vector<int> used(n);
     map<pair<int,vector<int>>,int> memo;
     auto dfs = [&](auto self, int turn) -> int {
       if (memo.count({turn,used})) return memo[{turn, used}];
       int res = 0;
-      REP(i,n) for(int j = i+1; j < n; j++) {
-        if (!f(i,j)) continue;
-        used[i] = 1; used[j] = 1;
-        res |= self(self,turn^1) ^ 1;
-        used[i] = 0; used[j] = 0;
-        if (res == 1) return memo[{turn, used}] = res;
+      REP(i,n) REP(j,i) {
+        if (used[i] || used[j]) continue;
+        if (a[i] == a[j] || b[i] == b[j]) {
+          used[i] = used[j] = 1;
+          res |= self(self,turn^1) ^ 1;
+          used[i] = used[j] = 0;
+          if (res == 1) return memo[{turn, used}] = res;
+        }
       }
       return memo[{turn, used}] = res;
     };
@@ -61,8 +54,8 @@ int main() {
     cout << (dp[n2-1] ? "Takahashi" : "Aoki") << endl;
   };
 
-  // solve1(); // dfs
-  solve2(); // bitDP
+  solve1(); // dfs
+  // solve2(); // bitDP
 
   return 0;
 }
