@@ -6,7 +6,7 @@ using ll = long long;
 
 struct Event {
   // type := 0: in, 1: out
-  int time, type, id;
+  int time, type;
   bool operator<(const Event& other) const {
     return time == other.time ? type < other.type : time < other.time;
   }
@@ -17,16 +17,16 @@ int main() {
   vector<Event> events;
   REP(i,n) {
     int l, r; cin >> l >> r;
-    events.emplace_back(l, 0, i);
-    events.emplace_back(r, 1, i);
+    events.emplace_back(l, 0);
+    events.emplace_back(r, 1);
   }
   sort(events.begin(), events.end());
 
-  unordered_set<int> st;
   ll ans = 0;
-  for (auto [_,t,id] : events) {
-    if (t == 0) { ans += st.size(); st.insert(id); }
-    else st.erase(id);
+  int now = 0;
+  for (auto [_,t] : events) {
+    if (t == 0) ans += now++;
+    else now--;
   }
 
   cout << ans << endl;
