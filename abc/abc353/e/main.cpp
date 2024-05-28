@@ -15,7 +15,7 @@ struct Trie {
 
   void add(const string& s) {
     int v = 0;
-    for(char c: s) {
+    for(auto c: s) {
       if (!d[v].to.count(c)) {
         d[v].to[c] = d.size();
         d.push_back(Node());
@@ -25,15 +25,14 @@ struct Trie {
     d[v].cnt++;
   }
 
-  ll ans;
+  ll ans = 0;
   int dfs(int v) {
     int res = d[v].cnt;
-    for(auto p: d[v].to) {
-      res += dfs(p.second);
-    }
-    if(v) ans += res*ll(res-1) / 2;
+    for(auto p: d[v].to) res += dfs(p.second);
+    if (v > 0) ans += res * ll(res-1) / 2;
     return res;
   }
+
   ll solve() {
     ans = 0;
     dfs(0);
@@ -43,12 +42,11 @@ struct Trie {
 
 int main() {
   int n; cin >> n;
-  Trie t;
+  Trie trie;
   REP(i,n) {
     string s; cin >> s;
-    t.add(s);
+    trie.add(s);
   }
-  ll ans = t.solve();
-  cout << ans << endl;
+  cout << trie.solve() << endl;
   return 0;
 }
