@@ -14,8 +14,7 @@ int main() {
     ll mask = 1LL << i;
     if (m & mask) {
       ll period = mask << 1;
-      ll full_period = (n+1) / period;
-      ans += full_period * mask;
+      ans += (n+1) / period * mask;
       ans += max(0LL, (n+1) % period - mask);
     }
   }
