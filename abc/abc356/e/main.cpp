@@ -29,9 +29,10 @@ int main() {
       int r = y*(x+1);
       now += (ll)sum(l,r) * x;
     }
-    now -= c[y];
+    now -= c[y]; // 同じ数を取り除く
     ans += now * c[y];
-    ans += c[y] * ll(c[y]-1)/2;
+    // 同じ数同士の組み合わせ分を足す。 nC2
+    ans += c[y] * ll(c[y]-1) / 2;
   }
   cout << ans << endl;
   return 0;
