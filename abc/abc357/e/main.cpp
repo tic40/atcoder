@@ -14,7 +14,7 @@ int main() {
     rg[a].push_back(i);
   }
 
-  vector<int> visited(n), visited2(n), order;
+  vector<int> visited(n),order;
   auto dfs = [&](auto self, int i) -> void {
     if (visited[i]) return;
     visited[i] = 1;
@@ -23,8 +23,8 @@ int main() {
   };
 
   auto rdfs = [&](auto self, int i, vector<int>& cycle) -> void {
-    if (visited2[i]) return;
-    visited2[i] = 1;
+    if (visited[i]) return;
+    visited[i] = 1;
     cycle.push_back(i);
     for(auto v: rg[i]) self(self,v,cycle);
   };
@@ -32,6 +32,7 @@ int main() {
   REP(i,n) dfs(dfs,i);
   reverse(order.begin(),order.end());
   vector<vector<int>> cycles;
+  visited = vector<int>(n);
   for(int i: order) {
     vector<int> cycle;
     rdfs(rdfs,i,cycle);
@@ -44,14 +45,14 @@ int main() {
     for(auto v: cycle) dp[v] = cycle.size();
   }
 
-  auto rec = [&](auto self, int i) -> ll {
+  auto f = [&](auto self, int i) -> ll {
     if (dp[i] > 0) return dp[i];
     if (to[i] == i) return dp[i] = 1LL;
     return dp[i] = self(self,to[i]) + 1;
   };
 
   ll ans = 0;
-  REP(i,n) ans += rec(rec,i);
+  REP(i,n) ans += f(f,i);
   cout << ans << endl;
   return 0;
 }
