@@ -5,29 +5,23 @@ using namespace std;
 
 int main() {
   int n; cin >> n;
-  vector<vector<int>> g(n);
+  vector<int> g(n);
   REP(i,n) {
     int a; cin >> a; a--;
-    g[i].push_back(a);
+    g[i] = a;
   }
 
-  vector<int> dir;
-  vector<bool> used(n);
-  auto dfs = [&](auto self, int i) -> void {
-    if (used[i]) return;
-    used[i] = true;
-    for(auto v: g[i]) self(self,v);
-    dir.push_back(i);
-  };
+  int v = 0;
+  REP(i,n) v = g[v];
 
-  REP(i,n) {
-    dir = vector<int>();
-    dfs(dfs,i);
-    if (dir.size() == 1) continue;
-    cout << dir.size() << endl;
-    reverse(dir.begin(),dir.end());
-    for(auto v: dir) cout << v+1 << " ";
-    break;
-  }
+  int start = v;
+  vector<int> ans;
+  do {
+    ans.push_back(v);
+    v = g[v];
+  } while(v != start);
+
+  cout << ans.size() << endl;
+  for(auto x: ans) cout << x+1 << " ";
   return 0;
 }
