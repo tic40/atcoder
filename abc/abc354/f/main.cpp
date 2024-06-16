@@ -38,11 +38,10 @@ void solve() {
   int n; cin >> n;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
-  {
-    CC<int> cc;
-    REP(i,n) cc.add(a[i]);
-    REP(i,n) a[i] = cc(a[i]);
-  }
+
+  CC<int> c;
+  REP(i,n) c.add(a[i]);
+  REP(i,n) a[i] = c(a[i]);
 
   auto get = [&]() {
     vector<int> dp(n);
@@ -54,17 +53,16 @@ void solve() {
     return dp;
   };
 
-  vector<int> dl = get();
+  auto dl = get();
+  // 値の大小を反対にする
   REP(i,n) a[i] = n-1-a[i];
   reverse(a.begin(),a.end());
-  vector<int> dr = get();
-  reverse(dr.begin(),dr.end());
+  auto dr = get();
 
-  int lis = *max_element(dl.begin(), dl.end());
+  auto lis = *max_element(dl.begin(),dl.end());
   vector<int> ans;
-  REP(i,n) {
-    if (dl[i] + dr[i] - 1 == lis) ans.push_back(i);
-  }
+  // i := LIS に含まれている値
+  REP(i,n) if (dl[i] + dr[n-i-1] - 1 == lis) ans.push_back(i);
   cout << ans.size() << endl;
   for(auto v: ans) cout << v+1 << " ";
 }
