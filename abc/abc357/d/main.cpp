@@ -14,7 +14,7 @@ int main() {
   mint r = mint(10).pow(d);
   // 等比数列の和の公式
   // s := N * ( 等比数列の和 )
-  mint s = n * (r.pow(n) - 1) / (r - 1);
-  cout << s.val() << endl;
+  mint ans = n * (r.pow(n) - 1) / (r - 1);
+  cout << ans.val() << endl;
   return 0;
 }
