@@ -31,44 +31,47 @@ struct CC {
   }
 };
 
-int op(int a, int b) { return max(a,b); }
-int e() { return 0; }
+using S = int;
+S op(S a, S b) { return max(a,b); }
+S e() { return 0; }
 
 void solve() {
   int n; cin >> n;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  CC<int> c;
-  REP(i,n) c.add(a[i]);
-  REP(i,n) a[i] = c(a[i]);
+  {
+    CC<int> c;
+    REP(i,n) c.add(a[i]);
+    REP(i,n) a[i] = c(a[i]);
+  }
 
-  auto get = [&]() {
+  auto lis = [&]() {
     vector<int> dp(n);
-    segtree<int,op,e> t(n);
+    segtree<S,op,e> seg(n);
     REP(i,n) {
-      dp[i] = t.prod(0,a[i]) + 1;
-      t.set(a[i],dp[i]);
+      dp[i] = seg.prod(0,a[i]) + 1;
+      seg.set(a[i],dp[i]);
     }
     return dp;
   };
 
-  auto dl = get();
+  auto dl = lis();
   // 値の大小を反対にする
   REP(i,n) a[i] = n-1-a[i];
   reverse(a.begin(),a.end());
-  auto dr = get();
+  auto dr = lis();
 
-  auto lis = *max_element(dl.begin(),dl.end());
+  auto mx = *max_element(dl.begin(),dl.end());
   vector<int> ans;
   // i := LIS に含まれている値
-  REP(i,n) if (dl[i] + dr[n-i-1] - 1 == lis) ans.push_back(i);
+  REP(i,n) if (dl[i] + dr[n-i-1] - 1 == mx) ans.push_back(i);
   cout << ans.size() << endl;
   for(auto v: ans) cout << v+1 << " ";
 }
 
 int main() {
-  int ts; cin >> ts;
-  REP(ti,ts) solve();
+  int t; cin >> t;
+  REP(i,t) solve();
   return 0;
 }
