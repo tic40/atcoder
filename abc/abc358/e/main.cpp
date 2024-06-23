@@ -5,10 +5,6 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
-using P = pair<int,int>;
-const int INF = numeric_limits<int>::max();
-const ll LINF = numeric_limits<ll>::max();
-const int MOD = 1e9+7;
 using mint = modint998244353; // modint1000000007;
 
 struct Combination {
@@ -32,21 +28,18 @@ int main() {
   REP(i,n) cin >> c[i];
 
   Combination comb(1000);
-  // dp[i][j] := 文字種　i まで置いて j 個置いたときの個数
-  vector<mint> dp(k+1);
-  dp[0] = 1;
+  vector dp(n+1,vector<mint>(k+1));
+  dp[0][0] = 1;
   REP(i,n) {
-    vector<mint> p(k+1);
-    swap(dp,p);
     REP(j,k+1) REP(a,c[i]+1) {
-      int nj = j+a;
+      int nj = j + a;
       if (nj > k) break;
-      dp[nj] += p[j] * comb(nj,a);
+      dp[i+1][nj] += dp[i][j] * comb(nj,a);
     }
   }
 
-  mint ans;
-  REP(i,k) ans += dp[i+1];
+  mint ans = 0;
+  for(int i = 1; i <= k; i++) ans += dp[n][i];
   cout << ans.val() << endl;
   return 0;
 }
