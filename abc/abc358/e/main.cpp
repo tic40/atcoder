@@ -28,6 +28,7 @@ int main() {
   REP(i,n) cin >> c[i];
 
   Combination comb(1000);
+  // dp[i][j] := 文字種 i までみたときに長さ j の文字列の個数
   vector dp(n+1,vector<mint>(k+1));
   dp[0][0] = 1;
   REP(i,n) {
