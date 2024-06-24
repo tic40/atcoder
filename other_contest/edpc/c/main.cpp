@@ -1,23 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
+#define endl '\n'
+void chmax(int& a, int b) { a = max(a,b); }
 
 int main() {
   int n; cin >> n;
-  vector<vector<int>> g(n,vector<int> (3));
-  REP(i,n) cin >> g[i][0] >> g[i][1] >> g[i][2];
+  vector d(n,vector<int>(3));
+  REP(i,n) cin >> d[i][0] >> d[i][1] >> d[i][2];
 
-  vector<int> dp(3);
-  REP(i,n) {
-    vector<int> p(3);
-    REP(from,3) REP(to,3) {
-      if (from != to) p[to] = max(p[to], dp[from] + g[i][to]);
-    }
-    swap(p,dp);
+  vector dp(n+1, vector<int>(3));
+  REP(i,n) REP(from,3) REP(to,3) if (from != to) {
+    chmax(dp[i+1][to], dp[i][from] + d[i][to]);
   }
 
-  int ans = 0;
-  REP(i,3) ans = max(ans,dp[i]);
-  cout << ans << endl;
+  cout << max({dp[n][0],dp[n][1],dp[n][2]}) << endl;
   return 0;
 }
