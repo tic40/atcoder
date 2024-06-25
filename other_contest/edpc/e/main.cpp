@@ -1,28 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
+#define endl '\n'
 using ll = long long;
-const int INF = 1e9+5;
+const int INF = numeric_limits<int>::max();
+const ll LINF = numeric_limits<ll>::max();
+void chmin(ll& a, ll b) { a = min(a,b); }
 
 int main() {
   int n,W; cin >> n >> W;
   vector<int> w(n),v(n);
   REP(i,n) cin >> w[i] >> v[i];
 
-  vector<ll> dp(1e5+1, INF); // [価値] = 重さ
-  dp[0] = 0;
+  // dp[i][j] := i 個までみたとき、価値が j のときの最小の重さ
+  vector dp(n+1, vector<ll>(1e5+1, LINF));
+  dp[0][0] = 0;
+
   REP(i,n) {
-    vector<ll> p(1e5+1, INF);
-    REP(now, 1e5+1) {
-      p[now] = min(p[now], dp[now]);
-      if ( W < dp[now] + w[i] ) continue;
-      p[now + v[i]] = min(p[now + v[i]], dp[now] + w[i]);
+    REP(j,1e5+1) if (dp[i][j] != LINF) {
+      chmin(dp[i+1][j], dp[i][j]);
+      int nj = j + v[i];
+      chmin(dp[i+1][nj], dp[i][j]+w[i]);
     }
-    swap(dp,p);
   }
 
-  int ans = 0;
-  for(int i = 1e5; 0 <= i; i--) if (dp[i] <= W) { ans = i; break; }
+  ll ans = 0;
+  REP(i,1e5+1) if (dp[n][i] <= W) ans = i;
   cout << ans << endl;
   return 0;
 }
