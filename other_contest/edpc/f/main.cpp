@@ -1,16 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
+#define endl '\n'
 
 int main() {
   string s,t; cin >> s >> t;
-  int ns = s.size(), nt = t.size();
+  int ns = s.size();
+  int nt = t.size();
 
-  vector<vector<int>> dp(ns+1, vector<int> (nt+1));
+  vector dp(ns+1,vector<int>(nt+1));
   REP(i,ns) REP(j,nt) {
-    if (s[i] == t[j]) dp[i+1][j+1] = dp[i][j]+1;
-    else dp[i+1][j+1] = max(dp[i+1][j],dp[i][j+1]);
+    dp[i+1][j+1] = max({dp[i+1][j], dp[i][j+1], dp[i][j] + (s[i] == t[j] ? 1 : 0)});
   }
+
+  // 最長の長さ cout << dp[ns][nt] << endl;
 
   int i = ns, j = nt;
   string ans;
