@@ -1,29 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
-
-vector<int> memo; // [i] = iを始点としたときの最長パス長
-vector<vector<int>> g;
-
-int f(int x) {
-  if (0 <= memo[x]) return memo[x];
-  int res = 0;
-  for(int v: g[x]) res = max(res, f(v)+1);
-  return memo[x] = res;
-}
+#define REP(i,n) for(int i=0;i<n;i++)
+#define endl '\n'
+const int INF = numeric_limits<int>::max();
 
 int main() {
   int n,m; cin >> n >> m;
-  g.resize(n); memo.resize(n,-1);
+  vector g(n,vector<int>());
+  vector<int> deg(n);
   REP(i,m) {
     int x,y; cin >> x >> y;
     x--; y--;
     g[x].push_back(y);
+    deg[y]++;
   }
 
-  int ans = 0;
-  REP(i,n) ans = max(ans, f(i));
-  cout << ans << endl;
+  vector<int> memo(n,-1);
+  auto dfs = [&](auto self, int i) {
+    if (memo[i] != -1) return memo[i];
+    int res = 0;
+    for(auto v: g[i]) res = max(res,self(self,v)+1);
+    return memo[i] = res;
+  };
 
+  int ans = 0;
+  REP(i,n) if (deg[i] == 0) ans = max(ans,dfs(dfs,i));
+  cout << ans << endl;
   return 0;
 }
