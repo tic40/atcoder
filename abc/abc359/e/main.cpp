@@ -10,21 +10,17 @@ int main() {
   vector<int> h(n);
   REP(i,n) cin >> h[i];
 
+  vector<P> pa;
   ll ans = 0;
-  stack<P> st;
-  st.emplace(0,0);
   REP(i,n) {
-    int len = 0;
-    while(st.size()) {
-      auto [k,v] = st.top();
-      if (k >= h[i]) break;
-      st.pop();
-      ans -= (ll)k*v;
-      len += v;
+    int len = 1;
+    while(pa.size() && pa.back().first < h[i]) {
+      len += pa.back().second;
+      ans -= (ll)pa.back().first * pa.back().second;
+      pa.pop_back();
     }
-    st.emplace(h[i],len+1);
-    ans += (ll)len * h[i];
-    ans += h[i];
+    ans += (ll)h[i] * len;
+    pa.emplace_back(h[i],len);
     cout << ans+1 << " ";
   }
   return 0;
