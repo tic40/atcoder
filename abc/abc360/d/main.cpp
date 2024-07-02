@@ -7,18 +7,19 @@ using ll = long long;
 int main() {
   int n,t; cin >> n >> t;
   string s; cin >> s;
-  vector<ll> x(n),xm;
+  vector<int> pos,neg;
   REP(i,n) {
-    cin >> x[i];
-    if (s[i] == '0') xm.push_back(x[i]);
+    int x; cin >> x;
+    if (s[i] == '0') neg.push_back(x);
+    else pos.push_back(x);
   }
-  sort(xm.begin(),xm.end());
+  sort(neg.begin(),neg.end());
 
   ll ans = 0;
-  REP(i,n) if (s[i] == '1') {
-    int id1 = upper_bound(xm.begin(),xm.end(),x[i]) - xm.begin() - 1;
-    int id2 = upper_bound(xm.begin(),xm.end(),x[i] + t * 2) - xm.begin() - 1;
-    ans += id2 - id1;
+  for(auto v: pos) {
+    auto lt = lower_bound(neg.begin(),neg.end(),v);
+    auto rt = upper_bound(neg.begin(),neg.end(),(ll)v+t*2);
+    ans += rt-lt;
   }
   cout << ans << endl;
   return 0;
