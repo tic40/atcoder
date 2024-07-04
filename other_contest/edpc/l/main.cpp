@@ -1,25 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define REP(i,n) for(int i=0;i<(n);i++)
+#define REP(i,n) for(int i=0;i<n;i++)
+#define endl '\n'
+using ll = long long;
+const ll LINF = numeric_limits<ll>::max();
 
 int main() {
   int n; cin >> n;
-  vector<double> p(n);
-  REP(i,n) cin >> p[i];
+  vector<int> a(n);
+  REP(i,n) cin >> a[i];
 
-  vector<double> dp(n+1);
-  dp[0] = 1;
+  // dp[l][r] := 区間 [l,r] からスタートしたときのの最適な値
+  vector dp(n,vector<ll>(n, LINF));
+  auto dfs = [&](auto self, int l, int r) {
+    if (l > r) return 0LL;
+    if (dp[l][r] != LINF) return dp[l][r];
 
-  REP(i,n) {
-    vector<double> ndp(n+1);
-    swap(dp,ndp);
-    REP(j,n) {
-      dp[j+1] += ndp[j] * p[i];
-      dp[j] += ndp[j] * (1.0-p[i]);
-    }
-  }
+    ll res = -LINF;
+    res = max(res, -self(self, l+1, r) + a[l]);
+    res = max(res, -self(self, l, r-1) + a[r]);
 
-  double ans = accumulate(dp.begin()+n/2+1,dp.end(),0.0);
-  printf("%0.10f\n", ans);
+    return dp[l][r] = res;
+  };
+
+  cout << dfs(dfs,0,n-1) << endl;
   return 0;
 }
