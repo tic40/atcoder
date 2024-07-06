@@ -10,17 +10,17 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  // dp[i] = i個飴を分ける方法が何通りあるか
-  vector<mint> dp(k+1);
-  dp[0] = 1;
+  // dp[i][j] = i個目までみたときに、 k 飴を分ける方法が何通りあるか
+  vector dp(n+1, vector<mint>(k+1));
+  dp[0][0] = 1;
   REP(i,n) {
-    vector<mint> p(k+1);
-    swap(dp,p);
-    vector<mint> m(k+2); // 累積和
-    REP(j,k+1) m[j+1] = m[j] + p[j];
-    REP(j,k+1) dp[j] = m[j+1] - m[max(0,j-a[i])];
+    // 累積和
+    vector<mint> s(k+2);
+    REP(j,k+1) s[j+1] = s[j] + dp[i][j];
+    // 貰うDP
+    REP(j,k+1) dp[i+1][j] = s[j+1] - s[max(0,j-a[i])];
   }
 
-  cout << dp[k].val() << endl;
+  cout << dp[n][k].val() << endl;
   return 0;
 }
