@@ -2,29 +2,29 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<(n);i++)
 using ll = long long;
-const ll LINF = 1e18+5;
-
-vector<vector<ll>> dp(401, vector<ll>(401, LINF));
-vector<ll> m(401);
-vector<int> a(401);
-
-// O(n^3)
-// dp[l][r]=(区間[l,r]に相当するスライムが1匹にまとまっているとき、それを分解するために必要な最小コスト)
-ll f(int l, int r) {
-  if (dp[l][r] != LINF) return dp[l][r];
-	if (l == r) return 0;
-
-	//どこで切るか全通り試す
-	ll fans = LINF;
-  for(int i = l; i < r; i++) fans = min(fans, f(l,i) + f(i+1, r));
-	return dp[l][r] = fans + (m[r+1] - m[l]);
-}
+const ll LINF = numeric_limits<ll>::max();
 
 int main() {
   int n; cin >> n;
+  vector<int> a(n);
   REP(i,n) cin >> a[i];
-  REP(i,n) m[i+1] = m[i] + a[i]; // 累積和
 
-  cout << f(0,n-1) << endl;
+  // 累積和
+  vector<ll> m(n+1);
+  REP(i,n) m[i+1] = m[i] + a[i];
+  vector<vector<ll>> dp(n+1, vector<ll>(n+1, LINF));
+
+  // O(n^3)
+  // dp[l][r]=(区間[l,r]に相当するスライムが1匹にまとまっているとき、それを分解するために必要な最小コスト)
+  auto f = [&](auto self, int l, int r) {
+    if (l == r) return 0LL;
+    if (dp[l][r] != LINF) return dp[l][r];
+
+    ll res = LINF;
+    for(int i = l; i < r; i++) res = min(res, self(self,l,i) + self(self,i+1,r));
+    return dp[l][r] = res + (m[r+1] - m[l]);
+  };
+
+  cout << f(f,0,n-1) << endl;
   return 0;
 }
