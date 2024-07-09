@@ -16,11 +16,10 @@ int main() {
     g[y].push_back(x);
   }
 
+  // 木DP
+  // dp[i][j] := 頂点 i を(j?黒く:白く)塗ったとき、i を親とする部分木の塗り方の場合の数
   // 0: 白, 1: 黒
-  // dp[i][j] := i 頂点 で j(0: 白, 1: 黒) のときの組み合わせ数
   vector dp(n,vector<mint>(2));
-  dp[0][0] = dp[0][1] = 1;
-
   auto dfs = [&](auto self, int i, int p) -> void {
     dp[i][0] = dp[i][1] = 1;
     for(auto v: g[i]) {
