@@ -13,10 +13,10 @@ int main() {
 
   auto sa = suffix_array(s);
 
+  // suffix array を二分探索する
   auto f = [&](string t) {
     int m = t.size();
     int ng = -1, ok = n;
-
     while(ng+1 < ok) {
       int wj = (ok+ng) / 2;
       if (s.substr(sa[wj],m) >= t) ok = wj;
