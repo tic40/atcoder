@@ -20,11 +20,11 @@ int main() {
     // s: 前半部分の数, rs: 後半部分の数
     string s = to_string(n);
     string rs = s;
+    if (keta%2 == 1) rs.pop_back();
     reverse(rs.begin(),rs.end());
-    if (keta%2 == 1) s.pop_back();
     s += rs;
     cout << s << endl;
-    return 0;
+    break;
   }
   return 0;
 }
