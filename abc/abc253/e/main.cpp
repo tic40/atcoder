@@ -17,13 +17,10 @@ int main() {
     for(int j = 1; j <= m; j++) {
       if (k == 0) {
         dp.add(j, p.sum(1,m+1));
-        continue;
+      } else {
+        dp.add(j, p.sum(1, max(1,j-k+1)));
+        dp.add(j, p.sum(min(m+1,j+k), m+1));
       }
-
-      int x1 = j + k;
-      if (x1 <= m) dp.add(j, p.sum(x1, m+1));
-      int x2 = j - k;
-      if (1 <= x2) dp.add(j, p.sum(1, x2+1));
     }
   }
 
