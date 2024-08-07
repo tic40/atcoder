@@ -13,25 +13,25 @@ int main() {
     g[a].push_back(b);
     g[b].push_back(a);
   }
+
   int q; cin >> q;
   vector<int> dist(n,INF);
   REP(_,q) {
     int x,k; cin >> x >> k;
     x--;
 
-    dist[x] = 0;
     queue<int> q;
-    vector<int> vs;
     q.push(x);
+    dist[x] = 0;
+    vector<int> vs;
+
     while(q.size()) {
       int i = q.front(); q.pop();
       vs.push_back(i);
-      if (k <= dist[i]) continue;
-      for(auto v: g[i]) {
-        if (dist[v] > dist[i]+1) {
-          dist[v] = dist[i]+1;
-          q.push(v);
-        }
+      if (dist[i] >= k) continue;
+      for(auto v: g[i]) if (dist[v] > dist[i]+1) {
+        dist[v] = dist[i]+1;
+        q.push(v);
       }
     }
 
