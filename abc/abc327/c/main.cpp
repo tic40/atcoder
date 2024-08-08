@@ -4,26 +4,30 @@ using namespace std;
 #define endl '\n'
 
 int main() {
-  vector a(9,vector<int>(9));
-  REP(i,9) REP(j,9) cin >> a[i][j];
+  const int n = 9;
+  vector a(n,vector<int>(n));
+  REP(i,n) REP(j,n) cin >> a[i][j];
+
   bool ok = true;
-  REP(i,9) {
-    vector<int> num(10);
-    REP(j,9) num[a[i][j]] = 1;
-    if (accumulate(num.begin(),num.end(),0) != 9) ok = false;
+  vector<int> cnt(n+1);
+  auto check = [&]() -> void {
+    ok && n == accumulate(cnt.begin(),cnt.end(),0);
+    cnt = vector<int>(n+1);
+  };
+
+  REP(i,n) {
+    REP(j,n) cnt[a[i][j]] = 1;
+    check();
   }
-  REP(j,9) {
-    vector<int> num(10);
-    REP(i,9) num[a[i][j]] = 1;
-    if (accumulate(num.begin(),num.end(),0) != 9) ok = false;
+  REP(j,n) {
+    REP(i,n) cnt[a[i][j]] = 1;
+    check();
   }
-  REP(i,3) REP(j,3) {
-    int ni = i*3;
-    int nj = j*3;
-    vector<int> num(10);
-    REP(k,3) REP(l,3) num[a[ni+k][nj+l]] = 1;
-    if (accumulate(num.begin(),num.end(),0) != 9) ok = false;
+  REP(i,n/3) REP(j,n/3) {
+    REP(ni,n/3) REP(nj,n/3) cnt[a[i*3+ni][j*3+nj]] = 1;
+    check();
   }
+
   cout << (ok ? "Yes" : "No") << endl;
   return 0;
 }
