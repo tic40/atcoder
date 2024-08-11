@@ -5,47 +5,31 @@ using namespace std;
 
 int main() {
   int n, q; cin >> n;
+  vector<vector<vector<int>>> a(n+1, vector<vector<int>>(n+1, vector<int>(n+1)));
+  vector<vector<vector<int>>> s(n+2, vector<vector<int>>(n+2, vector<int>(n+2)));
+  REP(i,n) REP(j,n) REP(k,n) cin >> a[i][j][k];
 
-  vector<vector<vector<int>>> a(n + 1, vector<vector<int>>(n + 1, vector<int>(n + 1, 0)));
-  for (int x = 1; x <= n; ++x) {
-    for (int y = 1; y <= n; ++y) {
-      for (int z = 1; z <= n; ++z) {
-        cin >> a[x][y][z];
-      }
-    }
-  }
-
-  vector<vector<vector<int>>> s(n + 1, vector<vector<int>>(n + 1, vector<int>(n + 1, 0)));
-  for (int x = 1; x <= n; ++x) {
-    for (int y = 1; y <= n; ++y) {
-      for (int z = 1; z <= n; ++z) {
-        s[x][y][z] = a[x][y][z]
-          + s[x-1][y][z]
-          + s[x][y-1][z]
-          + s[x][y][z-1]
-          - s[x-1][y-1][z]
-          - s[x-1][y][z-1]
-          - s[x][y-1][z-1]
-          + s[x-1][y-1][z-1];
-      }
-    }
-  }
+  // 累積和
+  REP(i,n) REP(j,n) REP(k,n) s[i+1][j+1][k+1] += a[i][j][k];
+  // xyz 軸ごとに取る
+  REP(i,n+1) REP(j,n+1) REP(k,n+1) s[i+1][j][k] += s[i][j][k];
+  REP(i,n+1) REP(j,n+1) REP(k,n+1) s[i][j+1][k] += s[i][j][k];
+  REP(i,n+1) REP(j,n+1) REP(k,n+1) s[i][j][k+1] += s[i][j][k];
 
   cin >> q;
   REP(_,q) {
-    int lxi, rxi, lyi, ryi, lzi, rzi;
-    cin >> lxi >> rxi >> lyi >> ryi >> lzi >> rzi;
-
-    int sum = s[rxi][ryi][rzi]
-      - s[lxi-1][ryi][rzi]
-      - s[rxi][lyi-1][rzi]
-      - s[rxi][ryi][lzi-1]
-      + s[lxi-1][lyi-1][rzi]
-      + s[lxi-1][ryi][lzi-1]
-      + s[rxi][lyi-1][lzi-1]
-      - s[lxi-1][lyi-1][lzi-1];
-
-    cout << sum << endl;
+    int lx,rx,ly,ry,lz,rz;
+    cin >> lx >> rx >> ly >> ry >> lz >> rz;
+    int ans = 0;
+    ans += s[rx][ry][rz];
+    ans -= s[lx-1][ry][rz];
+    ans -= s[rx][ly-1][rz];
+    ans -= s[rx][ry][lz-1];
+    ans += s[lx-1][ly-1][rz];
+    ans += s[lx-1][ry][lz-1];
+    ans += s[rx][ly-1][lz-1];
+    ans -= s[lx-1][ly-1][lz-1];
+    cout << ans << endl;
   }
   return 0;
 }
