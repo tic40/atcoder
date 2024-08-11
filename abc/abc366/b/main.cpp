@@ -4,20 +4,19 @@ using namespace std;
 #define endl '\n'
 
 int main() {
-  int n; cin >> n;
-  vector<string> s(n);
-  int m = 0;
+  int n,m=0; cin >> n;
+  vector<string> s(n,string(100,'*'));
   REP(i,n) {
-    cin >> s[i];
-    m = max(m,(int)s[i].size());
+    string t; cin >> t;
+    m = max(m,(int)t.size());
+    REP(j,(int)t.size()) s[i][j] = t[j];
   }
 
-  REP(i,m) {
-    string t = "";
-    REP(j,n) t += ((int)s[j].size() > i) ? s[j][i] : '*';
-    reverse(t.begin(),t.end());
-    while(t.back() == '*') t.pop_back();
-    cout << t << endl;
+  REP(j,m) {
+    string ans = "";
+    REP(i,n) ans = s[i][j] + ans;
+    while(ans.back() == '*') ans.pop_back();
+    cout << ans << endl;
   }
   return 0;
 }
