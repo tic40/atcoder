@@ -6,7 +6,7 @@ using ll = long long;
 
 const int M = 1e6;
 
-// ∑(|x-xi|) を求める
+// 取りうる x の ∑(|x-xi|) を求める
 vector<ll> f(vector<int> x) {
   int n = x.size();
 
@@ -24,10 +24,8 @@ vector<ll> f(vector<int> x) {
   int k = 0;
   for (int i = 1; i <= M*4; i++) {
     while (k < n && x[k] < i) k++;
-    // x が正に一つ動くのでその分 -n(全て x より右側にあると仮定している)
-    s -= n;
-    // x より左側にある分は + されるのでその分 +1 と上で引いた分を +1 で *2
-    s += k*2;
+    s -= n-k; // i より右側にある点はマイナスする
+    s += k; // i より左側にある分はプラスする
     res[i] = s;
   }
   sort(res.begin(),res.end());
