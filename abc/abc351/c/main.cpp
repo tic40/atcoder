@@ -5,20 +5,17 @@ using namespace std;
 
 int main() {
   int n; cin >> n;
-  vector<int> a(n);
-  REP(i,n) cin >> a[i];
+  vector<int> a;
 
-  vector<int> b;
   REP(i,n) {
-    b.push_back(a[i]);
-    while(b.size() > 1) {
-      if (b[b.size() - 1] != b[b.size() - 2]) break;
-      int add = b.back()+1;
-      b.pop_back(); b.pop_back();
-      b.push_back(add);
+    int x; cin >> x;
+    a.push_back(x);
+    while(a.size() > 1) {
+      if (a[a.size()-1] != a[a.size()-2]) break;
+      a.pop_back();
+      a.back() += 1;
     }
   }
-
-  cout << b.size() << endl;
+  cout << a.size() << endl;
   return 0;
 }
