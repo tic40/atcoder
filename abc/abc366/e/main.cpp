@@ -28,7 +28,6 @@ vector<ll> f(vector<int> x) {
     s += k; // i より左側にある分はプラスする
     res[i] = s;
   }
-  sort(res.begin(),res.end());
   return res;
 }
 
@@ -39,6 +38,9 @@ int main() {
 
   vector<ll> a = f(x);
   vector<ll> b = f(y);
+  // ソートして単調増加になるようにする
+  sort(a.begin(),a.end());
+  sort(b.begin(),b.end());
 
   ll ans = 0;
   // 尺取法
