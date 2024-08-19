@@ -14,7 +14,7 @@ int main() {
 
   // 累積和
   vector<int> s(n2+1);
-  REP(i,n2) s[i+1] = (s[i] + a[i%n]) % m;
+  REP(i,n2) s[i+1] = (s[i] + a[i]) % m;
 
   ll ans = 0;
   vector<int> cnt(m+1);
