@@ -10,11 +10,15 @@ int main() {
   for(int i = 1; i < m; i++) for(int j = i*2; j < m; j+=i) {
     divs[j].push_back(i);
   }
+  // grundy 数. 0 のとき勝ち
+  // grundy[x] := mex(状態 x から到達可能な状態 x' の grundy数の集合). mex = 最小除外数
   vector<int> grundy(m);
   for(int i = 1; i < m; i++) {
     set<int> st;
     for(int v: divs[i]) st.insert(grundy[v]);
-    while(st.count(grundy[i])) grundy[i]++;
+    int mex = 0;
+    while(st.count(mex)) mex++;
+    grundy[i] = mex;
   }
 
   int n; cin >> n;
