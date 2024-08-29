@@ -20,10 +20,6 @@ struct Top2 {
     }
     if (a.col == b.col) b = d;
   }
-  void operator<=(Top2 x) {
-    *this <= x.a;
-    *this <= x.b;
-  }
   ll get(int c) {
     return a.col == c ? b.val : a.val;
   }
@@ -34,6 +30,7 @@ int main() {
   vector<int> c(n),v(n);
   REP(i,n) cin >> c[i] >> v[i];
 
+  // dp[i][j] := i まで見て、j 個のボールを取り除いたときの最後に残した価値が最大のトップ　2 の色と価値の情報を持つ
   vector<Top2> dp(k+1);
   dp[0] = Top2(D(0,-1));
 
@@ -47,7 +44,6 @@ int main() {
   }
 
   ll ans = dp[k].a.val;
-  if (ans < 0) ans = -1;
-  cout << ans << endl;
+  cout << (ans < 0 ? -1 : ans) << endl;
   return 0;
 }
