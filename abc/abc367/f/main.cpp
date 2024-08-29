@@ -16,8 +16,10 @@ int main() {
 
   const int MX = 2e5+5;
   vector<ull> h(MX);
+  // 各要素に足してランダムな値を割り当てる
   REP(i,MX) h[i] = rng() % mod;
 
+  // a,b の累積和を取る
   vector<ull> sa(n+1), sb(n+1);
   REP(i,n) sa[i+1] = (sa[i]+h[a[i]]) % mod;
   REP(i,n) sb[i+1] = (sb[i]+h[b[i]]) % mod;
