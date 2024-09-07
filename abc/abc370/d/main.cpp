@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
-using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
@@ -14,9 +12,19 @@ int main() {
     row_walls[i].insert(j);
     col_walls[j].insert(i);
   }
+  // 番兵
+  REP(i,h) {
+    row_walls[i].insert(-1);
+    row_walls[i].insert(1e9);
+  }
+  REP(i,w) {
+    col_walls[i].insert(-1);
+    col_walls[i].insert(1e9);
+  }
 
   int ans = h*w;
   auto del_wall = [&](int r, int c) -> void {
+    if (r < 0 || r >= h || c < 0 || c >= w) return;
     row_walls[r].erase(row_walls[r].find(c));
     col_walls[c].erase(col_walls[c].find(r));
     ans--;
@@ -27,15 +35,18 @@ int main() {
     if (row_walls[r].count(c)) { del_wall(r, c); continue; }
 
     auto it_up = col_walls[c].lower_bound(r);
-    auto it_down = col_walls[c].upper_bound(r);
-    auto it_left = row_walls[r].lower_bound(c);
-    auto it_right = row_walls[r].upper_bound(c);
+    auto it_down = it_up;
+    auto it_left= row_walls[r].lower_bound(c);
+    auto it_right = it_left;
+    it_up--;
+    it_left--;
 
-    if (it_up != col_walls[c].begin()) del_wall(*(--it_up), c);
-    if (it_down != col_walls[c].end()) del_wall(*it_down, c);
-    if (it_left != row_walls[r].begin()) del_wall(r, *(--it_left));
-    if (it_right != row_walls[r].end()) del_wall(r, *it_right);
+    del_wall(*it_up, c);
+    del_wall(*it_down, c);
+    del_wall(r, *it_left);
+    del_wall(r, *it_right);
   }
+
   cout << ans << endl;
   return 0;
 }

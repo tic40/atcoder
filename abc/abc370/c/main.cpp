@@ -9,16 +9,13 @@ int main() {
 
   vector<string> ans;
   while(s != t) {
-    vector<int> cand;
-    REP(i,n) {
-      if (s[i] == t[i]) continue;
-      cand.push_back(i);
+    int idx = -1;
+    REP(i,n) if (s[i] != t[i]) {
+      idx = i;
       if (s[i] > t[i]) break;
     }
-    if (cand.size()) {
-      s[cand.back()] = t[cand.back()];
-      ans.push_back(s);
-    }
+    s[idx] = t[idx];
+    ans.push_back(s);
   }
 
   cout << ans.size() << endl;
