@@ -4,32 +4,13 @@ using namespace std;
 #define endl '\n'
 
 int main() {
-  char sab, sac, sbc;
-  cin >> sab >> sac >> sbc;
-  if (sab == '>' && sac == '>' && sbc == '>') {
-    cout << "b" << endl;
-  }
-  else if (sab == '>' && sac == '>' && sbc == '<') {
-    cout << "c" << endl;
-  }
-  else if (sab == '>' && sac == '<' && sbc == '>') {
-    // invalid
-  }
-  else if (sab == '>' && sac == '<' && sbc == '<') {
-    cout << "a" << endl;
-  }
-  else if (sab == '<' && sac == '>' && sbc == '>') {
-    cout << "a" << endl;
-  }
-  else if (sab == '<' && sac == '>' && sbc == '<') {
-    // invalid
-  }
-  else if (sab == '<' && sac == '<' && sbc == '>') {
-    cout << "c" << endl;
-  }
-  else if (sab == '<' && sac == '<' && sbc == '<') {
-    cout << "b" << endl;
-  }
-
+  vector op(3,vector<char>(3));
+  cin >> op[0][1] >> op[0][2] >> op[1][2];
+  op[1][0] = op[0][1] == '<' ? '>' : '<';
+  op[2][0] = op[0][2] == '<' ? '>' : '<';
+  op[2][1] = op[1][2] == '<' ? '>' : '<';
+  vector<int> s = {0,1,2};
+  sort(s.begin(),s.end(),[&](int a, int b){ return op[a][b] == '<'; });
+  cout << char('A' + s[1]) << endl;
   return 0;
 }
