@@ -10,7 +10,9 @@ int main() {
   op[2][0] = op[0][2] == '<' ? '>' : '<';
   op[2][1] = op[1][2] == '<' ? '>' : '<';
   vector<int> s = {0,1,2};
-  sort(s.begin(),s.end(),[&](int a, int b){ return op[a][b] == '<'; });
+  sort(s.begin(),s.end(),[&](int a, int b){ return op[a][b] == '>'; });
+  REP(i,3) cout << s[i] << " ";
+  cout << endl;
   cout << char('A' + s[1]) << endl;
   return 0;
 }

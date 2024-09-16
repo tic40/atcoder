@@ -6,10 +6,10 @@ using ll = long long;
 
 int main() {
   int n; cin >> n;
-  vector positions(200005,vector<int>());
+  vector positions(n,vector<int>());
 
   REP(i,n) {
-    int a; cin >> a;
+    int a; cin >> a; a--;
     positions[a].push_back(i);
   }
   // 番兵追加
@@ -18,6 +18,7 @@ int main() {
   ll ans = 0;
   for (auto& pos : positions) {
     // 重複を許す組み合わせのため n+2-1C2 = n*(n+1)/2
+    // 全体から x を含まない数を引くことで x を含む場合の数を求める(余事象)
     ll tot = (ll)n*(n+1)/2;
     int prev = -1;
     for(auto v: pos) {
