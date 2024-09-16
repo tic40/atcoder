@@ -15,19 +15,19 @@ int main() {
   // 番兵追加
   for(auto& v: positions) v.push_back(n);
 
-  ll tot = (ll)n*(n+1)/2;
   ll ans = 0;
   for (auto& pos : positions) {
-    ll tot_without_x = 0;
+    // 重複を許す組み合わせのため n+2-1C2 = n*(n+1)/2
+    ll tot = (ll)n*(n+1)/2;
     int prev = -1;
     for(auto v: pos) {
       int start = prev + 1;
       int end = v - 1;
       int len = end - start + 1;
-      tot_without_x += (ll)len*(len+1)/2;
+      tot -= (ll)len*(len+1)/2;
       prev = v;
     }
-    ans += tot - tot_without_x;
+    ans += tot;
   }
 
   cout << ans << endl;
