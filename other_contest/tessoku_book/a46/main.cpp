@@ -21,6 +21,12 @@ double rand_double() {
   return 1.0 * rand() / RAND_MAX;
 }
 
+int score (vector<int> &p) {
+  int sum = 0;
+  REP(i,n) sum += f(p[i],p[i+1]);
+  return sum;
+};
+
 // greedy
 void solve1() {
   vector<int> ans;
@@ -48,18 +54,16 @@ void solve1() {
 
 // 局所探索(山登り法)
 void solve2() {
+  auto START_TIME = std::chrono::system_clock::now();
   vector<int> p(n+1);
   iota(p.begin(),p.end(),0);
   p[n] = 0;
 
-  auto score = [](vector<int> &p) {
-    int sum = 0;
-    REP(i,n) sum += f(p[i],p[i+1]);
-    return sum;
-  };
-
   int cur_score = score(p);
-  REP(_, 2e5) {
+  while(1) {
+    auto spent_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - START_TIME).count();
+    if (spent_ms > 980) break;
+
     int l = rand_int(1,n-1);
     int r = rand_int(1,n-1);
     if (l > r) swap(l,r);
@@ -81,14 +85,9 @@ void solve3() {
   iota(p.begin(),p.end(),0);
   p[n] = 0;
 
-  auto score = [](vector<int> &p) {
-    int sum = 0;
-    REP(i,n) sum += f(p[i],p[i+1]);
-    return sum;
-  };
-
   int cur_score = score(p);
-  REP(_, 2e5) {
+  REP(i,2e5) {
+
     int l = rand_int(1,n-1);
     int r = rand_int(1,n-1);
     if (l > r) swap(l,r);
@@ -96,10 +95,9 @@ void solve3() {
     reverse(p.begin()+l, p.begin()+r+1);
     int new_score = score(p);
 
-    double t = 30.00 - 28.00 * t / 200000.0;
+    double t = 30.0 - 28.0 * i / 200000.0;
     double probability = exp(min(0.0, (cur_score - new_score) / t));
     if (rand_double() < probability) cur_score = new_score;
-    if (cur_score >= new_score) cur_score = new_score;
     else reverse(p.begin()+l, p.begin()+r+1);
   }
 
