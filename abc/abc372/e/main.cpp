@@ -40,7 +40,7 @@ int main() {
   REP(_,q) {
     int t, u, v; cin >> t >> u >> v;
     u--; v--;
-    if (t == 1) { uf.unite(u,v); }
+    if (t == 1) uf.unite(u,v);
     if (t == 2) cout << uf.kth_largest(u,v+1) << endl;
   }
   return 0;
