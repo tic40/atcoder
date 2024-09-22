@@ -10,10 +10,9 @@ int main() {
 
   vector<int> ans(n);
   vector<int> st;
-
-  for (int i = n-1; i >= 0; i--) {
+  for(int i = n-1; i >= 0; i--) {
     ans[i] = st.size();
-    while (st.size() && h[st.back()] < h[i]) st.pop_back();
+    while(st.size() && h[st.back()] < h[i]) st.pop_back();
     st.push_back(i);
   }
 
