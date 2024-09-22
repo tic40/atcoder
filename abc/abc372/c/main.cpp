@@ -3,21 +3,20 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 
+int f(string& s, int idx) { return s.substr(idx,3) == "ABC"; }
+
 int main() {
   int n,q; cin >> n >> q;
   string s; cin >> s;
 
-  auto f = [&](int idx) -> int {
-    return (idx-1 < 0 || idx+1 >= n) ? 0 : (s[idx-1] == 'A' && s[idx] == 'B' && s[idx+1] == 'C');
-  };
-
   int ans = 0;
-  for(int i = 1; i < n-1; i++) ans += f(i);
+  REP(i,n-2) ans += f(s,i);
+
   REP(_,q) {
     int x; char c; cin >> x >> c; x--;
-    for(int i = x-1; i <= x+1; i++) ans -= f(i);
+    for(int i = max(0,x-2); i <= x; i++) ans -= f(s,i);
     s[x] = c;
-    for(int i = x-1; i <= x+1; i++) ans += f(i);
+    for(int i = max(0,x-2); i <= x; i++) ans += f(s,i);
 
     cout << ans << endl;
   }
