@@ -10,10 +10,8 @@ int main() {
   int n,x; cin >> n >> x;
   vector<P> s(n),t(n);
   REP(i,n) {
-    cin >> s[i].first >> s[i].second;
-    cin >> t[i].first >> t[i].second;
-    // 効率が良い方を s にしておく
-    // b/q > a/p = b * p > a * q
+    cin >> s[i].first >> s[i].second >> t[i].first >> t[i].second;
+    // 効率が良い方を s にしておく b/q > a/p = b * p > a * q
     if (t[i].first * s[i].second > s[i].first * t[i].second) swap(s[i],t[i]);
   }
 
@@ -21,17 +19,16 @@ int main() {
     ll cost = 0;
     REP(i,n) {
       ll now = LINF;
-      REP(j,100) {
+      REP(j,s[i].first) {
         // k := s 側で作る個数
-        // m - t 側で作る個数している
         int k = max(m - t[i].first * j, 0);
-        k = (k+s[i].first - 1) / s[i].first;
-        now = min(now, t[i].second * j + (ll)s[i].second * k);
+        int v = (k+s[i].first - 1) / s[i].first;
+        now = min(now, t[i].second * j + (ll)s[i].second * v);
       }
       cost += now;
       if (cost > x) return false;
     }
-    return cost <= x;
+    return true;
   };
 
   int ok = 0, ng = 1e9+5;
