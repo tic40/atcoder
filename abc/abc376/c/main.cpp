@@ -9,11 +9,11 @@ int main() {
   REP(i,n) cin >> a[i];
   REP(i,n-1) cin >> b[i];
   sort(a.begin(),a.end());
+  sort(b.begin(),b.end());
 
   auto f = [&](int x) -> bool {
     auto c = b;
-    c.push_back(x);
-    sort(c.begin(),c.end());
+    c.insert(lower_bound(c.begin(),c.end(),x),x);
     REP(i,n) if (a[i] > c[i]) return false;
     return true;
   };
