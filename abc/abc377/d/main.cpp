@@ -12,9 +12,12 @@ int main() {
     int l,r; cin >> l >> r; l--; r--;
     chmin(min_r[l],r);
   }
-  for (int l = m-1; l >= 0; l--) chmin(min_r[l],min_r[l+1]);
+
   ll ans = 0;
-  REP(l,m+1) ans += min_r[l] - l;
+  for (int l = m-1; l >= 0; l--) {
+    chmin(min_r[l],min_r[l+1]);
+    ans += min_r[l]-l;
+  }
   cout << ans << endl;
   return 0;
 }
