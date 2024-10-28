@@ -17,17 +17,17 @@ int main() {
   vector<int> p(n);
   REP(i,n) { cin >> p[i]; p[i]--; }
 
-  vector<int> ans(n);
-  vector<bool> used(n);
+  vector<int> ans(n), used(n);
   REP(i,n) if (!used[i]) {
     int v = i;
     vector<int> vs;
     while(!used[v]) {
-      used[v] = true;
+      used[v] = 1;
       vs.push_back(v);
       v = p[v];
     }
     int c = vs.size();
+    // 2^k % c を求める
     int m = powmod(2,k,c);
     REP(i,c) ans[vs[i]] = vs[(i+m)%c];
   }
