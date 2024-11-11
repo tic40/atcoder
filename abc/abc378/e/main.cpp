@@ -11,11 +11,11 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  // 累積和
+  // mod m の累積和
   vector<ll> s(n+1);
   REP(i,n) s[i+1] = (s[i]+a[i]) % m;
-  fenwick_tree<ll> fw(m);
 
+  fenwick_tree<ll> fw(m);
   ll ans = 0, t = 0;
   REP(r,n+1) {
     ans += s[r] * r - t + fw.sum(s[r]+1,m) * m;
