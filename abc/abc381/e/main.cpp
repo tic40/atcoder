@@ -17,18 +17,18 @@ int main() {
     auto& vec = mp[c];
     int j = lower_bound(vec.begin(),vec.end(),i) - vec.begin();
     j += k-1;
-    return j < (int)vec.size() ? vec[j] : INF;
+    return j < (int)vec.size() ? vec[j]+1 : INF;
   };
 
   REP(qi,q) {
     int l,r; cin >> l >> r;
-    l--; r--;
+    l--;
 
     auto f = [&](int k) {
       int i = l;
       i = getNext('1',i,k);
-      i = getNext('/',i+1,1);
-      i = getNext('2',i+1,k);
+      i = getNext('/',i,1);
+      i = getNext('2',i,k);
       return i <= r;
     };
 
