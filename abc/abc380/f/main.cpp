@@ -5,7 +5,6 @@ using namespace std;
 
 int main() {
   int n,m,l; cin >> n >> m >> l;
-
   vector<int> a(n),b(m),c(l);
   REP(i,n) cin >> a[i];
   REP(i,m) cin >> b[i];
@@ -20,24 +19,28 @@ int main() {
   auto f = [&](auto f, S s) -> bool {
     if (mem.find(s) != mem.end()) return mem[s];
     auto [a,b,c] = s;
-    bool res = false;
-    REP(i,(int)a.size()) {
+    bool win = false;
+    REP(i,(int)a.size()) if (!win) {
       auto na = a, nc = c;
+      // a[i] を場に出す処理
       nc.push_back(a[i]);
       na.erase(na.begin()+i);
       sort(nc.begin(),nc.end());
-      if (!f(f, S(b,na,nc))) res = true;
-      REP(j,(int)nc.size()) {
-        if (nc[j] < a[i]) {
-          auto na2 = na, nc2 = nc;
-          nc2.erase(nc2.begin()+j);
-          na2.push_back(nc[j]);
-          sort(na2.begin(),na2.end());
-          if (!f(f, S(b,na2,nc2))) res = true;
-        }
+      // 出したカードの数未満の場のカードを加えない
+      // 手番が代わるので b,a を入れ替えて再帰
+      if (!f(f, S(b,na,nc))) win = true;
+
+      // 出したカードの数未満の場のカードを加える
+      REP(j,(int)nc.size()) if (!win && nc[j] < a[i]) {
+        auto na2 = na, nc2 = nc;
+        // 場のカードを a に加える処理
+        nc2.erase(nc2.begin()+j);
+        na2.push_back(nc[j]);
+        sort(na2.begin(),na2.end());
+        if (!f(f, S(b,na2,nc2))) win = true;
       }
     }
-    return mem[s] = res;
+    return mem[s] = win;
   };
 
   cout << (f(f,S(a,b,c)) ? "Takahashi" : "Aoki") << endl;
