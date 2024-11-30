@@ -2,6 +2,7 @@
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
+using S = tuple<vector<int>,vector<int>,vector<int>>;
 
 int main() {
   int n,m,l; cin >> n >> m >> l;
@@ -13,11 +14,9 @@ int main() {
   sort(b.begin(),b.end());
   sort(c.begin(),c.end());
 
-  using S = tuple<vector<int>,vector<int>,vector<int>>;
-  map<S,bool> mem;
-
-  auto f = [&](auto f, S s) -> bool {
-    if (mem.find(s) != mem.end()) return mem[s];
+  map<S,bool> mp;
+  auto dfs = [&](auto dfs, S s) -> bool {
+    if (mp.find(s) != mp.end()) return mp[s];
     auto [a,b,c] = s;
     bool win = false;
     REP(i,(int)a.size()) if (!win) {
@@ -28,7 +27,7 @@ int main() {
       sort(nc.begin(),nc.end());
       // 出したカードの数未満の場のカードを加えない
       // 手番が代わるので b,a を入れ替えて再帰
-      if (!f(f, S(b,na,nc))) win = true;
+      if (!dfs(dfs, S(b,na,nc))) win = true;
 
       // 出したカードの数未満の場のカードを加える
       REP(j,(int)nc.size()) if (!win && nc[j] < a[i]) {
@@ -37,12 +36,12 @@ int main() {
         nc2.erase(nc2.begin()+j);
         na2.push_back(nc[j]);
         sort(na2.begin(),na2.end());
-        if (!f(f, S(b,na2,nc2))) win = true;
+        if (!dfs(dfs, S(b,na2,nc2))) win = true;
       }
     }
-    return mem[s] = win;
+    return mp[s] = win;
   };
 
-  cout << (f(f,S(a,b,c)) ? "Takahashi" : "Aoki") << endl;
+  cout << (dfs(dfs, S(a,b,c)) ? "Takahashi" : "Aoki") << endl;
   return 0;
 }
