@@ -8,7 +8,7 @@ int main() {
   vector<double> p(n);
   REP(i,n) cin >> p[i], p[i] /= 100.0;
 
-  // dp[i][j] := i 枚目までで レアカードを j 枚持つ確率
+  // dp[i][j] := パック内の i 枚目まででレアカードを j 枚持つ確率
   vector<double> dp(n+1);
   dp[0] = 1.0; // レアカード 0 枚は 100 %
   REP(i,n) {
@@ -23,11 +23,8 @@ int main() {
   // f[i] := レアカードが x 枚になるまで必要なパック数の期待値
   vector<double> f(x+1);
   for(int i = 1; i <= x; i++) {
-    double sum = 0;
-    REP(j,n+1) {
-      if (i-j <= 0) break;
-      sum += dp[j] * f[i-j];
-    }
+    double sum = 0.0;
+    for(int j = 1; j <= min(i-1,n); j++) sum += dp[j] * f[i-j];
     sum += 1.0;
     // f[i] = dp[0] * f[i] + sum
     // f[i] = sum / (1 - dp[0])
