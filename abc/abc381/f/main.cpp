@@ -14,11 +14,10 @@ int main() {
   vector<vector<int>> is(m);
   REP(i,n) is[a[i]].push_back(i);
 
-  auto getNext = [&](int c, int i, int k) {
-    if (k == 0) return i;
+  auto getNext = [&](int c, int i) {
     auto& vec = is[c];
     int j = lower_bound(vec.begin(),vec.end(),i) - vec.begin();
-    j += k-1;
+    j++;
     return j < (int)vec.size() ? vec[j]+1 : INF;
   };
 
@@ -27,14 +26,14 @@ int main() {
   vector<int> dp(1<<m,INF);
   dp[0] = 0;
 
-  int ans = 0;
-  REP(bit,1<<m) {
-    if (dp[bit] != INF) ans = max(ans, __builtin_popcount(bit));
-    REP(c,m) {
-      if (bit >> c & 1) continue;
-      chmin(dp[bit | 1<<c], getNext(c,dp[bit],2));
+  REP(bit,1<<m) if (dp[bit] != INF) {
+    REP(c,m) if (!(bit >> c & 1)) { // flag が立っていないときだけ
+      chmin(dp[bit|1<<c], getNext(c,dp[bit]));
     }
   }
+
+  int ans = 0;
+  REP(bit,1<<m) if (dp[bit]!=INF) ans = max(ans,__builtin_popcount(bit));
 
   cout << ans*2 << endl;
   return 0;
