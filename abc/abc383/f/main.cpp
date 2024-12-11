@@ -15,24 +15,23 @@ int main() {
   }
 
   // dp[i][j] := 使った金額が i, 今見ている商品を買った ? j = 1 : j = 0 のときの最大満足度
-  vector<vector<ll>> dp(x+1,vector<ll>(2));
-
-  for(auto pa: items) if (pa.size()) {
-    // 色が変わったらリセットする
+  vector dp(x+1,vector<ll>(2));
+  for(auto item: items) {
+    // 色が変わったらリセット
     REP(i,x+1) {
-      chmax(dp[i][0], dp[i][1]);
+      chmax(dp[i][0],dp[i][1]);
       dp[i][1] = 0;
     }
 
-    for(auto [p,u]: pa) {
-      vector<vector<ll>> old(x+1,vector<ll>(2));
+    for(auto [p,u]: item) {
+      vector old(x+1,vector<ll>(2));
       swap(dp,old);
       REP(i,x+1) {
-        REP(j,2) chmax(dp[i][j], old[i][j]);
-        int ni = i+p;
+        REP(j,2) chmax(dp[i][j],old[i][j]);
+        int ni = i + p;
         if (ni > x) continue;
-        chmax(dp[ni][1], old[i][1]+u);
-        chmax(dp[ni][1], old[i][0]+u+k);
+        chmax(dp[ni][1],old[i][0]+k+u);
+        chmax(dp[ni][1],old[i][1]+u);
       }
     }
   }
