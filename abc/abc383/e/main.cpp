@@ -27,7 +27,6 @@ int main() {
     u = uf.leader(u);
     v = uf.leader(v);
     if (a[v]) swap(u,v); // u が a, v が b になるように swap
-    if (!a[u] || !b[v]) continue;
 
     // x = マッチングできる数。これは両者の min の数だけ
     int x = min(a[u],b[v]);
