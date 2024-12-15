@@ -3,7 +3,6 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
-using P = pair<int,int>;
 using T = pair<ll,pair<int,int>>;
 const vector<int> di = {-1,0,1,0};
 const vector<int> dj = {0,1,0,-1};

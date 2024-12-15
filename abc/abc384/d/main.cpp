@@ -8,16 +8,12 @@ int main() {
   int n; ll s; cin >> n >> s;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
-  int n2 = n*2;
-  vector<ll> sum(n2+1);
-  REP(i,n2) sum[i+1] = sum[i] + a[i%n];
+  vector<ll> sum(n*2+1);
+  REP(i,n*2) sum[i+1] = sum[i] + a[i%n];
 
-  s = s % accumulate(a.begin(),a.end(),0LL);
+  s %= accumulate(a.begin(),a.end(),0LL);
   int ok = 0;
-  REP(i,n) {
-    ll k = sum[i]+ s;
-    ok |= k == *lower_bound(sum.begin(),sum.end(),k);
-  }
+  REP(i,n) ok |= binary_search(sum.begin(),sum.end(),sum[i]+s);
   cout << (ok ? "Yes" : "No") << endl;
   return 0;
 }
