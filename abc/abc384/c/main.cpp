@@ -13,12 +13,12 @@ int main() {
     int score = 0;
     string s;
     REP(i,n) if (bit >> i & 1) {
-      score -= a[i];
+      score += a[i];
       s += char('A'+i);
     }
-    ans.emplace_back(score,s);
+    ans.emplace_back(-score,s);
   }
   sort(ans.begin(),ans.end());
-  for(auto [_,s]: ans) cout << s << endl;
+  for(auto [_,s]: ans) if (s.size()) cout << s << endl;
   return 0;
 }
