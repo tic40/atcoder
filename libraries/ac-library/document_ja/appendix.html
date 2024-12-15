@@ -3,22 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
+
     <!-- Uikit -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://judge.yosupo.jp/public/css/uikit.min.css" />
-    <script src="https://judge.yosupo.jp/public/js/uikit.min.js"></script>
-    <script src="https://judge.yosupo.jp/public/js/uikit-icons.min.js"></script>
+    <link rel="stylesheet" href="lib/uikit.min.css" />
+    <script src="lib/uikit.min.js"></script>
+    <script src="lib/uikit-icons.min.js"></script>
     <!-- Katex -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css"
-        integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.js"
-        integrity="sha384-9Nhn55MVVN0/4OFx7EE5kpFBPsEMZxKTCnA+4fqDmg12eCTqGi6+BB2LjY8brQxJ"
-        crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/contrib/auto-render.min.js"
-        integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
-        onload="renderMathInElement(document.body);"></script>
+    <link rel="stylesheet" href="lib/katex.min.css" />
+    <script defer src="lib/katex.min.js"></script>
+    <script defer src="lib/auto-render.min.js"></script>
     <!-- Ace editor-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
+    <script src="lib/ace.js"></script>
 
     <style>
         h2 {
@@ -71,15 +67,15 @@
 <li>環境変数 <code>CPLUS_INCLUDE_PATH</code> で、<code>CPLUS_INCLUDE_PATH="/path/to/ac-library"</code>のように<code>atcoder</code>フォルダの場所を指定する。(Windowsの場合は、<a href="https://img.atcoder.jp/practice2/01333b7c5575b09b5868376ef242aa52.png">ユーザー環境変数の設定画面</a> で、変数の欄に <code>CPLUS_INCLUDE_PATH</code> 値の欄に <code>C:\path\to\ac-library</code>　などと入力する。スラッシュではなくバックスラッシュを用いることに注意。なお、バックスラッシュは環境によっては円記号として表示されることがあります)。すると普通に<code>g++ main.cpp -std=c++14</code>とコンパイルできる。</li>
 </ul>
 <h3>Visual Studioへのインストール方法</h3>
-<p>古いVisual Studioを使っている場合、アップデートしてください。Visual Studio 2017 / 2019をサポートしています。</p>
+<p>古いVisual Studioを使っている場合、アップデートしてください。Visual Studio 2019 / 2022をサポートしています。</p>
 <p>Visual Studioがインストールされているならば、以下のようなフォルダがあるはずです。</p>
 <ul>
+<li><code>C:\Program Files\Microsoft Visual Studio\2022\(Community, Professional or Enterprise)\VC\Tools\MSVC\(Some number, e.g. 14.35.32215)\include</code></li>
 <li><code>C:\Program Files (x86)\Microsoft Visual Studio\2019\(Community, Professional or Enterprise)\VC\Tools\MSVC\(Some number, e.g. 14.27.29110)\include</code></li>
-<li><code>C:\Program Files (x86)\Microsoft Visual Studio\2017\(Community, Professional or Enterprise)\VC\Tools\MSVC\(Some number, e.g. 14.10.25017)\include</code></li>
 </ul>
 <p>このなかに丸ごと <code>atcoder</code> フォルダをコピーしてください。つまり、</p>
 <ul>
-<li><code>C:\Program Files (x86)\Microsoft Visual Studio\2019\(Community, Professional or Enterprise)\VC\Tools\MSVC\(Some number, e.g. 14.27.29110)\include\atcoder\dsu.hpp</code></li>
+<li><code>C:\Program Files\Microsoft Visual Studio\2022\(Community, Professional or Enterprise)\VC\Tools\MSVC\(Some number, e.g. 14.35.32215)\include\atcoder\dsu.hpp</code></li>
 </ul>
 <p>となるように配置してください。</p>
 <h2>他のジャッジへの提出方法</h2>
@@ -92,14 +88,13 @@
 <h3>テンプレート関数</h3>
 <p>例えば<code>suffix_array(v)</code>は<code>vector&lt;int&gt;</code>, <code>vector&lt;ll&gt;</code>などを引数に取れるのですが、これらをまとめて<code>suffix_array&lt;T&gt;(vector&lt;T&gt; v)</code>と表記します。</p>
 <p>例えば<code>vector&lt;int&gt;</code>に格納された整数列 $v$ の suffix array を求めたいとき、</p>
-<pre><code class="cpp">vector&lt;int&gt; sa = suffix_array(v);
+<pre><code class="language-cpp">vector&lt;int&gt; sa = suffix_array(v);
 // vector&lt;int&gt; sa = suffix_array&lt;int&gt;(v); ではないことに注意
 </code></pre>
-
 <p>と使います。</p>
 <h3>デフォルトコンストラクタ</h3>
 <p>構造体、例えば<code>scc_graph</code> などは、サンプルのように</p>
-<pre><code class="cpp">#include &lt;atcoder/scc&gt;;
+<pre><code class="language-cpp">#include &lt;atcoder/scc&gt;;
 using namespace atcoder;
 
 int main() {
@@ -109,9 +104,8 @@ int main() {
     return 0;
 }
 </code></pre>
-
 <p>といった宣言方法だけでなく、次のように初期化なしで宣言することも出来ます。</p>
-<pre><code class="cpp">#include &lt;atcoder/scc&gt;;
+<pre><code class="language-cpp">#include &lt;atcoder/scc&gt;;
 using namespace atcoder;
 
 scc_graph g;
@@ -120,14 +114,13 @@ int main() {
     return 0;
 }
 </code></pre>
-
 <p>このように宣言したときの挙動（デフォルトコンストラクタ）は、</p>
 <ul>
 <li>$O(1)$</li>
 <li>生成されたものへのメンバ変数のアクセス, メンバ関数の呼び出しの挙動は全て未定義</li>
 </ul>
 <p>となります。また、構造体に後から代入することも出来ます。</p>
-<pre><code class="cpp">#include &lt;atcoder/scc&gt;;
+<pre><code class="language-cpp">#include &lt;atcoder/scc&gt;;
 using namespace atcoder;
 
 scc_graph g;
@@ -137,28 +130,26 @@ int main() {
     return 0;
 }
 </code></pre>
-
 <h3>辺の型</h3>
 <p>最大流ライブラリなどでは、辺の型として <code>mf_graph&lt;Cap&gt;::edge</code> というのを使います。</p>
 <p>例えば、<code>mf_graph&lt;int&gt;</code> の辺の型は <code>mf_graph&lt;int&gt;::edge</code> です。
 <code>::</code> が見慣れないかもしれないですが、<code>mf_graph&lt;int&gt;::edge</code> という文字列を<code>int</code>や<code>string</code>のように扱えばよいです。例えば</p>
-<pre><code class="cpp">vector&lt;mf_graph&lt;int&gt;::edge&gt; v;
+<pre><code class="language-cpp">vector&lt;mf_graph&lt;int&gt;::edge&gt; v;
 mf_graph&lt;int&gt;::edge e;
 </code></pre>
-
 <p>のようになります。</p>
 <h3>デフォルトテンプレート引数</h3>
 <p>convolution のように、以下のような表記法を用いることがあります。</p>
-<pre><code class="cpp">vector&lt;T&gt; convolution&lt;int m = 998244353&gt;(vector&lt;T&gt; a, vector&lt;T&gt; b)
+<pre><code class="language-cpp">vector&lt;T&gt; convolution&lt;int m = 998244353&gt;(vector&lt;T&gt; a, vector&lt;T&gt; b)
 </code></pre>
-
 <p>これは、二通りの使い方ができることを表します。</p>
-<pre><code class="cpp">vector&lt;long long&gt; c = convolution(a, b);
+<pre><code class="language-cpp">vector&lt;long long&gt; c = convolution(a, b);
 vector&lt;long long&gt; c = convolution&lt;924844033&gt;(a, b);
 </code></pre>
-
 <p>上段のように使った場合は、$m$ の値は自動的に $998244353$ となります。
 下段のように使った場合は、$m$ の値は明示的に与えた値 (この場合は $924844033$) となります。</p>
+<h3>💻 explicit 指定子</h3>
+<p><code>modint</code> 以外の構造体のコンストラクタには explicit が付いています。</p>
 <h2>Segtree / LazySegtree の厳密な要件</h2>
 <p>Segtree / LazySegtree を使いたい状況において、扱う代数構造が無限集合である場合があります。たとえば、与えられた区間の $\mathrm{max}$ を求める、与えられた区間内の全ての要素に定数を足す、の二種類のクエリに対応する LazySegtree はよくありますが、このときたとえば $S = \mathrm{int}$ としてしまうと、$S$ は加法について閉じていない (overflow を起こす可能性がある) ため、厳密な意味でドキュメント本編の制約を満たしません。そこで、AC Library では以下のような場合正しく動くことを保証しています。</p>
 <h3>Segtree</h3>
