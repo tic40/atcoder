@@ -3,7 +3,8 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
-using P = pair<ll,ll>;
+using P = pair<int,int>;
+using D = map<ll,set<ll>>;
 
 int main() {
   map<char,P> moves;
@@ -14,53 +15,36 @@ int main() {
 
   int n,m; cin >> n >> m;
   ll sx,sy; cin >> sx >> sy; sx--; sy--;
-  map<ll,set<ll>> mpx,mpy;
+
+  D xs,ys;
   REP(i,n) {
-    ll x,y; cin >> x >> y;
-    x--; y--;
-    mpx[y].insert(x);
-    mpy[x].insert(y);
+    ll x,y; cin >> x >> y; x--; y--;
+    xs[y].insert(x);
+    ys[x].insert(y);
   }
 
-  int cnt = 0;
+  int ans = 0;
+  auto f = [&](D& xs, D& ys, ll y, ll l, ll r) -> void {
+    if (l > r) swap(l,r);
+    auto& st = xs[y];
+    auto it = st.lower_bound(l);
+    while(it != st.end() && *it <= r) {
+      ys[*it].erase(y);
+      it = st.erase(it);
+      ans++;
+    }
+  };
+
   REP(i,m) {
     char d; ll c; cin >> d >> c;
     auto [dx, dy] = moves[d];
-    ll lx = sx, rx = sx + dx * c;
-    ll ly = sy, ry = sy + dy * c;
-    if (lx > rx) swap(rx,lx);
-    if (ly > ry) swap(ly,ry);
+    ll nx = sx + dx * c;
+    ll ny = sy + dy * c;
+    sy == ny ? f(xs,ys,sy,sx,nx) : f(ys,xs,sx,sy,ny);
 
-    if (dy == 0) {
-      auto it = mpx[sy].lower_bound(lx);
-      vector<int> rm;
-      while(*it <= rx && it != mpx[sy].end()) {
-        rm.push_back(*it);
-        cnt++;
-        it++;
-      }
-      for(auto v: rm) {
-        mpx[sy].erase(v);
-        mpy[v].erase(sy);
-      }
-    }
-
-    if (dx == 0) {
-      auto it = mpy[sx].lower_bound(ly);
-      vector<int> rm;
-      while(*it <= ry && it != mpy[sx].end()) {
-        rm.push_back(*it);
-        cnt++;
-        it++;
-      }
-      for(auto v: rm) {
-        mpy[sx].erase(v);
-        mpx[v].erase(sx);
-      }
-    }
-    sx = sx + dx * c;
-    sy = sy + dy * c;
+    sx = nx; sy = ny;
   }
-  cout << sx+1 << " " << sy+1 << " " << cnt << endl;
+
+  cout << sx+1 << " " << sy+1 << " " << ans << endl;
   return 0;
 }
