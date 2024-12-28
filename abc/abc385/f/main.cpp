@@ -38,7 +38,8 @@ int main() {
     while(conv.size() >= 2) {
       V a = conv.back();
       V b = conv.end()[-2];
-      if ((p.y-a.y) * (p.x-b.x) < (p.y-b.y)*(p.x-a.x)) break;
+      // (py-ay)/(px-ax) < (py-by)/(px-bx)
+      if ((p.y-a.y)*(p.x-b.x) < (p.y-b.y)*(p.x-a.x)) break;
       conv.pop_back();
     }
     if (conv.size() >= 1) {
