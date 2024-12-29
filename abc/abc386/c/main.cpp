@@ -1,51 +1,50 @@
 #include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
+using ll = long long;
+using P = pair<int,int>;
+const int INF = numeric_limits<int>::max();
+const ll LINF = numeric_limits<ll>::max();
+const int MOD = 1e9+7;
+// using mint = modint998244353; // modint1000000007;
 
 int main() {
   int k; cin >> k;
   string s,t; cin >> s >> t;
 
-  int ss = s.size();
-  int ts = t.size();
+  auto f = [&]() -> bool {
+    int szs = s.size(), szt = t.size();
 
-  if (abs(ss-ts) > 1) { cout << "No" << endl; return 0; }
+    if (abs(szs-szt) > 1) return false;
 
-  if (ss == ts) {
-    int cnt = 0;
-    REP(i,ss) { if (s[i] != t[i]) cnt++; }
-    cout << (cnt <= 1 ? "Yes" : "No") << endl;
-  }
+    if (szs == szt) {
+      REP(i,szt) if (s[i] != t[i]) k--;
+      return k >= 0;
+    }
 
-  if (ss < ts) {
-    s.push_back('_');
-    int si = 0;
-    int cnt = 0;
-    REP(i,ts) {
-      if (s[si] != t[i]) {
-        cnt++;
-        if (cnt > 1) { cout << "No" << endl; return 0; }
-      } else {
+    if (szs > szt) {
+      int si = 0;
+      REP(i,szt) {
+        while (s[si] != t[i]) {
+          si++; k--;
+          if (k < 0 || si >= szs) return false;
+        }
         si++;
       }
+      return true;
     }
-    cout << "Yes" << endl;
-  }
 
-  if (ss > ts) {
-    int cnt = 0;
     int si = 0;
-    REP(i,(int)t.size()) {
-      while (s[si] != t[i]) {
-        si++;
-        cnt++;
-        if (cnt > 1) { cout << "No" << endl; return 0; }
-      }
-      si++;
+    REP(i,szt) {
+      if (s[si] != t[i]) k--;
+      else si++;
     }
-    cout << "Yes" << endl;
-  }
+    return k >= 0;
+  };
 
+  cout << (f() ? "Yes" : "No") << endl;
   return 0;
 }
