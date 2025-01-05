@@ -14,7 +14,7 @@ int main() {
     //   i: i 桁目
     //   j: 0 でない最初の数字
     //   k: x より小さいことが確定しているか
-    //   l: 先頭から 0 が続くかどうか
+    //   l: 先頭から 0 が続いていないか
     vector dp(10,vector(2,vector<ll>(2)));
     // 先頭桁の処理(初期値)
     dp[0][1][0] = 1;
@@ -24,13 +24,23 @@ int main() {
     for(int i = 1; i < (int)s.size(); i++) {
       vector old(10,vector(2,vector<ll>(2)));
       swap(dp,old);
-      REP(j,10) REP(k,10) REP(strict,2) REP(nonzero,2) {
-        if (nonzero && j <= k) continue;
-        if (!strict && k > s[i]-'0') continue;
-        int nj = (!nonzero && k != 0) ? k : j;
-        int ns = strict || k < s[i]-'0';
-        int nn = nonzero || k > 0;
-        dp[nj][ns][nn] += old[j][strict][nonzero];
+      int now = s[i]-'0';
+      // 先頭の数 / 次の末尾の数 / 未満フラグ / nonzeroフラグ
+      REP(lead,10) REP(nx,10) REP(strict,2) REP(nonzero,2) {
+        if (nonzero && lead <= nx) continue;
+        if (!strict && nx > now) continue;
+        int nlead = lead;
+        int ns = strict;
+        int nn = nonzero;
+
+        // いままで先頭が 0 で初めて先頭の数が決まるケース
+        if (!nonzero && nx!=0) nlead = nx;
+        // 次の末尾が s の数より小さい場合は必ず ns = 1
+        if (nx < now) ns ||= 1;
+        // 次の末尾が 0 でない場合は必ず nn = 1
+        if (nx > 0) nn ||= 1;
+
+        dp[nlead][ns][nn] += old[lead][strict][nonzero];
       }
     }
 
