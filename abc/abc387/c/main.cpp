@@ -12,7 +12,7 @@ int main() {
     // 桁DP
     // dp[i][j][k][l]
     //   i: i 桁目
-    //   j: 0 でない最初の数字
+    //   j: 最初の数字
     //   k: x より小さいことが確定しているか
     //   l: 先頭から 0 が続いていないか
     vector dp(10,vector(2,vector<ll>(2)));
@@ -34,11 +34,11 @@ int main() {
         int nn = nonzero;
 
         // いままで先頭が 0 で初めて先頭の数が決まるケース
-        if (!nonzero && nx!=0) nlead = nx;
+        if (lead == 0 && !nonzero && nx!=0) nlead = nx;
         // 次の末尾が s の数より小さい場合は必ず ns = 1
-        if (nx < now) ns ||= 1;
+        if (nx < now) ns |= 1;
         // 次の末尾が 0 でない場合は必ず nn = 1
-        if (nx > 0) nn ||= 1;
+        if (nx > 0) nn |= 1;
 
         dp[nlead][ns][nn] += old[lead][strict][nonzero];
       }
