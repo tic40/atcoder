@@ -18,7 +18,7 @@ int main() {
     vector dp(10,vector(2,vector<ll>(2)));
     // 先頭桁の処理(初期値)
     dp[0][1][0] = 1; // 最初の文字が 0 の場合は x より小さいことが確定
-    for(int i = 1; i < (s[0]-'0'); i++) dp[i][1][1] = 1;
+    for(int i = 1; i < s[0]-'0'; i++) dp[i][1][1] = 1;
     dp[s[0]-'0'][0][1] = 1;
 
     for(int i = 1; i < (int)s.size(); i++) {
@@ -34,7 +34,7 @@ int main() {
         int nn = nonzero;
 
         // いままで先頭が 0 で初めて先頭の数が決まるケース
-        if (lead == 0 && !nonzero && nx!=0) nlead = nx;
+        if (lead == 0 && !nonzero && nx != 0) nlead = nx;
         // 次の末尾が s の数より小さい場合は必ず ns = 1
         if (nx < now) ns |= 1;
         // 次の末尾が 0 でない場合は必ず nn = 1
