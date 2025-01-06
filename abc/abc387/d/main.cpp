@@ -13,18 +13,12 @@ int main() {
   vector<string> s(h);
   REP(i,h) cin >> s[i];
 
-  P st,ga;
-  REP(i,h) REP(j,w) {
-    if (s[i][j] == 'S') st = P{i,j};
-    if (s[i][j] == 'G') ga = P{i,j};
-  }
-
   // dist[i][j][k]
   //   i,j マスで k(0: 横向き, 1: 縦向き)のときの最小移動回数
   vector dist(h,vector(w,vector<int>(2,INF)));
   queue<tuple<int,int,int>> q;
 
-  auto push = [&](int i, int j, int k, int d) {
+  auto push = [&](int i, int j, int k, int d) -> void {
     if (i < 0 || j < 0 || i >= h || j >= w) return;
     if (s[i][j] == '#') return;
     if (dist[i][j][k] <= d) return;
@@ -32,9 +26,7 @@ int main() {
     dist[i][j][k] = d;
   };
 
-  push(st.first, st.second, 0, 0);
-  push(st.first, st.second, 1, 0);
-
+  REP(i,h) REP(j,w) if (s[i][j] == 'S') { push(i,j,0,0); push(i,j,1,0); }
   while(q.size()) {
     auto [i,j,k] = q.front(); q.pop();
     REP(l,4) {
@@ -46,7 +38,9 @@ int main() {
     }
   }
 
-  int ans = min(dist[ga.first][ga.second][0], dist[ga.first][ga.second][1]);
-  cout << (ans == INF ? -1 : ans) << endl;
+  REP(i,h) REP(j,w) if (s[i][j] == 'G') {
+    int ans = min(dist[i][j][0],dist[i][j][1]);
+    cout << (ans == INF ? -1 : ans) << endl;
+  }
   return 0;
 }
