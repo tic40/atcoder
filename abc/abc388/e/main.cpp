@@ -8,30 +8,23 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  auto f = [&](int x) {
-    int cur = x;
-    int cnt = 0;
+  // x 個の鏡餅を作れるか？
+  auto f = [&](int x) -> bool {
+    int ri = 0;
     REP(i,x) {
-      while(cur < n) {
-        if (a[i]*2 <= a[cur]) {
-          cnt++; cur++;
-          break;
-        }
-        cur++;
-      }
+      auto it = lower_bound(a.begin()+ri,a.end(),a[i]*2);
+      if (it == a.end()) return false;
+      ri = it-a.begin()+1;
     }
-    return cnt;
+    return true;
   };
 
-  int left = 0, right = n;
-  int ans = 0;
-  while(right-left>1) {
-    int mid = (right+left)/2;
-    int cnt = f(mid);
-    if (ans <= cnt) { right = mid; ans = cnt; }
-    else left = mid;
+  int ok = 0, ng = n/2+1;
+  while(ng-ok>1) {
+    int mid = (ok+ng)/2;
+    if (f(mid)) ok = mid;
+    else ng = mid;
   }
-
-  cout << ans << endl;
+  cout << ok << endl;
   return 0;
 }
