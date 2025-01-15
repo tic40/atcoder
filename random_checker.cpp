@@ -13,20 +13,20 @@ void random_generate(int N, vector<int> &A) {
 }
 
 int solve_jury(int N, vector<int> &A) {
-    int ans = -(1 << 30);
-    REP(i,N) {
-      for (int j = i + 1; j < N; j++) ans = max(ans, A[j] - A[i]);
-    }
-    return ans;
+  int ans = -(1 << 30);
+  REP(i,N) {
+    for (int j = i + 1; j < N; j++) ans = max(ans, A[j] - A[i]);
+  }
+  return ans;
 }
 
 int solve(int N, vector<int> &A) {
-    int ans = 0, curMin = A[0];
-    for (int i = 1; i < N; i++) {
-        ans = max(ans, A[i] - curMin);
-        curMin = min(curMin, A[i]);
-    }
-    return ans;
+  int ans = 0, curMin = A[0];
+  for (int i = 1; i < N; i++) {
+    ans = max(ans, A[i] - curMin);
+    curMin = min(curMin, A[i]);
+  }
+  return ans;
 }
 
 int main() {
