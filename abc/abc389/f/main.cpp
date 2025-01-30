@@ -17,29 +17,29 @@ F id() { return 0; }
 int main() {
   int n; cin >> n;
 
-  const int m = 5e5+5;
+  // 取りうるレート x の値のシミュレーションを事前計算しておく
+  const int m = 5e5+1;
   vector<int> initial(m);
   iota(initial.begin(),initial.end(),0);
-  lazy_segtree<S, op, e, F, mapping, composition, id> t(initial);
+  lazy_segtree<S, op, e, F, mapping, composition, id> seg(initial);
 
+  // lower bound
   auto lwb = [&](int x) {
     auto f = [&](int a) { return a < x; };
-    return t.max_right(0,f);
+    return seg.max_right(1,f);
   };
 
   REP(i,n) {
     int l,r; cin >> l >> r;
-    r++;
-    int li = lwb(l);
-    int ri = lwb(r);
-    t.apply(li,ri,1);
+    // レーティングが l 以上 r 以下の範囲の区間へ 1 加算
+    // 区間に 1 ずつ加算するので必ず単調増加になっている
+    seg.apply(lwb(l),lwb(r+1),1);
   }
 
   int q; cin >> q;
   REP(i,q) {
-  int x; cin >> x;
-    int ans = t.get(x);
-    cout << ans << endl;
+    int x; cin >> x;
+    cout << seg.get(x) << endl;
   }
   return 0;
 }
