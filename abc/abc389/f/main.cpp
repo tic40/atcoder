@@ -19,9 +19,8 @@ int main() {
 
   // 取りうるレート x の値のシミュレーションを事前計算しておく
   const int m = 5e5+1;
-  vector<int> initial(m);
-  iota(initial.begin(),initial.end(),0);
-  lazy_segtree<S, op, e, F, mapping, composition, id> seg(initial);
+  lazy_segtree<S, op, e, F, mapping, composition, id> seg(m);
+  REP(i,m) seg.set(i,i);
 
   // lower bound
   auto lwb = [&](int x) {
