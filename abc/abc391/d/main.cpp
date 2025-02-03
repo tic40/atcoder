@@ -8,7 +8,7 @@ const int INF = numeric_limits<int>::max();
 int main() {
   int n,w; cin >> n >> w;
   vector<int> x(n),y(n);
-  REP(i,n) { cin >> x[i] >> y[i]; x[i]--; }
+  REP(i,n) { cin >> x[i] >> y[i]; x[i]--; y[i]--; }
   vector<int> idx(n);
   REP(i,n) idx[i] = i;
   // y の昇順に並び替え
@@ -30,7 +30,7 @@ int main() {
       // 一列揃わない場合
       if ((int)blocks[i].size() != w) continue;
       int mx = 0;
-      for(int j: blocks[i]) mx = max(mx,y[j]-1);
+      for(int j: blocks[i]) mx = max(mx,y[j]);
       d[i] = mx+1;
     }
   }
