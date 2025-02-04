@@ -23,22 +23,18 @@ int main() {
 
   // d[i] := 下から i 番目のブロックが消える時刻
   vector<int> d(n,INF);
-  {
-    vector blocks(n,vector<int>());
-    REP(i,n) blocks[r[i]].push_back(i);
-    REP(i,n) {
-      // 一列揃わない場合
-      if ((int)blocks[i].size() != w) continue;
-      int mx = 0;
-      for(int j: blocks[i]) mx = max(mx,y[j]);
-      d[i] = mx+1;
-    }
+  // blocks[i][j] := 下から i 番目の列にあるブロックの集合
+  vector blocks(n,vector<int>());
+  REP(i,n) blocks[r[i]].push_back(i);
+  REP(i,n) if ((int)blocks[i].size() == w) { // 一列揃う場合だけ
+    d[i] = 0;
+    for(int j: blocks[i]) d[i] = max(d[i],y[j]);
   }
 
   int q; cin >> q;
   REP(i,q) {
     int t,a; cin >> t >> a; a--;
-    cout << (d[r[a]] > t ? "Yes" : "No") << endl;
+    cout << (d[r[a]] >= t ? "Yes" : "No") << endl;
   }
   return 0;
 }
