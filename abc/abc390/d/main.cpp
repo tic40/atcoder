@@ -4,46 +4,44 @@ using namespace std;
 #define endl '\n'
 using ll = long long;
 
+template<class T> void uniq(T& vec) {
+  sort(vec.begin(),vec.end());
+  vec.erase(unique(vec.begin(),vec.end()),vec.end());
+}
+
 int main() {
   int n; cin >> n;
   vector<ll> a(n);
   REP(i,n) cin >> a[i];
 
-  vector<ll> xs;
-  // g[i][j] := グループ i に入っている a の index の集合
-  vector<vector<int>> g;
-
+  // g[i] := グループ i に入っている石の合計数
+  vector<ll> ans,g;
   // a[0] から順にグループに入れる全探索を考える
-  // グループ分けは以下の2つの操作で考える
+  // グループ分けは以下の2択で DFS すればよい
   //   - すでにあるグループに入れる
   //   - 新しいグループに入れる
   auto dfs = [&](auto& dfs, int i) -> void {
     if (i == n) {
       ll x = 0;
-      REP(j,(int)g.size()) {
-        ll sum = 0;
-        for(int ni: g[j]) sum += a[ni];
-        x ^= sum;
-      }
-      xs.push_back(x);
+      for(auto v: g) x ^= v;
+      ans.push_back(x);
       return;
     }
 
     // すでにあるグループに入れる操作
     REP(j,(int)g.size()) {
-      g[j].push_back(i);
+      g[j] += a[i];
       dfs(dfs,i+1);
-      g[j].pop_back();
+      g[j] -= a[i];
     }
-    // 新しいグループに入れる
-    g.push_back(vector<int>(1,i));
+    // 新しいグループを作って入れる操作
+    g.push_back(a[i]);
     dfs(dfs,i+1);
     g.pop_back();
   };
 
   dfs(dfs,0);
-  sort(xs.begin(),xs.end());
-  xs.erase(unique(xs.begin(),xs.end()),xs.end());
-  cout << xs.size() << endl;
+  uniq(ans);
+  cout << ans.size() << endl;
   return 0;
 }
