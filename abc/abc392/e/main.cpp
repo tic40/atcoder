@@ -16,8 +16,7 @@ int main() {
   }
 
   unordered_set<int> st;
-  auto g = uf.groups();
-  for(auto group: g) st.insert(uf.leader(group[0]));
+  for(auto group: uf.groups()) st.insert(uf.leader(group[0]));
 
   vector<tuple<int,int,int>> ans;
   for(auto [i,a,b]: t) {
