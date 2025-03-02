@@ -7,37 +7,35 @@ using P = pair<ll,int>;
 const ll LINF = numeric_limits<ll>::max();
 
 int main() {
-  int n,m; ll x; cin >> n >> m >> x;
-
-  auto id = [](int id, int state) { return id * 2 + state; };
-  vector<vector<P>> g(2*n);
+  int n,m,x; cin >> n >> m >> x;
+  vector g(n*2,vector<P>());
   REP(i,m) {
     int u,v; cin >> u >> v; u--; v--;
-    g[id(u,0)].emplace_back(id(v,0),1);
-    g[id(v,1)].emplace_back(id(u,1),1);
+    g[u].emplace_back(v,1);
+    g[v+n].emplace_back(u+n,1);
   }
   REP(i,n) {
-    g[id(i,0)].emplace_back(id(i,1),x);
-    g[id(i,1)].emplace_back(id(i,0),x);
+    g[i].emplace_back(i+n,x);
+    g[i+n].emplace_back(i,x);
   }
 
+  vector<ll> dist(n*2,LINF);
   priority_queue<P, vector<P>, greater<P>> pq;
-  pq.emplace(0,id(0,0));
+  pq.emplace(0,0);
+  dist[0] = 0;
 
-  vector<ll> dist(2*n,LINF);
   while(pq.size()) {
     auto [cd,i] = pq.top(); pq.pop();
     if (dist[i] < cd) continue;
 
-    for(auto [nxt,cost]: g[i]) {
-      ll nd = cd + cost;
-      if (dist[nxt] > nd) {
-        dist[nxt] = nd;
-        pq.emplace(nd,nxt);
-      }
+    for(auto [ni,cost]: g[i]) {
+      ll ndist = dist[i]+cost;
+      if (dist[ni] <= ndist) continue;
+      dist[ni] = ndist;
+      pq.emplace(ndist,ni);
     }
   }
 
-  cout << min(dist[id(n-1,0)],dist[id(n-1,1)]) << endl;
+  cout << min(dist[n-1],dist[n*2-1]) << endl;
   return 0;
 }
