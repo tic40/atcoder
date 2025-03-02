@@ -10,7 +10,6 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  // map<int,int> mp;
   vector<int> idx(1e6+1,-1);
   int ans = INF;
   REP(i,n) {
