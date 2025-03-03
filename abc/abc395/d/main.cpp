@@ -5,28 +5,24 @@ using namespace std;
 
 int main() {
   int n,q; cin >> n >> q;
-  vector<int> bi(n);
-  REP(i,n) bi[i] = i;
-  vector<int> box(n);
-  REP(i,n) box[i] = i;
-  vector<int> box2(n);
-  REP(i,n) box2[i] = i;
+  // p:鳩, h:巣, b:袋
+  vector<int> p2b(n); // 鳩->袋, p2b[i] := 鳩iの袋番号
+  vector<int> b2h(n); // 袋->巣, b2h[i] := 袋iの巣番号
+  vector<int> h2b(n); // 巣->袋, h2b[i] := 巣iの袋番号
+  REP(i,n) p2b[i] = i, b2h[i] = i, h2b[i] = i;
 
-  REP(i,q) {
-    int t; cin >> t;
+  while(q--) {
+    int t,a,b; cin >> t >> a; a--;
     if (t == 1) {
-      int a,b; cin >> a >> b; a--; b--;
-      bi[a] = box[b];
+      cin >> b; b--;
+      p2b[a] = h2b[b];
     }
     if (t == 2) {
-      int a,b; cin >> a >> b; a--; b--;
-      swap(box[a],box[b]);
-      swap(box2[box[a]],box2[box[b]]);
+      cin >> b; b--;
+      swap(h2b[a],h2b[b]);
+      swap(b2h[h2b[a]],b2h[h2b[b]]);
     }
-    if (t == 3) {
-      int a; cin >> a; a--;
-      cout << box2[bi[a]]+1 << endl;
-    }
+    if (t == 3) cout << b2h[p2b[a]]+1 << endl;
   }
   return 0;
 }
