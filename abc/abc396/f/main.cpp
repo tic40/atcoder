@@ -11,10 +11,8 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  // bit で転倒数処理
   fenwick_tree<int> bit(m);
   vector<ll> ans(m);
-  // 初期 k = 0
   REP(i,n) {
     ans[0] += i - bit.sum(0,a[i]+1);
     bit.add(a[i],1);
@@ -23,13 +21,16 @@ int main() {
   vector e(m,vector<ll>());
   REP(i,n) if (a[i] > 0) {
     int t = m-a[i];
+    // m-1 -> m となるときに転倒数にどれだけ寄与するか
+    // 増える転倒数 i
+    // 減る転倒数 n-i-1
     e[t].push_back(i-(n-i-1));
   }
 
-  ll cur = ans[0];
+  ll now = ans[0];
   for (int k = 1; k < m; k++){
-    for (auto d : e[k]) cur += d;
-    ans[k] = cur;
+    for (auto d : e[k]) now += d;
+    ans[k] = now;
   }
 
   REP(i,m) cout << ans[i] << endl;
