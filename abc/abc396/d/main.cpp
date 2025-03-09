@@ -10,26 +10,25 @@ int main() {
   int n,m; cin >> n >> m;
   vector g(n,vector<P>());
   REP(i,m) {
-    int u,v; ll w;
-    cin >> u >> v >> w; u--; v--;
+    int u,v; ll w; cin >> u >> v >> w; u--; v--;
     g[u].emplace_back(v,w);
     g[v].emplace_back(u,w);
   }
 
-  vector<int> visited(n);
-  ll ans = LINF;
-  auto dfs = [&](auto& dfs, int i, ll cur) -> void {
-    if (i == n-1) { ans = min(ans,cur); return; }
+  vector<bool> visited(n);
+  auto dfs = [&](auto& dfs, int i, ll cur) -> ll {
+    if (i == n-1) return cur;
 
-    for(auto [ni,nw]: g[i]) if (visited[ni] == 0) {
-      visited[ni] = 1;
-      dfs(dfs,ni,cur^nw);
-      visited[ni] = 0;
+    ll res = LINF;
+    for(auto [ni,w]: g[i]) if (!visited[ni]) {
+      visited[ni] = true;
+      res = min(res,dfs(dfs,ni,cur^w));
+      visited[ni] = false;
     }
+    return res;
   };
 
-  visited[0] = 1;
-  dfs(dfs,0,0);
-  cout << ans << endl;
+  visited[0] = true;
+  cout << dfs(dfs,0,0) << endl;
   return 0;
 }

@@ -6,17 +6,17 @@ using ll = long long;
 
 int main() {
   int n,m; cin >> n >> m;
-  vector<ll> b(n),w(m);
+  vector<int> b(n),w(m);
   REP(i,n) cin >> b[i];
   REP(i,m) cin >> w[i];
+  REP(i,n-m) w.push_back(0);
   sort(b.rbegin(),b.rend());
   sort(w.rbegin(),w.rend());
 
-  ll ans = 0, sb = 0, sw = 0;
+  ll ans = 0, now = 0;
   REP(i,n) {
-    sb += b[i];
-    if (i < m && w[i] > 0) sw += w[i];
-    ans = max(ans,sb+sw);
+    now += b[i] + max(0,w[i]);
+    ans = max(ans,now);
   }
   cout << ans << endl;
   return 0;
