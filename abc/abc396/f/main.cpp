@@ -11,28 +11,27 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  fenwick_tree<int> bit(m);
   vector<ll> ans(m);
+  fenwick_tree<int> fw(m);
+  // k = 0 のときの転倒数を fenwich tree で求める
   REP(i,n) {
-    ans[0] += i - bit.sum(0,a[i]+1);
-    bit.add(a[i],1);
+    ans[0] += i - fw.sum(0,a[i]+1);
+    fw.add(a[i],1);
   }
 
-  vector e(m,vector<ll>());
+  vector events(m,vector<ll>());
   REP(i,n) if (a[i] > 0) {
-    int t = m-a[i];
-    // m-1 -> m となるときに転倒数にどれだけ寄与するか
+    // m-1 -> m となるとき(時刻t = m-a[i])に転倒数にどれだけ寄与するか
     // 増える転倒数 i
     // 減る転倒数 n-i-1
-    e[t].push_back(i-(n-i-1));
+    events[m-a[i]].push_back(i-(n-i-1));
   }
 
   ll now = ans[0];
   for (int k = 1; k < m; k++){
-    for (auto d : e[k]) now += d;
+    for (auto v : events[k]) now += v;
     ans[k] = now;
   }
-
-  REP(i,m) cout << ans[i] << endl;
+  for(auto v: ans) cout << v << endl;
   return 0;
 }

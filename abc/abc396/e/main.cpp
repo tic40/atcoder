@@ -3,11 +3,10 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
-using P = pair<int,int>;
 
 int main() {
   int n,m; cin >> n >> m;
-  vector g(n,vector<P>());
+  vector g(n,vector<pair<int,int>>());
   REP(i,m) {
     int x,y,z; cin >> x >> y >> z; x--; y--;
     g[x].emplace_back(y,z);
@@ -16,15 +15,17 @@ int main() {
 
   vector<ll> ans(n);
   vector<bool> visited(n);
-
   auto bfs = [&](int start) -> bool {
     queue<int> q;
     vector<int> comp;
-    ans[start] = 0;
-    visited[start] = true;
-    q.push(start);
-    comp.push_back(start);
 
+    auto push = [&](int v) {
+      q.push(v);
+      comp.push_back(v);
+      visited[v] = true;
+    };
+
+    push(start);
     while(q.size()) {
       int from = q.front(); q.pop();
       for (auto [to,z]: g[from]) {
@@ -32,9 +33,7 @@ int main() {
           if ((ans[from] ^ ans[to]) != z) return false;
         } else {
           ans[to] = ans[from] ^ z;
-          visited[to] = true;
-          q.push(to);
-          comp.push_back(to);
+          push(to);
         }
       }
     }
