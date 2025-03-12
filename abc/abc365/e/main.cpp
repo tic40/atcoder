@@ -13,16 +13,15 @@ int main() {
   vector<int> s(n+1);
   REP(i,n) s[i+1] = s[i] ^ a[i];
 
-  n++;
   ll ans = 0;
   REP(k,30) {
     int one = 0;
-    REP(i,n) if (s[i]>>k&1) one++;
-    ans += one*(ll)(n-one) * (1<<k);
+    REP(i,n+1) if (s[i]>>k&1) one++;
+    ans += one*(ll)(n+1-one) * (1<<k);
   }
 
   // 幅 1 の区間を引く
-  REP(i,n-1) ans -= a[i];
+  REP(i,n) ans -= a[i];
   cout << ans << endl;
   return 0;
 }
