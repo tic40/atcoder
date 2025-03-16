@@ -15,15 +15,15 @@ int main() {
 
   // DFS: まだ分解していない頂点 i の部分木のパスの長さを返す
   auto dfs = [&](auto& dfs, int i, int p) -> int {
-    vector<int> path;
-    for (int v: g[i]) if (v!=p) {
+    int cnt = 0, len = 1;
+    for (auto v: g[i]) if (v!=p) {
       int res = dfs(dfs,v,i);
       if (res == -1) return -1;
-      if (res > 0) path.push_back(res);
+      if (res > 0) cnt++;
+      len += res;
     }
-    int len = accumulate(path.begin(),path.end(),0) + 1;
-    if (path.size() <= 1) return len == k ? 0 : len;
-    if (path.size() == 2 && len == k) return 0;
+    if (cnt <= 1) return len == k ? 0 : len;
+    if (cnt == 2) return len == k ? 0 : -1;
     return -1;
   };
 

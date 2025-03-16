@@ -8,7 +8,7 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  auto f = [&](vector<int>& a) {
+  auto f = [&]() {
     unordered_set<int> st;
     vector<int> res(n);
     REP(i,n) {
@@ -18,12 +18,13 @@ int main() {
     return res;
   };
 
-  auto l = f(a);
+  auto l = f();
   reverse(a.begin(),a.end());
-  auto r = f(a);
+  auto r = f();
+  reverse(r.begin(),r.end());
 
   int ans = 0;
-  REP(i,n-1) ans = max(ans,l[i]+r[n-i-2]);
+  REP(i,n-1) ans = max(ans,l[i]+r[i+1]);
   cout << ans << endl;
   return 0;
 }
