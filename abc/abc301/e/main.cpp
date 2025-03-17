@@ -3,11 +3,11 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using P = pair<int,int>;
-const int INF = 1e9;
+const int INF = 1e9; //numeric_limits<int>::max();
+const vector<int> di = {-1,0,1,0};
+const vector<int> dj = {0,1,0,-1};
 template<class T> void chmin(T& a, T b) { a = min(a,b); }
-template<class T> void chmax(T& a, T b) { a = max(a,b); }
 
-const vector<P> moves = { { 1,0 }, { -1,0 }, { 0,1 }, { 0,-1 } };
 int main() {
   int h,w,t; cin >> h >> w >> t;
   vector<string> a(h);
@@ -18,27 +18,28 @@ int main() {
   REP(i,h) REP(j,w) if (a[i][j] == 'G') ps.emplace_back(i,j);
 
   int n = ps.size() - 2;
-  vector dist(n+2, vector<int>(n+2,INF));
 
   auto bfs = [&](int i, int j) {
-    vector d(h, vector<int>(w,INF));
+    vector dist(h,vector<int>(w,INF));
     queue<P> q;
-    d[i][j] = 0;
+    dist[i][j] = 0;
     q.emplace(i,j);
     while(q.size()) {
       auto [i,j] = q.front(); q.pop();
-      for(auto [di,dj]: moves) {
-        int ni = i+di, nj = j+dj;
+      REP(k,4) {
+        int ni = i+di[k], nj = j+dj[k];
         if (ni < 0 || nj < 0 || ni >= h || nj >= w) continue;
         if (a[ni][nj] == '#') continue;
-        if (d[ni][nj] != INF) continue;
-        d[ni][nj] = d[i][j]+1;
+        if (dist[ni][nj] != INF) continue;
+        dist[ni][nj] = dist[i][j]+1;
         q.emplace(ni,nj);
       }
     }
-    return d;
+    return dist;
   };
 
+  // dist[i][j] := お菓子 i からお菓子 j への最短距離
+  vector dist(n+2,vector<int>(n+2,INF));
   REP(si,n+2) {
     auto [i,j] = ps[si];
     auto d = bfs(i,j);
@@ -48,24 +49,22 @@ int main() {
     }
   }
 
-  int sv = n, tv = n+1;
+  int start = n, goal = n+1;
   int n2 = 1<<n;
-  // dp[i][j] := 集合 i を訪問済みで今いる場所が j のときに訪れているときの最小の移動回数
+  // dp[bit][i] := 集合 bit のお菓子を訪問済みで今いる場所が i のときに訪れているときの最小の移動回数
   vector dp(n2,vector<int>(n,INF));
-  REP(i,n) dp[1<<i][i] = dist[sv][i];
-  REP(s,n2) REP(v,n) {
-    if (dp[s][v] == INF) continue;
-    REP(u,n) {
-      if (s >> u & 1) continue;
-      chmin(dp[s|1<<u][u], dp[s][v] + dist[v][u]);
+  REP(i,n) dp[1<<i][i] = dist[start][i];
+  REP(bit,n2) REP(from,n) if (dp[bit][from] != INF) {
+    REP(to,n) {
+      if (bit >> to & 1) continue;
+      chmin(dp[bit|1<<to][to],dp[bit][from] + dist[from][to]);
     }
   }
 
-  if (dist[sv][tv] > t) { cout << -1 << endl; return 0; }
+  if (dist[start][goal] > t) { cout << -1 << endl; return 0; }
   int ans = 0;
-  REP(s,n2) REP(v,n) {
-    if (dp[s][v] + dist[v][tv] > t) continue;
-    chmax(ans, __builtin_popcount(s));
+  REP(bit,n2) REP(i,n) if (dp[bit][i] + dist[i][goal] <= t) {
+    ans = max(ans,__builtin_popcount(bit));
   }
   cout << ans << endl;
   return 0;
