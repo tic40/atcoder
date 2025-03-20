@@ -16,26 +16,21 @@ int main() {
   vector<int> a(n);
   REP(i,n) cin >> a[i];
 
-  vector<int> pre(n);
-  {
-    vector<int> pos(n+1,-1);
-    REP(i,n) {
-      pre[i] = pos[a[i]];
-      pos[a[i]] = i;
-    }
+  // pre[v] := 値 v が最後に入っている位置 index
+  vector<int> pre(n), pos(n+1,-1);
+  REP(i,n) {
+    pre[i] = pos[a[i]];
+    pos[a[i]] = i;
   }
 
+  // dp[j][i] = j個目の切れ目を i にしたときの max
+  // dp[j+1][i] = max(dp[j][p] + f(p,i)) // p < i
   using seg = lazy_segtree<int,op,e,int,mapping,composition,id>;
   vector<seg> t(3,seg(n));
 
   REP(i,n) {
-    REP(j,2) {
-      int now = t[j].all_prod();
-      t[j+1].set(i,now);
-    }
-    REP(j,3) {
-      t[j].apply(pre[i]+1,i+1,1);
-    }
+    REP(j,2) t[j+1].set(i,t[j].all_prod());
+    REP(j,3) t[j].apply(pre[i]+1,i+1,1);
   }
   cout << t[2].all_prod() << endl;
   return 0;
