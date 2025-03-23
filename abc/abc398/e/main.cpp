@@ -12,43 +12,40 @@ int main() {
     int u,v; cin >> u >> v; u--; v--;
     g[u].push_back(v);
     g[v].push_back(u);
-    es.emplace_back(min(u,v),max(u,v));
+    es.emplace_back(u,v);
   }
 
-  vector<int> col(n,-1);
-  queue<int> q;
-  q.push(0);
-  col[0] = 0;
-  while(q.size()) {
-    auto v = q.front(); q.pop();
-    for(auto nv: g[v]) if (col[nv] == -1) {
-      col[nv] = col[v]^1;
-      q.push(nv);
+  vector<int> col(n);
+  auto dfs = [&](auto& dfs, int i, int p) -> void {
+    for(auto v: g[i]) if (v != p) {
+      col[v] = col[i]^1;
+      dfs(dfs,v,i);
     }
-  }
+  };
+  dfs(dfs,0,-1);
 
   vector<int> x,y;
   REP(i,n) col[i] == 0 ? x.push_back(i) : y.push_back(i);
   int tot = x.size() * y.size() - (n-1);
-  // 奇数なら先手が必勝
-  cout << (tot%2 ? "First" : "Second") << endl;
+  int t = tot%2;
+  cout << (t == 1 ? "First" : "Second") << endl;
 
   set<P> st;
   for(auto a: x) for(auto b: y) st.emplace(min(a,b),max(a,b));
   for(auto e: es) st.erase(e);
-  int turn = tot%2;
+
   while(1) {
-    if (turn == 1) {
+    if (t == 1) {
       auto [u,v] = *st.begin();
-      st.erase(st.begin());
       cout << u+1 << " " << v+1 << endl;
+      st.erase(st.begin());
     }
-    if (turn == 0) {
+    if (t == 0) {
       int u,v; cin >> u >> v; u--; v--;
-      if (u < 0) break;
-      st.erase(P{min(u,v),max(u,v)});
+      if (u == -2) break;
+      st.erase(P{u,v});
     }
-    turn ^= 1;
+    t^=1;
   }
   return 0;
 }
