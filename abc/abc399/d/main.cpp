@@ -9,14 +9,10 @@ int main() {
 
   auto solve = []() {
     int n; cin >> n;
-    int n2 = n*2;
-    vector<int> a(n2);
-    REP(i,n2) { cin >> a[i]; a[i]--; }
-
     vector<P> pos(n,{-1,-1});
-    REP(i,n2) {
-      if (pos[a[i]].first == -1) pos[a[i]].first = i;
-      else pos[a[i]].second = i;
+    REP(i,n*2) {
+      int a; cin >> a; a--;
+      pos[a].first == -1 ? pos[a].first = i : pos[a].second = i;
     }
 
     set<P> st;
@@ -32,3 +28,4 @@ int main() {
   REP(_,t) solve();
   return 0;
 }
+
