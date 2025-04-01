@@ -9,14 +9,16 @@ int main() {
 
   auto solve = []() {
     int n; cin >> n;
-    vector<P> pos(n,{-1,-1});
+    vector g(n,vector<int>());
     REP(i,n*2) {
       int a; cin >> a; a--;
-      pos[a].first == -1 ? pos[a].first = i : pos[a].second = i;
+      g[a].push_back(i);
     }
 
     set<P> st;
-    for(auto [l,r]: pos) if (l+1 != r) st.emplace(l,r);
+    for(auto v: g) if (v.size() == 2 && v[1]-v[0] > 1) {
+      st.emplace(v[0],v[1]);
+    }
 
     int ans = 0;
     for(auto [l,r]: st) {
@@ -28,4 +30,3 @@ int main() {
   REP(_,t) solve();
   return 0;
 }
-
