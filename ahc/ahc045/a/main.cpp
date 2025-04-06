@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#include <atcoder/all>
-using namespace atcoder;
 using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
@@ -10,7 +8,7 @@ const int INF = numeric_limits<int>::max();
 
 vector<P> query(const vector<int>& c) {
   cout << "? " << c.size();
-  for (int v : c) cout << " " << v;
+  for (int v: c) cout << " " << v;
   cout << endl;
   cout.flush();
 
@@ -24,15 +22,16 @@ vector<P> query(const vector<int>& c) {
 
 void answer(const vector<vector<int>>& groups, const vector<vector<P>>& edges) {
   cout << "!" << endl;
-  for (size_t i = 0; i < groups.size(); ++i) {
+  REP(i,(int)groups.size()) {
     for (int v : groups[i]) cout << v << " ";
     cout << endl;
-    for (auto [u, v] : edges[i]) cout << u << " " << v << endl;
+    for (auto [u,v]: edges[i]) cout << u << " " << v << endl;
   }
 }
 
 int main() {
-  int n, m, q, l, w; cin >> n >> m >> q >> l >> w;
+  int n, m, q, l, w;
+  cin >> n >> m >> q >> l >> w;
 
   vector<int> g(m);
   REP(i,m) cin >> g[i];
@@ -46,10 +45,20 @@ int main() {
     y[i] = (ly[i] + ry[i]) / 2;
   }
 
-  // 都市を中心座標でソート
+  // 全都市の重心を求める
+  double sum_x = 0, sum_y = 0;
+  REP(i,n) { sum_x += x[i]; sum_y += y[i]; }
+  double center_x = sum_x / n;
+  double center_y = sum_y / n;
+
+  // 都市を極角でソートする
   vector<int> cities(n);
   iota(cities.begin(), cities.end(), 0);
-  sort(cities.begin(), cities.end(), [&](int i, int j) { return P(x[i], y[i]) < P(x[j], y[j]); });
+  sort(cities.begin(), cities.end(), [&](int i, int j) {
+      double angle_i = atan2(y[i] - center_y, x[i] - center_x);
+      double angle_j = atan2(y[j] - center_y, x[j] - center_x);
+      return angle_i < angle_j;
+  });
 
   // 都市をグループに分割
   vector<vector<int>> groups;
@@ -60,7 +69,7 @@ int main() {
     start_idx += v;
   }
 
-  vector<vector<P>> edges(m);
+  vector edges(m,vector<P>);
   REP(k,m) {
     for (int i = 0; i < g[k] - 1; i += 2) {
       if (i < g[k] - 2) {
