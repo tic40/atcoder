@@ -6,8 +6,7 @@ using ll = long long;
 
 int main() {
   int n,m; cin >> n >> m;
-  ll ans = 0;
-  ll now = 1;
+  ll ans = 0, now = 1;
   REP(i,m+1) {
     ans += now;
     now *= n;
