@@ -7,30 +7,26 @@ using namespace std;
 
 int main() {
   int n,m; cin >> n >> m;
-  vector to(n,vector<int>());
+  vector g(n,vector<int>());
   REP(i,m) {
     int a,b; cin >> a >> b; a--; b--;
-    to[a].push_back(b);
-    to[b].push_back(a);
+    g[a].push_back(b);
+    g[b].push_back(a);
   }
 
   dsu uf(n);
+  // 1 - k の頂点を 赤, それ以外の頂点を 黒 としたとき
+  //  red[i] := 頂点 i が赤に隣接しているか
   vector<bool> red(n);
-  int cnt = 0;
-  REP(v,n) {
-    for(auto u: to[v]) {
-      if (u < v) uf.merge(u,v);
-      if (u > v) {
-        if (red[u]) continue;
-        red[u] = true;
-        cnt++;
-      }
+  // 赤に隣接している黒の数 = 消す頂点数の最小値
+  int ans = 0;
+  REP(i,n) {
+    for(auto j: g[i]) {
+      if (j < i) uf.merge(j,i); // i 未満なら追加可能
+      if (j > i && !red[j]) { red[j] = true; ans++; }
     }
-    if (red[v]) cnt--;
-
-    int ans = -1;
-    if (uf.size(v) == v+1) ans = cnt;
-    cout << ans << endl;
+    if (red[i]) ans--;
+    cout << (uf.size(i) == i+1 ? ans : -1) << endl;
   }
   return 0;
 }
