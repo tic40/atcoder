@@ -48,39 +48,48 @@ void solve1() {
 //  i: i 桁目まで見て
 //  j: 未満フラグ
 //  k: popcount
-//  dp1,2 はそれぞれ dp1: 総和, dp2: 場合の数 を管理する
+//  dp1: 個数, dp2: 総和
 vector dp1(m+1,vector(2,vector<mint>(m+1)));
 vector dp2(m+1,vector(2,vector<mint>(m+1)));
 
 void solve2() {
   ll n; int k; cin >> n >> k;
-  n++; // 未満フラグで答えを出せるように +1
+  n++; // 未満フラグにするために +1 しておく
 
-  REP(i,m+1) REP(j,2) REP(p,k+1) dp1[i][j][p] = dp2[i][j][p] = 0;
-  dp2[0][0][0] = 1;
+  REP(i,m+1) REP(j,2) REP(p,2) dp1[i][j][p] = dp2[i][j][p] = 0;
+  dp1[m][0][0] = 1;
 
-  REP(i,m) {
+  for(int i = m-1; i >= 0; i--) {
     REP(j,2) REP(p,k+1) {
-      // a: 上から i 桁目の bit を立てるかどうか
-      REP(a,2) if (p+a <= k) {
-        int nj = j; // 次の未満 flag
-        int np = p+a; // 次の popcount 数
-        if (!j) { // 未満 flag = false. ここまで n と一致しているとき
-          if (a < (n>>(m-i-1)&1)) nj = 1;
-          if (a > (n>>(m-i-1)&1)) continue; // n 以上になるので不可
+      mint now = dp1[i+1][j][p];
+      if (now == 0) continue;
+      REP(a,2) {
+        int nj = j, np = p+a;
+        if (j == 0) { // ここまで n と一致しているとき
+          if (a < (n>>i&1)) nj = 1; // 未満フラグ立てる
+          if (a > (n>>i&1)) continue; // n より大きくなるので skip
         }
-        //
-        dp1[i+1][nj][p+a] += dp1[i][j][p] * 2;
-        if (a > 0) dp1[i+1][nj][np] += dp2[i][j][p];
-        dp2[i+1][nj][np] += dp2[i][j][p];
+        if (np > k) continue;
+        if (a == 1) {
+          dp1[i][nj][np] += now;
+          dp2[i][nj][np] += dp2[i+1][j][p] * now;
+        } else {
+          dp1[i][nj][np] += now;
+          dp2[i][nj][np] += dp2[i+1][j][p];
+        }
       }
     }
   }
-  cout << dp1[m][1][k].val() << endl;
+  cout << dp1[0][1][k].val() << endl;
+  cout << dp2[0][1][k].val() << endl;
 }
 
 int main() {
   int t; cin >>t;
-  REP(_,t) solve2();
+
+  REP(_,t) {
+    // solve1();
+    solve2();
+  }
   return 0;
 }
