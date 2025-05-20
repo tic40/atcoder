@@ -8,6 +8,7 @@ using ll = long long;
 using mint = modint998244353; // modint1000000007;
 
 const int m = 60;
+
 // 桁 DP
 // dp[i][j][s][p] := 上から i 桁決めて
 //   j: 0/1, すでに丸をつけたかどうか
@@ -44,45 +45,40 @@ void solve1() {
   cout << dp[0][1][1][k].val() << endl;
 }
 
-// dp1[i][j][k]
+// dp[i][j][k]
 //  i: i 桁目まで見て
 //  j: 未満フラグ
 //  k: popcount
-//  dp1,2 はそれぞれ dp1: 総和, dp2: 場合の数 を管理する
+// ways: 場合の数 を管理する
 vector dp1(m+1,vector(2,vector<mint>(m+1)));
-vector dp2(m+1,vector(2,vector<mint>(m+1)));
+vector ways(m+1,vector(2,vector<mint>(m+1)));
 
 void solve2() {
   ll n; int k; cin >> n >> k;
   n++; // 未満フラグで答えを出せるように +1
 
-  REP(i,m+1) REP(j,2) REP(p,k+1) dp1[i][j][p] = dp2[i][j][p] = 0;
-  dp2[0][0][0] = 1;
+  REP(i,m+1) REP(j,2) REP(p,k+1) dp1[i][j][p] = ways[i][j][p] = 0;
+  ways[0][0][0] = 1;
 
-  REP(i,m) {
-    REP(j,2) REP(p,k+1) {
-      // a: 上から i 桁目の bit を立てるかどうか
-      REP(a,2) if (p+a <= k) {
-        int nj = j; // 次の未満 flag
-        int np = p+a; // 次の popcount 数
-        if (!j) { // 未満 flag = false. ここまで n と一致しているとき
-          if (a < (n>>(m-i-1)&1)) nj = 1;
-          if (a > (n>>(m-i-1)&1)) continue; // n 以上になるので不可
-        }
-        // 桁が1つ増えるので総和を * 2
-        dp1[i+1][nj][np] += dp1[i][j][p] * 2;
-        // bit を立てるときは場合の数分を足す
-        if (a > 0) dp1[i+1][nj][np] += dp2[i][j][p];
-        // 場合の数を更新
-        dp2[i+1][nj][np] += dp2[i][j][p];
+  REP(i,m) REP(j,2) REP(p,k+1) {
+    REP(a,2) if (p+a <= k) { // a: 上から i 桁目の bit を立てるかどうか
+      int nj = j; // 次の未満 flag
+      int np = p+a; // 次の popcount 数
+      if (j == 0) { // 未満 flag = false. ここまで n と一致しているとき
+        int x = n>>(m-i-1)&1; // 今見ている桁の bit
+        if (a > x) continue; // n 以上になるので不可
+        if (a < x) nj = 1;
       }
+      dp1[i+1][nj][np] += dp1[i][j][p] * 2; // 桁が1つ増えるので総和を * 2
+      if (a == 1) dp1[i+1][nj][np] += ways[i][j][p]; // bit を立てるときは場合の数分を足す
+      ways[i+1][nj][np] += ways[i][j][p]; // 場合の数を更新
     }
   }
   cout << dp1[m][1][k].val() << endl;
 }
 
 int main() {
-  int t; cin >>t;
+  int t; cin >> t;
   REP(_,t) solve2();
   return 0;
 }
