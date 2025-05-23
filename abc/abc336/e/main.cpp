@@ -4,51 +4,37 @@ using namespace std;
 #define endl '\n'
 using ll = long long;
 
-// dp[i][j][s][r]
-// i: 何桁まで決めたか
-// j: 以下フラグ. 1: N以下が確定, 0: 確定していない
-// s: 桁和
-// r: 10進法の値をkで割った余り
-ll dp[16][2][130][130];
-
 int main() {
-  ll n; cin >> n;
-  n++; // 簡単にするため、+1 して n 未満を数える問題にする
+  string s; cin >> s;
+  const int n = s.size();
+  const int m = n*9;
+  // dp[i][j][k][l]
+  //  i 番目までみたとき
+  //  j 未満フラグ
+  //  k 桁和が k のとき
+  //  l 現在の数を 桁和(x)で割った余り
+  vector dp(n+1,vector(2,vector(m+1,vector<ll>(m+1))));
 
-  // n の各桁の値を直接参照できるようにする
-  vector<int> digit;
-  while(n) {
-    digit.push_back(n%10);
-    n/=10;
-  }
-  reverse(digit.begin(),digit.end());
-  int m = digit.size(); // 桁数
-
-  ll ans = 0;
-  // k: 桁和
-  for(int k = 1; k < 129; k++) {
-    // dp の初期化
-    REP(i,m+1) REP(j,2) REP(s,k+1) REP(r,k) dp[i][j][s][r] = 0;
+  ll ans = 0 ;
+  for(int x = 1; x <= m; x++) {
+    REP(i,n) REP(j,2) REP(k,m+1) REP(l,x) dp[i][j][k][l] = 0;
     dp[0][0][0][0] = 1;
 
-    REP(i,m) REP(j,2) REP(s,k+1) REP(r,k) {
+    REP(i,n) REP(j,2) REP(k,m+1) REP(l,x) {
       REP(d,10) {
-        int ni = i+1; // 次の桁
-        int nj = j; // 以下フラグ
-        int ns = s+d; // 桁和
-        int nr = (r*10+d)%k; // 10進法の値をkで割った余り
-        if (ns > k) continue;
+        int nj = j;
+        int nk = k + d;
+        int nl = (l * 10 + d) % x;
+        if (nk > x) continue;
         if (j == 0) {
-          if (digit[i] < d) continue;
-          if (digit[i] > d) nj = 1;
+          if (s[i]-'0' < d) continue;
+          if (s[i]-'0' > d) nj = 1;
         }
-
-        dp[ni][nj][ns][nr] += dp[i][j][s][r];
+        dp[i+1][nj][nk][nl] += dp[i][j][k][l];
       }
     }
-    ans += dp[m][1][k][0];
+    ans += dp[n][0][x][0] + dp[n][1][x][0];
   }
-
   cout << ans << endl;
   return 0;
 }
