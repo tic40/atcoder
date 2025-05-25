@@ -5,50 +5,54 @@ using namespace std;
 using ll = long long;
 
 int main() {
-  ll l,r; cin >> l >> r;
+  string l,r; cin >> l >> r;
 
-  auto f = [&](ll x) {
-    string s = to_string(x);
-    // 桁DP
-    // dp[i][j][k][l]
-    //   i: i 桁目
-    //   j: 最初の数字
-    //   k: x より小さいことが確定しているか
-    //   l: 先頭から 0 が続いていないか
-    vector dp(10,vector(2,vector<ll>(2)));
-    // 先頭桁の処理(初期値)
-    dp[0][1][0] = 1; // 最初の文字が 0 の場合は x より小さいことが確定
-    for(int i = 1; i < s[0]-'0'; i++) dp[i][1][1] = 1;
-    dp[s[0]-'0'][0][1] = 1;
+  auto solve = [&](string s) {
+    int n = s.size();
+    /*
+     dp[i][j][k][t]
+       i 桁目
+       j 未満フラグ
+       k 先頭桁の数
+       t 先頭桁がまだ決まっているかどうか(0が続いていない)
+    */
+    vector dp(n+1,vector(2,vector(10,vector<ll>(2))));
 
-    for(int i = 1; i < (int)s.size(); i++) {
-      vector old(10,vector(2,vector<ll>(2)));
-      swap(dp,old);
-      int now = s[i]-'0';
-      // 先頭の数 / 次の末尾の数 / 未満フラグ / nonzeroフラグ
-      REP(lead,10) REP(nx,10) REP(strict,2) REP(nonzero,2) {
-        if (nonzero && lead <= nx) continue;
-        if (!strict && nx > now) continue;
-        int nlead = lead;
-        int ns = strict;
-        int nn = nonzero;
+    dp[1][1][0][0] = 1;
+    for(int k = 1; k < s[0]-'0'; k++) dp[1][1][k][1] = 1;
+    dp[1][0][s[0]-'0'][1] = 1;
 
-        // いままで先頭が 0 で初めて先頭の数が決まるケース
-        if (lead == 0 && !nonzero && nx != 0) nlead = nx;
-        // 次の末尾が s の数より小さい場合は必ず ns = 1
-        if (nx < now) ns |= 1;
-        // 次の末尾が 0 でない場合は必ず nn = 1
-        if (nx > 0) nn |= 1;
-
-        dp[nlead][ns][nn] += old[lead][strict][nonzero];
+    for(int i = 1; i < n; i++) REP(j,2) REP(k,10) REP(t,2) {
+      REP(d,10) {
+        int nj = j;
+        int nk = k;
+        int nt = t;
+        if (t == 1 && k <= d) continue;
+        if (t == 0) {
+          if (k == 0 && d > 0) {
+            nt = 1;
+            nk = d;
+          }
+        }
+        if (j == 0) {
+          if (s[i]-'0' < d) continue;
+          if (s[i]-'0' > d) nj = 1;
+        }
+        dp[i+1][nj][nk][nt] += dp[i][j][k][t];
       }
     }
-
-    ll res = 0;
-    REP(i,10) REP(j,2) res += dp[i][j][1];
-    return res;
+    return dp;
   };
 
-  cout << f(r) - f(l-1) << endl;
+  auto dp1 = solve(r);
+  auto dp2 = solve(l);
+  ll ans = 0;
+
+  int n = r.size();
+  for(int k = 0; k < 10; k++) ans += dp1[n][0][k][1] + dp1[n][1][k][1];
+  n = l.size();
+  for(int k = 0; k < 10; k++) ans -= dp2[n][1][k][1];
+
+  cout << ans << endl;
   return 0;
 }
