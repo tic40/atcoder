@@ -25,6 +25,14 @@ int main() {
   int a,b,c,d; cin >> a >> b >> c >> d;
   mint ans = 0;
   Combination comb(4e6+1);
+
+  /*
+    a > c
+    a > d
+    b > d
+
+    [a,b混合][b,c混合][c,d混合]
+  */
   REP(l,b+1) {
     mint now = comb(a-1+l,l);
     now *= comb((b-l+d)+c,c);
