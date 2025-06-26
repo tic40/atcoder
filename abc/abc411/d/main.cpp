@@ -12,18 +12,18 @@ int main() {
     if (t == 2) { cin >> s; reverse(s.begin(),s.end()); }
     e.emplace_back(t,p,s);
   }
+  reverse(e.begin(),e.end());
 
   string ans = "";
   int i = 0;
-  for(int t = q-1; t >= 0; t--) {
-    auto [type,p,s] = e[t];
-    if (type == 1) {
+  for(auto [t,p,s]: e) {
+    if (t == 1) {
       if (i == p) i = 0;
     }
-    if (type == 2) {
+    if (t == 2) {
       if (i == p) ans += s;
     }
-    if (type == 3) {
+    if (t == 3) {
       if (i == 0) i = p;
     }
   }
