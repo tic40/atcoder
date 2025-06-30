@@ -22,9 +22,9 @@ int main() {
       int u = b[i], v = b[(i+1)%n];
       f[u][v] = f[v][u] = 1;
     }
-    int now = 0;
-    REP(i,n) for(int j = i; j < n; j++) if(g[i][j] != f[i][j]) now++;
-    return now;
+    int res = 0;
+    REP(i,n) for(int j = i+1; j < n; j++) if(g[i][j] != f[i][j]) res++;
+    return res;
   };
 
   auto cycle2 = [&]() {
@@ -32,7 +32,7 @@ int main() {
     for(int d = 3; d <= n-3; d++) {
       vector f(n,vector<int>(n));
       REP(i,d) {
-        int u = b[i], v = b[(i+1)%n];
+        int u = b[i], v = b[(i+1)%d];
         f[u][v] = f[v][u] = 1;
       }
       for(int i = d; i < n; i++) {
@@ -40,7 +40,7 @@ int main() {
         f[u][v] = f[v][u] = 1;
       }
       int now = 0;
-      REP(i,n) for(int j = i; j < n; j++) if(g[i][j] != f[i][j]) now++;
+      REP(i,n) for(int j = i+1; j < n; j++) if(g[i][j] != f[i][j]) res++;
       res = min(res,now);
     }
     return res;
