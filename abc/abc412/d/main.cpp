@@ -40,7 +40,7 @@ int main() {
         f[u][v] = f[v][u] = 1;
       }
       int now = 0;
-      REP(i,n) for(int j = i+1; j < n; j++) if(g[i][j] != f[i][j]) res++;
+      REP(i,n) for(int j = i+1; j < n; j++) if(g[i][j] != f[i][j]) now++;
       res = min(res,now);
     }
     return res;
