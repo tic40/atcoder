@@ -7,39 +7,28 @@ int main() {
   int n; cin >> n;
   vector<int> p(n),a(n),b(n);
   REP(i,n) cin >> p[i] >> a[i] >> b[i];
+  const int m = 1001;
+  // dp[i][j] := i までもらってテンションが j のときの最終的なテンションの値
+  vector dp(n+1,vector<int>(m));
+  REP(i,m) dp[n][i] = i;
+  for(int i = n-1; i >= 0; i--) REP(j,m) {
+    int nj = j <= p[i] ? j+a[i] : max(0,j-b[i]);
+    dp[i][j] = dp[i+1][nj];
+  }
 
-  auto binary_search = [&]() {
-    int ok = 1e8, ng = 0;
-    while(ok-ng>1) {
-      int mid = (ok+ng)/2;
-      auto f = [&](int x) {
-        REP(i,n) {
-          if (p[i] > x) return false;
-          x -= b[i];
-        }
-        return true;
-      };
-      f(mid) ? ok = mid : ng = mid;
-    }
-    return ok;
-  };
-
-  int upper = binary_search();
-  int sb = accumulate(b.begin(),b.end(),0);
-  map<int,int> mp;
-
-  auto solve = [&](int x) {
-    if (x >= upper) return x-sb;
-    if (mp.count(x)) return mp[x];
-    int now = x;
-    REP(i,n) now <= p[i] ? now += a[i] : now = max(0,now-b[i]);
-    return mp[x] = now;
-  };
+  vector<int> bs(n+1);
+  REP(i,n) bs[i+1] = bs[i]+b[i];
 
   int q; cin >> q;
   REP(_,q) {
     int x; cin >> x;
-    cout << solve(x) << endl;
+    if (x >= m) {
+      int idx = upper_bound(bs.begin(),bs.begin()+n,x-m) - bs.begin();
+      x -= bs[idx];
+      cout << (idx < n ? dp[idx][x] : x) << endl;
+    } else {
+      cout << dp[0][x] << endl;
+    }
   }
   return 0;
 }
