@@ -6,9 +6,9 @@ using namespace std;
 #define endl '\n'
 using P = pair<int,int>;
 using mint = modint998244353;
-
-mint op(mint a, mint b) { return a*b; }
-mint e() { return mint::raw(1); }
+using S = mint;
+S op(S  a, S b) { return a*b; }
+S e() { return 1; }
 const int m = 6;
 const mint inv_m = mint(m).inv();
 
@@ -18,7 +18,7 @@ int main() {
   REP(i,n) REP(j,m) { int a; cin >> a; pa.emplace_back(a,i); }
   sort(pa.begin(),pa.end());
 
-  segtree<mint,op,e> seg(vector<mint>(n,mint::raw(0)));
+  segtree<S,op,e> seg(vector<S>(n,0));
   mint ans = 0;
   for(auto [a,i]: pa) {
     // a := 現在の出目の最大値
