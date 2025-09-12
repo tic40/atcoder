@@ -8,7 +8,7 @@ int main() {
   vector<int> ans(1,k);
   REP(i,n) {
     vector<int> nx;
-    for(int v: ans) {
+    for(auto v: ans) {
       nx.push_back(v/2);
       nx.push_back(v-v/2);
     }
