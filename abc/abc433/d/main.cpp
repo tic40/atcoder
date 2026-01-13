@@ -13,8 +13,12 @@ int main() {
   vector<vector<int>> as(11);
   REP(i,n) as[to_string(a[i]).size()].push_back(a[i]);
   
-  ll ans = 0, ten = 1;
-  REP(b,11) {
+  ll ans = 0, ten = 10;
+  for(ll b = 1; b <= 10; b++) {
+
+    // 事前に a % m の個数を集計
+    unordered_map<int,int> cnt;
+    for(int na: as[b]) cnt[na%m]++;
     /*
       f(a[i],a[j]) = 10^k * a[i] + a[j]
       f(a[i],a[j]) % m = 0 となる組 (i,j) の個数を数える
@@ -22,8 +26,6 @@ int main() {
       ⇔ a[j] % m = (- 10^k * a[i]) % m
       ⇔ a[j] % m = (- 10^k * a[i] % m + m) % m
     */
-    unordered_map<int,int> cnt;
-    for(int na: as[b]) cnt[na%m]++;
     REP(i,n) {
       ll r = (-ten * a[i] % m + m) % m;
       ans += cnt[r];
