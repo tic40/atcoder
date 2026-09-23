@@ -12,7 +12,6 @@ int main() {
   vector<ll> a(n),b(m);
   REP(i,n) cin >> a[i];
   REP(i,m) cin >> b[i];
-  sort(a.begin(),a.end());
   sort(b.begin(),b.end());
   vector<ll> s(m+1);
   REP(i,m) s[i+1] = s[i]+b[i];
@@ -22,10 +21,8 @@ int main() {
     auto it = lower_bound(b.begin(),b.end(),a[i]);
     int idx = it - b.begin();
     ll tot = 0;
-    tot += a[i] * idx;
-    tot -= s[idx];
-    tot += s[m] - s[idx];
-    tot -= a[i] * (m - (idx));
+    tot += a[i] * idx - s[idx];
+    tot += s[m] - s[idx] - (a[i] * (m - idx));
     ans += tot;
   }
 
