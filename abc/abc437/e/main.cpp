@@ -5,7 +5,7 @@ using namespace std;
 using ll = long long;
 
 struct Node {
-  map<ll, int> next;
+  map<int,int> next;
   vector<int> ids;
 };
 
@@ -16,12 +16,11 @@ int main() {
 
   pos[0] = 0;
   for (int i = 1; i <= n; i++) {
-    int x; ll y; cin >> x >> y;
+    int x, y; cin >> x >> y;
 
     int v = pos[x];
     if (!trie[v].next.count(y)) {
-      int new_node = trie.size();
-      trie[v].next[y] = new_node;
+      trie[v].next[y] = trie.size();
       trie.push_back(Node{});
     }
 
