@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 filePattern=${1:-test*}
-self_dir=$(cd $(dirname $0); pwd)
+self_dir=$(cd "$(dirname "$0")"; pwd)
 
 echo "===start runTest.sh==="
 
@@ -9,7 +9,7 @@ if [ -e a.out ]; then
 fi
 
 # compile with ac-library
-g++ -std=gnu++2b -O2 -Wall -Wextra -ld_classic -I ${self_dir}/../libraries/ac-library main.cpp
+g++ -std=gnu++2b -O2 -Wall -Wextra -ld_classic -I "${self_dir}"/../libraries/ac-library main.cpp
 
 if [ ! -e a.out ]; then
   echo "Error: Compile error."
@@ -27,9 +27,9 @@ fi
 
 echo "===start test==="
 for fname in "${res[@]}"; do
-  echo "\n[input $fname]"
-  ./a.out < $fname
+  printf "\n[input %s]\n" "$fname"
+  ./a.out < "$fname"
 done
 
 rm ./a.out
-echo "\n===end: run $cnt tests.==="
+printf "\n===end: run %d tests.===\n" "$cnt"

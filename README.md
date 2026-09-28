@@ -13,7 +13,9 @@
 
 #### Create contest template
 
-`$ scripts/createContestTemplate.sh {directory name}`
+`$ scripts/createContestTemplate.sh {contest} [problems...]`
+
+e.g. `scripts/createContestTemplate.sh abc440` (a-g), `scripts/createContestTemplate.sh arc200 a b c d`
 
 #### Download test input
 
