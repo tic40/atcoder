@@ -8,31 +8,26 @@ int main() {
   int n; cin >> n;
   vector<int> a(n);
   REP(i,n) cin >> a[i];
-
   map<int,vector<int>> mp;
   REP(i,n) mp[a[i]].push_back(i);
 
   ll ans = 0;
   REP(j,n) {
     if (a[j] % 5 != 0) continue;
-    ll c = a[j] / 5 * 7;
-    ll d = a[j] / 5 * 3;
 
-    if (!mp.count(c) || !mp.count(d)) continue;
+    int ai = a[j] / 5 * 7, ak = a[j] / 5 * 3;
+    if (mp.count(ai) == 0 || mp.count(ak) == 0) continue;
 
-    // j が min
-    auto it1 = upper_bound(mp[c].begin(), mp[c].end(), j);
-    auto it2 = upper_bound(mp[d].begin(), mp[d].end(), j);
-    ll r1 = mp[c].end() - it1;
-    ll r2 = mp[d].end() - it2;
-    ans += r1*r2;
-
-    // j が max
-    auto it3 = lower_bound(mp[c].begin(), mp[c].end(), j);
-    auto it4 = lower_bound(mp[d].begin(), mp[d].end(), j);
-    ll r3 = it3 - mp[c].begin();
-    ll r4 = it4 - mp[d].begin();
-    ans += r3*r4;
+    auto itai = lower_bound(mp[ai].begin(), mp[ai].end(), j);
+    auto itak = lower_bound(mp[ak].begin(), mp[ak].end(), j);
+    // aj が min
+    int rai = mp[ai].end() - itai;
+    int rak = mp[ak].end() - itak;
+    ans += (ll)rai * rak;
+    // aj が max
+    int lai = itai - mp[ai].begin();
+    int lak = itak - mp[ak].begin();
+    ans += (ll)lai * lak;
   }
   cout << ans << endl;
   return 0;
