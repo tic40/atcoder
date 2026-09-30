@@ -3,7 +3,6 @@ using namespace std;
 #define REP(i,n) for(int i=0;i<n;i++)
 #define endl '\n'
 using ll = long long;
-const ll LINF = numeric_limits<ll>::max();
 
 int main() {
   int t; cin >> t;
@@ -12,18 +11,18 @@ int main() {
     vector<int> c(n);
     REP(i,n) cin >> c[i];
 
-    int w2 = 2*w;
+    int w2 = w*2;
     vector<ll> cost(w2);
     REP(i,n) cost[i%w2] += c[i];
 
-    ll now = 0;
-    REP(i,w) now += cost[i];
+    ll tot = 0;
+    REP(i,w) tot += cost[i];
+    ll ans = tot;
 
-    ll ans = now;
-    REP(l,w2) {
-      now -= cost[l];
-      now += cost[(l+w) % w2];
-      ans = min(ans,now);
+    REP(i,w2) {
+      tot -= cost[i];
+      tot += cost[(i+w) % w2];
+      ans = min(ans,tot);
     }
     cout << ans << endl;
   }
