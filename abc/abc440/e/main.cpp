@@ -7,7 +7,7 @@ using ll = long long;
 using State = pair<ll, vector<int>>;
 
 int main() {
-  int n, k, x; cin >> n >> k >> x;
+  int n,k,x; cin >> n >> k >> x;
   vector<ll> a(n);
   REP(i,n) cin >> a[i];
   sort(a.rbegin(), a.rend());
@@ -15,21 +15,18 @@ int main() {
   priority_queue<State> pq;
   set<vector<int>> seen;
 
-  vector<int> initial(n, 0);
+  vector<int> initial(n);
   initial[0] = k;
 
-  pq.emplace(a[0] * k, initial);
+  pq.emplace(a[0]*k, initial);
   seen.insert(initial);
 
   REP(_,x) {
-    auto [sum, cnt] = pq.top();
-    pq.pop();
-
+    auto [sum,cnt] = pq.top(); pq.pop();
     cout << sum << endl;
 
     // 種類 i のクッキーを1枚減らして、種類 i+1 のクッキーを1枚増やす
-    REP(i,n-1) {
-      if (cnt[i] == 0) continue;
+    REP(i,n-1) if (cnt[i] > 0) {
 
       auto next = cnt;
       next[i]--;
