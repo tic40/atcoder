@@ -10,7 +10,12 @@ ll cross(P a, P b) {
   return a.first * b.second - a.second * b.first;
 }
 
-// 0-180度と180-360度を区別
+// 内積
+ll dot(P a, P b) {
+  return a.first * b.first + a.second * b.second;
+}
+
+// false: [0,180), true: [180,360)
 bool half(P p) {
   auto [x, y] = p;
   return y < 0 || (y == 0 && x < 0);
@@ -48,10 +53,7 @@ int main() {
 
   // 同じ方向かどうか
   auto same = [&](int i, int j) {
-    auto [x1, y1] = pt[i];
-    auto [x2, y2] = pt[j];
-
-    return cross(pt[i], pt[j]) == 0 && x1 * x2 + y1 * y2 > 0;
+    return cross(pt[i], pt[j]) == 0 && dot(pt[i], pt[j]) > 0;
   };
 
   // 同じ角度のグループの左右端
